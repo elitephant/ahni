@@ -17,10 +17,11 @@
                             <li><a href="#">Menu1</a></li>
                             <li><a href="#">Menu2</a></li>
                             @if(user != null) {
-                            <li><a href="#">환영합니다! @user.fullName</a></li>
+                                <li><a href="#">환영합니다! @user.fullName</a></li>
+                                <li><a href="/logout">로그아웃</a></li>
                             }
                             @if(user == null) {
-                            <li><a href="#">로긴하셈</a></li>
+                            <li><a href="/login">로그인</a></li>
                             }
                         }
                     </ul>

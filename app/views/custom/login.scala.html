@@ -37,7 +37,7 @@
                     <p>
                         @for(p <- externalProviders) { @provider(request, p.id) }
                     </p>
-                    <p> 소셜 아이디로 로그인 할 수 있어요 </p>
+                    @*<p> 소셜 아이디로 로그인 할 수 있어요 </p>*@
                 }
 
                 @Registry.providers.get(UsernamePassword).map { up =>
