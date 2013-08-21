@@ -1,5 +1,8 @@
+@(user: securesocial.core.Identity)
+@import securesocial.core.IdentityProvider
+@import Http.Context.Implicit
 @main("ahni") {
-    @header("home")
+    @header("home",user)
     <div class="container">
         <div class="starter-template">
             <img src="@routes.Assets.at("images/ahni-128.png")" alt="">

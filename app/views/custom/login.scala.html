@@ -1,0 +1,55 @@
+@(request: play.api.mvc.RequestHeader, loginForm: play.api.data.Form[(String,String)], errorMsg: Option[String] = None)
+
+@import helper._
+@import securesocial.core.Registry
+@import securesocial.core.AuthenticationMethod._
+@import securesocial.core.providers.UsernamePasswordProvider.UsernamePassword
+
+@main(Messages("securesocial.login.title")) {
+    <div class="container">
+    <div class="starter-template">
+
+    <img src="@routes.Assets.at("images/ahni-128.png")" alt="">
+
+    @errorMsg.map { msg =>
+        <div class="alert alert-danger">
+            @Messages(msg)
+        </div>
+    }
+
+    @request.flash.get("success").map { msg =>
+        <div class="alert alert-info">
+            @msg
+        </div>
+    }
+
+    @request.flash.get("error").map { msg =>
+        <div class="alert alert-danger">
+            @msg
+        </div>
+    }
+
+@defining( Registry.providers.all.values.filter( _.id != UsernamePassword) ) { externalProviders =>
+
+        @if( externalProviders.size > 0 ) {
+            <p>소셜 계정으로 로그인 할 수 있어요!</p>
+            <p>
+                @for(p <- externalProviders) {
+                    @provider(request, p.id)
+                }
+            </p>
+        }
+
+        @Registry.providers.get(UsernamePassword).map { up =>
+            @if( externalProviders.size > 0 ) {
+                <p>@Messages("securesocial.login.useEmailAndPassword")</p>
+            } else {
+                <p>@Messages("securesocial.login.useEmailAndPasswordOnly")</p>
+            }
+
+            @provider(request, "userpass", Some(loginForm))
+        }
+    }
+    </div>
+    </div>
+}

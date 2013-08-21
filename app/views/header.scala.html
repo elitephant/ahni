@@ -1,4 +1,4 @@
-@(title: String)
+@(title: String, user: securesocial.core.Identity)
 
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
@@ -16,6 +16,12 @@
                             <li class="active"><a href="@routes.Home.index">Home</a></li>
                             <li><a href="#">Menu1</a></li>
                             <li><a href="#">Menu2</a></li>
+                            @if(user != null) {
+                            <li><a href="#">환영합니다! @user.fullName</a></li>
+                            }
+                            @if(user == null) {
+                            <li><a href="#">로긴하셈</a></li>
+                            }
                         }
                     </ul>
                 </div><!--/.nav-collapse -->
