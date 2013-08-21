@@ -1,0 +1,23 @@
+@(title: String)
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@routes.Home.index">
+                    ahni
+                </a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        @if(title=="home") {
+                            <li class="active"><a href="@routes.Home.index">Home</a></li>
+                            <li><a href="#">Menu1</a></li>
+                            <li><a href="#">Menu2</a></li>
+                        }
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div><!-- /.navbar -->

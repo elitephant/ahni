@@ -1,0 +1,74 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, serif;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #202030;
+    padding-top: 50px;   /* Account for fixed navbar */
+    position: relative; /* For scrollyspy */
+    background-color: dodgerblue;
+}
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+#footer {
+    font-size: 12px;
+    text-align: center;
+    position:fixed;
+    left:0px;
+    bottom:0px;
+    width:100%;
+    background-color: chartreuse;
+    z-index: 1030;
+}
+
+.thumbnail.thumb-photo{
+    background-color: transparent;
+}
+
+div.row.favorite{
+    margin-top: 2em
+}
+
+div.row.favorite div{
+    /*background-color: rgba(0,0,0,0.5);*/
+}
+
+div.about-me-wrapper {
+    margin-bottom: 5em;
+}
+
+p.edu-univ-toggle-p, #edu-univ-toggle-confirm{
+    display: none;
+}
+
+img.grayscale {
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 3.5+ */
+    filter: gray; /* IE6-9 */
+    -webkit-filter: grayscale(100%); /* Chrome 19+ & Safari 6+ */
+}
+
+img.grayscale:hover {
+    filter: none;
+    -webkit-filter: grayscale(0%);
+}
+
+.text-left{
+    text-align: left;
+}
+
+pre.pre-javachip{
+    background-color: rgba(0,0,0,.5);
+    border-style: none;
+    border-left: 5px solid lightseagreen;
+    border-radius: 0;
+    color: white;
+}
+
+/*My Favorite Color*/
+.crimson-f{color: crimson} .crimson-b{background-color: crimson}
+.dodgerblue-f{color: dodgerblue} .dodgerblue-b{background-color: dodgerblue}
+.chartreuse-f{color: chartreuse} .chartreuse-b{background-color: chartreuse}
+.darkorange-f{color: darkorange} .darkorange-b{background-color: darkorange}
+.lightseagreen-f{color: lightseagreen} .lightseagreen-b{background-color: lightseagreen}
