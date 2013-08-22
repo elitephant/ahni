@@ -12,7 +12,8 @@ object ApplicationBuild extends Build {
     javaCore,
     javaJdbc,
     javaEbean,
-    "securesocial" %% "securesocial" % "master-SNAPSHOT"
+    "securesocial" %% "securesocial" % "master-SNAPSHOT",
+    "org.mongodb" % "mongo-java-driver" % "2.11.2"
   )
 
   //  val main = play.Project(appName, appVersion, appDependencies).settings(
