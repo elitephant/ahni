@@ -1,12 +1,109 @@
 package service;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
 import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import org.joda.time.DateTime;
 import scala.Some;
 import securesocial.core.*;
+import securesocial.core.java.Token;
+
+import java.net.UnknownHostException;
 
 public class MongoDBUserService  {
+
+    /**
+     * DB 연결 객체 생성.
+     * @return DB
+     */
+    public static DB getDB() {
+        MongoClient mongoClient = null;
+        try {
+            mongoClient = new MongoClient();
+//            mongoClient = new MongoClient("ds039768.mongolab.com",39768);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        DB db = mongoClient.getDB("ahni");
+        db.authenticate("admin","1234".toCharArray());
+
+        return db;
+    }
+
+    /**
+     * Identity -> DBObject, 유저 정보를 MongoDB에 저장할 수 있도록 변환.
+     * InMemoryUserService 클래스의 doSave() 메소드에서 쓰임.
+     * @param user - 유저 정보
+     * @return DBObject - MongoDB 객체
+     */
+    public static DBObject identityToDoc(Identity user){
+        BasicDBObject doc = new BasicDBObject("UserIdAndProviderId", user.identityId().userId() + user.identityId().providerId())
+                .append("authMethod", new BasicDBObject("method",user.authMethod().method()))
+                .append("firstName", user.firstName())
+                .append("fullName", user.fullName())
+                .append("identityId", new BasicDBObject("productPrefix",user.identityId().productPrefix())
+                        .append("providerId",user.identityId().providerId())
+                        .append("userId",user.identityId().userId()))
+                .append("lastName", user.lastName());
+
+        if(user.email().nonEmpty()){
+            doc.append("email", user.email().get());
+        }
+        if(user.avatarUrl().nonEmpty()){
+            doc.append("avatarUrl", user.avatarUrl().get());
+        }
+
+        if(user.oAuth1Info().nonEmpty()) {
+            doc.append("oAuth1Info", new BasicDBObject("secret", user.oAuth1Info().get().secret())
+                    .append("token",user.oAuth1Info().get().token()));
+        }
+
+        if(user.oAuth2Info().nonEmpty()) {
+            BasicDBObject oAuth2Info = new BasicDBObject("accessToken", user.oAuth2Info().get().accessToken());
+            if(user.oAuth2Info().get().tokenType().nonEmpty()){
+                oAuth2Info.append("tokenType",user.oAuth2Info().get().tokenType().get());
+            }
+            if(user.oAuth2Info().get().refreshToken().nonEmpty()){
+                oAuth2Info.append("refreshToken",user.oAuth2Info().get().refreshToken());
+            }
+            if(user.oAuth2Info().get().expiresIn().nonEmpty()){
+                oAuth2Info.append("expiresIn",user.oAuth2Info().get().expiresIn().get());
+            }
+            doc.append("oAuth2Info", oAuth2Info);
+        }
+
+        if(user.passwordInfo().nonEmpty()) {
+            BasicDBObject passwordInfo = new BasicDBObject("password", user.passwordInfo().get().password())
+                    .append("hasher",user.passwordInfo().get().hasher());
+            if(user.passwordInfo().get().salt().nonEmpty()){
+                passwordInfo.append("salt",user.passwordInfo().get().salt().get());
+            }
+            doc.append("passwordInfo", passwordInfo);
+        }
+
+        return doc;
+    }
+
+    public static DBObject tokenToDoc(Token token){
+        BasicDBObject doc = new BasicDBObject("uuid", token.getUuid())
+                .append("token", new BasicDBObject("email",token.getEmail())
+                        .append("creationTime",token.getCreationTime().toDate())
+                        .append("expirationTime",token.getExpirationTime().toDate())
+                        .append("isSignUp",token.getIsSignUp()));
+
+        return  doc;
+    }
+
+    /**
+     * DBObject -> Identity, 데이터베이스에 있는 유저 정보를 Identity 타입에 맞춰서 가져옴.
+     * InMemoryUserService 클래스의 doFind() 메소드에서 쓰임.
+     * @param doc MongoDB - JSON 형태로 저장되어 있는 유저 정보
+     * @return Identity - securesocial에서 사용할 수 있는 유저 객체
+     */
     public static Identity docToIdentity(DBObject doc){
-        Identity iden=null;
+        Identity identity=null;
         if(doc!=null){
             DBObject identityId = (DBObject)doc.get("identityId");
             DBObject authMethod = (DBObject)doc.get("authMethod");
@@ -42,12 +139,12 @@ public class MongoDBUserService  {
                 String salt = "";
 
                 if(passwordInfo.get("hasher")!=null) {hasher = String.valueOf(passwordInfo.get("hasher"));}
-                if(oAuth2Info.get("password")!=null) {password = String.valueOf(passwordInfo.get("password"));}
-                if(oAuth2Info.get("salt")!=null) {salt = String.valueOf(passwordInfo.get("salt"));}
+                if(passwordInfo.get("password")!=null) {password = String.valueOf(passwordInfo.get("password"));}
+                if(passwordInfo.get("salt")!=null) {salt = String.valueOf(passwordInfo.get("salt"));}
                 pinfo = new PasswordInfo(hasher,password,new Some<String>(salt));
             }
 
-            iden = new SocialUser(new IdentityId(String.valueOf(identityId.get("userId")),String.valueOf(identityId.get("providerId"))),
+            identity = new SocialUser(new IdentityId(String.valueOf(identityId.get("userId")),String.valueOf(identityId.get("providerId"))),
                     String.valueOf(doc.get("firstName")),
                     String.valueOf(doc.get("lastName")),
                     String.valueOf(doc.get("fullName")),
@@ -60,7 +157,26 @@ public class MongoDBUserService  {
             );
         }
 
-        return iden;
+        return identity;
     }
 
+    public static Token docToToken(DBObject doc) {
+        Token token = new Token();
+
+        if(doc!=null){
+            DBObject tokenObject = (DBObject)doc.get("token");
+            token.setUuid(String.valueOf(doc.get("uuid")));
+
+            if(tokenObject!=null){
+                token.setEmail(String.valueOf(tokenObject.get("email")));
+//                token.setCreationTime(DateTime.parse(String.valueOf(tokenObject.get("creationTime"))));
+//                token.setExpirationTime(DateTime.parse(String.valueOf(tokenObject.get("expirationTime"))));
+                token.setCreationTime(new DateTime(tokenObject.get("creationTime")));
+                token.setExpirationTime(new DateTime(tokenObject.get("expirationTime")));
+                token.setIsSignUp(Boolean.valueOf(String.valueOf(tokenObject.get("isSignUp"))));
+            }
+        }
+
+        return token;
+    }
 }
