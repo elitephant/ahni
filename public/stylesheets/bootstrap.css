@@ -1953,8 +1953,8 @@ fieldset[disabled] .btn-info.active {
 .btn-crimson:focus,
 .btn-crimson:active,
 .btn-crimson.active {
-    background-color: #ff8c00;
-    border-color: #ff8c00;
+    background-color: lightseagreen;
+    border-color: crimson;
 }
 
 .btn-crimson.disabled,
@@ -2991,7 +2991,7 @@ button.close {
 }
 
 .navbar-inverse {
-  background-color: #ff8c00;
+  background-color: crimson;
 }
 
 .navbar-inverse .navbar-brand {
@@ -3009,7 +3009,7 @@ button.close {
 }
 
 .navbar-inverse .navbar-nav > li > a {
-  color: #202030;
+  color: #d0d0d0;
 }
 
 .navbar-inverse .navbar-nav > li > a:hover,
@@ -3022,7 +3022,7 @@ button.close {
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
   color: #ffffff;
-  background-color: dodgerblue;
+  background-color: #ff8c00;
 }
 
 .navbar-inverse .navbar-nav > .disabled > a,

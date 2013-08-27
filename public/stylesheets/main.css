@@ -5,7 +5,7 @@ body {
     color: #202030;
     padding-top: 50px;   /* Account for fixed navbar */
     position: relative; /* For scrollyspy */
-    background-color: dodgerblue;
+    background-color: #ff8c00;
 }
 .starter-template {
     padding: 40px 15px;
