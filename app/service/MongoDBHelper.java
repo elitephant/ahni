@@ -21,8 +21,8 @@ public class MongoDBHelper {
     public static DB getDB() {
         MongoClient mongoClient = null;
         try {
-            mongoClient = new MongoClient();
-//            mongoClient = new MongoClient("ds039768.mongolab.com",39768);
+//            mongoClient = new MongoClient();
+            mongoClient = new MongoClient("ds039768.mongolab.com",39768);
         } catch (UnknownHostException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -35,7 +35,6 @@ public class MongoDBHelper {
 
     /**
      * Identity -> DBObject, 유저 정보를 MongoDB에 저장할 수 있도록 변환.
-     * InMemoryUserService 클래스의 doSave() 메소드에서 쓰임.
      * @param user - 유저 정보
      * @return DBObject - MongoDB 객체
      */
@@ -99,7 +98,6 @@ public class MongoDBHelper {
 
     /**
      * DBObject -> Identity, 데이터베이스에 있는 유저 정보를 Identity 타입에 맞춰서 가져옴.
-     * InMemoryUserService 클래스의 doFind() 메소드에서 쓰임.
      * @param doc MongoDB - JSON 형태로 저장되어 있는 유저 정보
      * @return Identity - securesocial에서 사용할 수 있는 유저 객체
      */
