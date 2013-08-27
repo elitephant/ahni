@@ -92,6 +92,27 @@ public class InMemoryUserService extends BaseUserService {
 
     @Override
     public Identity doFindByEmailAndProvider(String email, String providerId) {
+        HashMap<String, Identity> tempUsers = new HashMap<String, Identity>();
+        DBCollection coll = MongoDBUserService.getDB().getCollection("users");
+        DBCursor cursor = coll.find();
+
+        while(cursor.hasNext()) {
+            DBObject obj = cursor.next();
+            Identity identity =  MongoDBUserService.docToIdentity(obj);
+            tempUsers.put(identity.identityId().userId() + identity.identityId().providerId(), identity);
+        }
+
+        for( Identity user : tempUsers.values() ) {
+            Option<String> optionalEmail = user.email();
+            if ( user.identityId().providerId().equals(providerId) &&
+                    optionalEmail.isDefined() &&
+                    optionalEmail.get().equalsIgnoreCase(email))
+            {
+                Logger.error("User Email: "+user.email().get());
+                break;
+            }
+        }
+
         Identity result = null;
         for( Identity user : users.values() ) {
             Option<String> optionalEmail = user.email();
@@ -108,15 +129,32 @@ public class InMemoryUserService extends BaseUserService {
 
     @Override
     public void doDeleteToken(String uuid) {
+        DBCollection coll = MongoDBUserService.getDB().getCollection("tokens");
+        coll.remove(new BasicDBObject("uuid",uuid));
+
+        Logger.error("지운다!");
         tokens.remove(uuid);
     }
 
     @Override
     public void doDeleteExpiredTokens() {
+        HashMap<String, Token> tempTokens = new HashMap<String, Token>();
+        DBCollection coll = MongoDBUserService.getDB().getCollection("tokens");
+        DBCursor cursor = coll.find();
+
+        while(cursor.hasNext()) {
+            DBObject obj = cursor.next();
+            Token token =  MongoDBUserService.docToToken(obj);
+            tempTokens.put(token.uuid, token);
+        }
+
         Iterator<Map.Entry<String,Token>> iterator = tokens.entrySet().iterator();
         while ( iterator.hasNext() ) {
             Map.Entry<String, Token> entry = iterator.next();
             if ( entry.getValue().isExpired() ) {
+                Logger.error(entry.getValue().getEmail());
+                Logger.error(entry.getValue().getCreationTime().toString());
+                Logger.error(entry.getValue().getExpirationTime().toString());
                 iterator.remove();
             }
         }
