@@ -17,16 +17,23 @@
                     <ul class="nav navbar-nav">
                         @if(title=="home") {
                             <li class="active"><a href="@routes.Home.index">Home</a></li>
-                            <li><a href="@routes.Home.review">Review</a></li>
-                            <li><a href="#">Menu2</a></li>
+                        }
+                        @if(title!="home") {
+                            <li><a href="@routes.Home.index">Home</a></li>
                         }
                         @if(title=="review") {
-                            <li><a href="@routes.Home.index">Home</a></li>
                             <li class="active"><a href="@routes.Home.review">Review</a></li>
-                            <li><a href="#">Menu2</a></li>
+                        }
+                        @if(title!="review") {
+                            <li><a href="@routes.Home.review">Review</a></li>
                         }
                         @if(user != null) {
-                            <li><a href="#">@user.fullName 님 환영합니다!</a></li>
+                            @if(title=="account") {
+                                <li class="active"><a href="@routes.Account.index">@user.fullName 님 환영합니다!</a></li>
+                            }
+                            @if(title!="account") {
+                                <li><a href="@routes.Account.index">@user.fullName 님 환영합니다!</a></li>
+                            }
                             <li><a href="/logout">로그아웃 <span class="glyphicon glyphicon-remove-circle"></span></a></li>
                         }
                         @if(user == null) {

@@ -5,7 +5,7 @@ import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import org.joda.time.DateTime;
-import scala.Option;
+import play.Logger;
 import scala.Some;
 import securesocial.core.*;
 import securesocial.core.java.Token;
@@ -14,22 +14,31 @@ import java.net.UnknownHostException;
 
 public class MongoDBHelper {
 
+    private static DB db = getConnection();
+
+    public static DB getConnection(){
+        Logger.error("몽고 생성자 호출");
+
+        DB db;
+        MongoClient mongoClient = null;
+        try {
+//          mongoClient = new MongoClient();
+            mongoClient = new MongoClient("ds039768.mongolab.com",39768);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        db = mongoClient.getDB("ahni");
+        db.authenticate("admin","1234".toCharArray());
+
+        return db;
+    }
+
     /**
-     * DB 연결 객체 생성.
+     * DB 인스턴스 리턴
      * @return DB
      */
     public static DB getDB() {
-        MongoClient mongoClient = null;
-        try {
-//            mongoClient = new MongoClient();
-            mongoClient = new MongoClient("ds039768.mongolab.com",39768);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
-        DB db = mongoClient.getDB("ahni");
-        db.authenticate("admin","1234".toCharArray());
-
         return db;
     }
 

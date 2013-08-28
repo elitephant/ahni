@@ -1,0 +1,16 @@
+@(user: securesocial.core.Identity)
+@main("ahni - account") {
+    @header("account",user)
+    <div class="container">
+        <div class="starter-template">
+            <div class="text-left">
+                <p>Full name: @user.fullName</p>
+                <p>Email: @user.email.get</p>
+                <p>Avatar URL: @user.avatarUrl.get</p>
+                <p>Auth method: @user.identityId.providerId</p>
+                <p>User ID: @user.identityId.userId</p>
+            </div>
+        </div>
+    </div><!-- /.container -->
+}
+
