@@ -78,12 +78,10 @@
                         <h5>@lectureEvaluation.comment</h5>
                         <div>
                             추천도:
-                            @for( i <- 1 to lectureEvaluation.rating){
-                                <span class="glyphicon glyphicon-star"></span>
-                            }
-                            @for( i <- 1 to 5-lectureEvaluation.rating){
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                            }
+                            @*  rating 크기만큼 별을 그림  *@
+                            @for( i <- 1 to lectureEvaluation.rating){ <span class="glyphicon glyphicon-star"></span> }
+                            @*  5-rating 크기만큼 빈별을 그림  *@
+                            @for( i <- 1 to 5-lectureEvaluation.rating){ <span class="glyphicon glyphicon-star-empty"></span> }
                         </div>
                         <small class="text-right">작성일: @lectureEvaluation.dateTime</small>
                     </div>

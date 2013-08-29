@@ -19,8 +19,8 @@
                         @if(title!="home") {<li><a href="@routes.Home.index">메인화면</a></li>}
                         @if(title=="evaluation") {<li class="active"><a href="@routes.Evaluation.index">강의평가</a></li>}
                         @if(title!="evaluation") {<li><a href="@routes.Evaluation.index">강의평가</a></li>}
-                        @if(title=="foodmap") {<li class="active"><a href="#">맛지도</a></li>}
-                        @if(title!="foodmap") {<li><a href="#">맛지도</a></li>}
+                        @if(title=="foodmap") {<li class="active"><a href="@routes.FoodMap.index">맛지도</a></li>}
+                        @if(title!="foodmap") {<li><a href="@routes.FoodMap.index">맛지도</a></li>}
                         @if(user != null) {
                             @if(title=="account") {<li class="active"><a href="@routes.Account.index">@user.fullName 님 환영합니다!</a></li>}
                             @if(title!="account") {<li><a href="@routes.Account.index">@user.fullName 님 환영합니다!</a></li>}
