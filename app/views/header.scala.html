@@ -16,16 +16,16 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         @if(title=="home") {
-                            <li class="active"><a href="@routes.Home.index">Home</a></li>
+                            <li class="active"><a href="@routes.Home.index">메인화면</a></li>
                         }
                         @if(title!="home") {
-                            <li><a href="@routes.Home.index">Home</a></li>
+                            <li><a href="@routes.Home.index">메인화면</a></li>
                         }
-                        @if(title=="review") {
-                            <li class="active"><a href="@routes.Home.review">Review</a></li>
+                        @if(title=="evaluation") {
+                            <li class="active"><a href="@routes.Evaluation.index">강의평가</a></li>
                         }
-                        @if(title!="review") {
-                            <li><a href="@routes.Home.review">Review</a></li>
+                        @if(title!="evaluation") {
+                            <li><a href="@routes.Evaluation.index">강의평가</a></li>
                         }
                         @if(user != null) {
                             @if(title=="account") {

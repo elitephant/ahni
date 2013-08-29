@@ -17,8 +17,6 @@ public class MongoDBHelper {
     private static DB db = getConnection();
 
     public static DB getConnection(){
-        Logger.error("몽고 생성자 호출");
-
         DB db;
         MongoClient mongoClient = null;
         try {

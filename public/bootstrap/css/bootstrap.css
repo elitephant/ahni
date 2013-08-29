@@ -2188,6 +2188,47 @@ fieldset[disabled] .btn-darkorange.active {
     border-color: #357ebd;
 }
 
+.btn-darkorange-slim {
+    color: #ffffff;
+    background-color: darkorange;
+    border: 1px solid #202020;
+}
+
+.btn-darkorange-slim:hover,
+.btn-darkorange-slim:focus,
+.btn-darkorange-slim:active,
+.btn-darkorange-slim.active,
+.open .dropdown-toggle.btn-darkorange-slim {
+    color: #ffffff;
+    background-color: #202020;
+    border: 1px solid darkorange;
+}
+
+.btn-darkorange-slim:active,
+.btn-darkorange-slim.active,
+.open .dropdown-toggle.btn-darkorange-slim {
+    background-image: none;
+}
+
+.btn-darkorange-slim.disabled,
+.btn-darkorange-slim[disabled],
+fieldset[disabled] .btn-darkorange-slim,
+.btn-darkorange-slim.disabled:hover,
+.btn-darkorange-slim[disabled]:hover,
+fieldset[disabled] .btn-darkorange-slim:hover,
+.btn-darkorange-slim.disabled:focus,
+.btn-darkorange-slim[disabled]:focus,
+fieldset[disabled] .btn-darkorange-slim:focus,
+.btn-darkorange-slim.disabled:active,
+.btn-darkorange-slim[disabled]:active,
+fieldset[disabled] .btn-darkorange-slim:active,
+.btn-darkorange-slim.disabled.active,
+.btn-darkorange-slim[disabled].active,
+fieldset[disabled] .btn-darkorange-slim.active {
+    background-color: #428bca;
+    border-color: #357ebd;
+}
+
 .btn-warning {
     color: #ffffff;
     background-color: #f0ad4e;
@@ -5644,9 +5685,10 @@ button.close {
 .modal-content {
     position: relative;
     background-color: #ffffff;
+    color: #202020;
     border: 1px solid #999999;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
+    /*border-radius: 6px;*/
     outline: none;
     -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
     box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);

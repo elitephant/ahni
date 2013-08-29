@@ -4,11 +4,17 @@
     <div class="container">
         <div class="starter-template">
             <div class="text-left">
-                <p>Full name: @user.fullName</p>
-                <p>Email: @user.email.get</p>
-                <p>Avatar URL: @user.avatarUrl.get</p>
-                <p>Auth method: @user.identityId.providerId</p>
-                <p>User ID: @user.identityId.userId</p>
+                <div class="media">
+                    <a class="pull-left" href="#">
+                        <img class="media-object" src="@user.avatarUrl.get" alt="@user.fullName" style="max-width: 128px; max-height: 128px">
+                    </a>
+                    <div class="media-body">
+                        <h3 class="media-heading">@user.fullName</h3>
+                        <p>Email: @user.email.get</p>
+                        <p>Auth method: @user.identityId.providerId</p>
+                        <p>User ID: @user.identityId.userId</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div><!-- /.container -->

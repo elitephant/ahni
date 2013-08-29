@@ -28,7 +28,6 @@ public class MongoDBUserService extends BaseUserService {
      */
     @Override
     public Identity doSave(Identity user) {
-        Logger.error("디버깅!");
         DBCollection coll = MongoDBHelper.getDB().getCollection("users");
 
         //디비에 없으면 바로 넣음
