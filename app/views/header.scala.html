@@ -15,30 +15,18 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        @if(title=="home") {
-                            <li class="active"><a href="@routes.Home.index">메인화면</a></li>
-                        }
-                        @if(title!="home") {
-                            <li><a href="@routes.Home.index">메인화면</a></li>
-                        }
-                        @if(title=="evaluation") {
-                            <li class="active"><a href="@routes.Evaluation.index">강의평가</a></li>
-                        }
-                        @if(title!="evaluation") {
-                            <li><a href="@routes.Evaluation.index">강의평가</a></li>
-                        }
+                        @if(title=="home") {<li class="active"><a href="@routes.Home.index">메인화면</a></li>}
+                        @if(title!="home") {<li><a href="@routes.Home.index">메인화면</a></li>}
+                        @if(title=="evaluation") {<li class="active"><a href="@routes.Evaluation.index">강의평가</a></li>}
+                        @if(title!="evaluation") {<li><a href="@routes.Evaluation.index">강의평가</a></li>}
+                        @if(title=="foodmap") {<li class="active"><a href="#">맛지도</a></li>}
+                        @if(title!="foodmap") {<li><a href="#">맛지도</a></li>}
                         @if(user != null) {
-                            @if(title=="account") {
-                                <li class="active"><a href="@routes.Account.index">@user.fullName 님 환영합니다!</a></li>
-                            }
-                            @if(title!="account") {
-                                <li><a href="@routes.Account.index">@user.fullName 님 환영합니다!</a></li>
-                            }
+                            @if(title=="account") {<li class="active"><a href="@routes.Account.index">@user.fullName 님 환영합니다!</a></li>}
+                            @if(title!="account") {<li><a href="@routes.Account.index">@user.fullName 님 환영합니다!</a></li>}
                             <li><a href="/logout">로그아웃 <span class="glyphicon glyphicon-remove-circle"></span></a></li>
                         }
-                        @if(user == null) {
-                            <li><a href="/login">로그인</a></li>
-                        }
+                        @if(user == null) {<li><a href="/login">로그인</a></li>}
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
