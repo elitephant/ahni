@@ -4,12 +4,15 @@ import com.mongodb.BasicDBObject;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
 import org.joda.time.DateTime;
+import play.Logger;
 import play.data.validation.Constraints;
 import play.modules.mongodb.jackson.MongoDB;
 import securesocial.core.Identity;
 
 import javax.persistence.Id;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class LectureEvaluation {
     private static JacksonDBCollection<LectureEvaluation, String> coll = MongoDB.getCollection("LectureEvaluation", LectureEvaluation.class, String.class);
@@ -30,7 +33,15 @@ public class LectureEvaluation {
 
     public static List<LectureEvaluation> all() {
         //시간으로 내림차순 정렬하여 최근것 부터 보여줌, 10개
-        return LectureEvaluation.coll.find().limit(10).sort(new BasicDBObject("dateTime",-1)).toArray();
+        return LectureEvaluation.coll.find().limit(10).sort(new BasicDBObject("dateTime", -1)).toArray();
+    }
+
+    public static List<LectureEvaluation> findByKeyword(String keyword) {
+        ArrayList orList = new ArrayList();
+        orList.add(new BasicDBObject("lectureName", Pattern.compile(keyword)));
+        orList.add(new BasicDBObject("professorName", Pattern.compile(keyword)));
+
+        return LectureEvaluation.coll.find(new BasicDBObject("$or", orList)).toArray();
     }
 
     public static void create(LectureEvaluation lectureEvaluation, Identity user) {
