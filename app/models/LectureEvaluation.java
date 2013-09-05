@@ -4,7 +4,6 @@ import com.mongodb.BasicDBObject;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
 import org.joda.time.DateTime;
-import play.Logger;
 import play.data.validation.Constraints;
 import play.modules.mongodb.jackson.MongoDB;
 import securesocial.core.Identity;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class LectureEvaluation {
-    private static JacksonDBCollection<LectureEvaluation, String> coll = MongoDB.getCollection("LectureEvaluation", LectureEvaluation.class, String.class);
+    private static JacksonDBCollection<LectureEvaluation, String> coll = MongoDB.getCollection("LectureEvaluations", LectureEvaluation.class, String.class);
 
     @Id
     @ObjectId
