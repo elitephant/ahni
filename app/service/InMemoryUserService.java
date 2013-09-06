@@ -35,8 +35,8 @@ import java.util.Map;
  * A real implementation would persist things in a database
  */
 public class InMemoryUserService extends BaseUserService {
-    private HashMap<String, Identity> users  = new HashMap<String, Identity>();
-    private HashMap<String, Token> tokens = new HashMap<String, Token>();
+    private HashMap<String, Identity> users  = new HashMap<>();
+    private HashMap<String, Token> tokens = new HashMap<>();
 
     public InMemoryUserService(Application application) {
         super(application);
