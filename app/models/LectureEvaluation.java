@@ -36,7 +36,7 @@ public class LectureEvaluation {
     }
 
     public static List<LectureEvaluation> findByKeyword(String keyword) {
-        ArrayList orList = new ArrayList();
+        List<BasicDBObject> orList = new ArrayList<>();
         orList.add(new BasicDBObject("lectureName", Pattern.compile(keyword)));
         orList.add(new BasicDBObject("professorName", Pattern.compile(keyword)));
 
@@ -48,7 +48,7 @@ public class LectureEvaluation {
         //TODO: 시스템 시간이 4시간 더 크게 들어감...
         //TODO: save할 때 중복확인 할 것인가? 한 유저가 같은 강의를 여러번 평가하면...안되는데
         lectureEvaluation.dateTime = DateTime.now();
-        lectureEvaluation.userId = user.identityId().userId();
+        lectureEvaluation.userId = User.findByIdentity(user).id;
         LectureEvaluation.coll.save(lectureEvaluation);
     }
 }
