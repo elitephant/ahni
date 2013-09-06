@@ -12,7 +12,7 @@
                         <h3 class="media-heading">@user.fullName</h3>
                         <p>Email: @user.email.get</p>
                         <p>Auth method: @user.identityId.providerId</p>
-                        <p>User ID: @user.identityId.userId</p>
+                        <p>User ID: @User.findByIdentity(user).id</p>
                     </div>
                 </div>
             </div>
