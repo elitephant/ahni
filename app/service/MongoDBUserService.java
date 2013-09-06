@@ -29,18 +29,15 @@ public class MongoDBUserService extends BaseUserService {
     @Override
     public Identity doSave(Identity user) {
         DBCollection coll = MongoDBHelper.getDB().getCollection("users");
+        DBObject userObject = coll.findOne(new BasicDBObject("UserIdAndProviderId",user.identityId().userId() + user.identityId().providerId()));
 
-        //디비에 없으면 바로 넣음
-        if(coll.findOne(new BasicDBObject("UserIdAndProviderId",user.identityId().userId() + user.identityId().providerId()))==null) {
+        //디비에 없으면 insert
+        if(userObject==null) {
             coll.insert(MongoDBHelper.identityToDoc(user));
         }
-        //디비에 있으면 지우고 넣음
+        //디비에 있으면 update
         else {
-            //TODO: UserPass(이메일 가입시) 에러 발생 java.lang.NullPointerException:
-            //TODO: 임시로 주석처리, 그러나 지워줘야함. 최신의 유저정보를 넣어야하기 때문에... 흠 생각해보자
-            //TODO: 고친것 같다.
-            coll.remove(new BasicDBObject("UserIdAndProviderId",user.identityId().userId() + user.identityId().providerId()));
-            coll.insert(MongoDBHelper.identityToDoc(user));
+            coll.update(userObject, MongoDBHelper.identityToDoc(user));
         }
 
         return user;
