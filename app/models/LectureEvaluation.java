@@ -27,6 +27,10 @@ public class LectureEvaluation {
     public String comment;          //수강후기
     @Constraints.Required
     public int rating;              //평가점수
+    @Constraints.Required
+    public int year;                //수강년도
+    @Constraints.Required
+    public int semester;            //수강학기
     public String userId;           //유저 아이디
     public DateTime dateTime;       //작성 시간
 

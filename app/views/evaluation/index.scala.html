@@ -41,10 +41,29 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="year" class="col-lg-2 control-label">수강시기</label>
+                                <div class="col-lg-5">
+                                    <select class="form-control" id="year" name="year" required="required">
+                                        <option value="" disabled>수강년도</option>
+                                        @*현재의 연도부터 2000년 까지*@
+                                        @for(i <- Calendar.getInstance().get(Calendar.YEAR) to 2000 by -1) {
+                                            <option value="@i">@i년</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-5">
+                                    <select class="form-control" id="semester" name="semester" required="required">
+                                        <option value="" disabled>수강학기</option>
+                                        <option value="1">1학기</option>
+                                        <option value="2">2학기</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="rating" class="col-lg-2 control-label">평가점수</label>
                                 <div class="col-lg-10">
                                     <select class="form-control" id="rating" name="rating" required="required">
-                                        <option value="" disabled>Please select</option>
+                                        <option value="" disabled>이 강의에 대한 평가점수를 선택해주세요</option>
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -92,7 +111,8 @@
                             @*  5-rating 크기만큼 빈별을 그림  *@
                             @for( i <- 1 to 5-lectureEvaluation.rating){ <span class="glyphicon glyphicon-star-empty"></span> }
                         </div>
-                        <small class="text-right">작성일: @lectureEvaluation.dateTime</small>
+                        <div><small class="text-right">@lectureEvaluation.year년 @lectureEvaluation.semester학기에 수강</small></div>
+                        <div><small class="text-right">작성일: @lectureEvaluation.dateTime</small></div>
                     </div>
                 </div>
             }
