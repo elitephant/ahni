@@ -56,11 +56,20 @@ public class Evaluation extends Controller {
     }
 
     /**
-     * 강의평가 Form 에서 ajax 로 호출되는 액션. DB 에서 강의목록을 읽어와 json 으로 출력.
+     * 강의평가 Form 에서 ajax 로 호출되는 액션. DB 에서 강의명을 읽어와 json 으로 출력.
      * @param term
      * @return
      */
     public static Result getLectureNames(String term) {
-        return ok(Json.toJson(Lecture.find(term)));
+        return ok(Json.toJson(Lecture.findLectureNameByKeyword(term)));
+    }
+
+    /**
+     * 강의평가 Form 에서 ajax 로 호출되는 액션. DB 에서 교수명을 읽어와 json 으로 출력.
+     * @param term
+     * @return
+     */
+    public static Result getProfessorNames(String term) {
+        return ok(Json.toJson(Lecture.findProfessorNameByKeyword(term)));
     }
 }

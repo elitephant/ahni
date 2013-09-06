@@ -46,7 +46,7 @@
                                     <select class="form-control" id="year" name="year" required="required">
                                         <option value="" disabled>수강년도</option>
                                         @*현재의 연도부터 2000년 까지*@
-                                        @for(i <- Calendar.getInstance().get(Calendar.YEAR) to 2000 by -1) {
+                                        @for(i <- Calendar.getInstance().get(Calendar.YEAR) to 1954 by -1) {
                                             <option value="@i">@i년</option>
                                         }
                                     </select>
@@ -101,8 +101,8 @@
             @for(lectureEvaluation <- lectureEvaluationList) {
                 <div class="row">
                     <div class="col-md-12 text-left div-review">
-                        <h2>@lectureEvaluation.lectureName</h2>
-                        <h4>@lectureEvaluation.professorName</h4>
+                        <h2 style="display: inline">@lectureEvaluation.lectureName</h2>
+                        <h4 style="display: inline">@lectureEvaluation.professorName</h4>
                         <h5>@lectureEvaluation.comment</h5>
                         <div>
                             추천도:
@@ -121,32 +121,6 @@
 
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/jquery-ui.css")">
     <script src="@routes.Assets.at("javascripts/jquery-ui.js")" type="text/javascript"></script>
-    <script>
-    $("#lectureName").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: "@{routes.Evaluation.getLectureNames()}",
-                dataType: "json",
-                data: {term: request.term},
-                success: function(data) {
-                    response( $.map(data, function(item) {
-                        return { label: item, value: item }
-                    }));
-                },
-                beforeSend:function(){
-                    $("#loading-indicator").show();
-                },
-                complete:function(){
-                    $("#loading-indicator").hide();
-                }
-            });
-        },
-        //한글 입력후에 방향키 이동시에 발생하는 문제 Fix
-        focus: function(event,ui){
-            return false;
-        },
-        minLength: 2
-    });
-    </script>
+    <script src="@routes.Assets.at("javascripts/main.js")" type="text/javascript"></script>
 }
 

@@ -29,7 +29,7 @@ public class Lecture {
         return Lecture.coll.find().limit(10).toArray();
     }
 
-    public static Collection<String> find(String keyword) {
+    public static Collection<String> findLectureNameByKeyword(String keyword) {
         List<Lecture> lectureList = Lecture.coll.find(new BasicDBObject("lectureName", Pattern.compile(keyword))).toArray();
 
         //고유한 강의명 분류를 위한 HashMap
@@ -38,7 +38,22 @@ public class Lecture {
             hashMap.put(lecture.lectureName, lecture.lectureName);
         }
 
-        //이름으로 정렬하기 위한 TreeMap
+        //정렬하기 위한 TreeMap
+        TreeMap<String, String> treeMap = new TreeMap<>(hashMap);
+
+        return treeMap.values();
+    }
+
+    public static Collection<String> findProfessorNameByKeyword(String keyword) {
+        List<Lecture> lectureList = Lecture.coll.find(new BasicDBObject("professorName", Pattern.compile(keyword))).toArray();
+
+        //고유한 교수명 분류를 위한 HashMap
+        HashMap<String,String> hashMap = new HashMap<>();
+        for (Lecture lecture : lectureList) {
+            hashMap.put(lecture.professorName, lecture.professorName);
+        }
+
+        //정렬하기 위한 TreeMap
         TreeMap<String, String> treeMap = new TreeMap<>(hashMap);
 
         return treeMap.values();
