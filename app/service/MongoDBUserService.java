@@ -32,13 +32,9 @@ public class MongoDBUserService extends BaseUserService {
         DBObject userObject = coll.findOne(new BasicDBObject("UserIdAndProviderId",user.identityId().userId() + user.identityId().providerId()));
 
         //디비에 없으면 insert
-        if(userObject==null) {
-            coll.insert(MongoDBHelper.identityToDoc(user));
-        }
+        if(userObject==null) { coll.insert(MongoDBHelper.identityToDoc(user)); }
         //디비에 있으면 update
-        else {
-            coll.update(userObject, MongoDBHelper.identityToDoc(user));
-        }
+        else { coll.update(userObject, MongoDBHelper.identityToDoc(user)); }
 
         return user;
     }
