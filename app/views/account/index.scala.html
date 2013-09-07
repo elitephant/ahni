@@ -15,6 +15,31 @@
                         <p>User ID: @User.findByIdentity(user).id</p>
                     </div>
                 </div>
+                <div>
+                    <h2>내가 작성한 강의평가</h2>
+                    <table class="table table-hover-custom text-center">
+                        <thead>
+                            <tr>
+                                <th>강의명</th>
+                                <th>교수명</th>
+                                <th>평가점수</th>
+                                <th>작성시간</th>
+                                <th>삭제</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @for( lectureEvaluation <- LectureEvaluation.findByIdentity(user) ) {
+                            <tr>
+                                <td>@lectureEvaluation.lectureName</td>
+                                <td>@lectureEvaluation.professorName</td>
+                                <td>@lectureEvaluation.rating</td>
+                                <td>@lectureEvaluation.dateTime</td>
+                                <td><a href="#"><span class="glyphicon glyphicon-remove crimson-f"></span></a></td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div><!-- /.container -->

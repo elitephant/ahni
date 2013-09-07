@@ -95,6 +95,8 @@ ul.ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content.ui-corner-all {
 /*자동완성목록 높이 조정*/
 ul.ui-autocomplete { max-height: 12em; overflow-y: auto; overflow-x: hidden;}
 
+.table-hover-custom > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th { background-color: #702020 }
+
 /*My Favorite Color*/
 .crimson-f{color: crimson} .crimson-b{background-color: crimson}
 .dodgerblue-f{color: dodgerblue} .dodgerblue-b{background-color: dodgerblue}

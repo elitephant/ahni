@@ -47,6 +47,10 @@ public class LectureEvaluation {
         return LectureEvaluation.coll.find(new BasicDBObject("$or", orList)).toArray();
     }
 
+    public static List<LectureEvaluation> findByIdentity(Identity user) {
+        return LectureEvaluation.coll.find(new BasicDBObject("userId", User.findByIdentity(user).id)).toArray();
+    }
+
     public static void create(LectureEvaluation lectureEvaluation, Identity user) {
         //현재 시스템 시간과 유저아이디를 set 해주고 MongoDB에 Insert
         //TODO: 시스템 시간이 4시간 더 크게 들어감...
