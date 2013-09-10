@@ -9,10 +9,10 @@
                         <img class="media-object" src="@user.avatarUrl.get" alt="@user.fullName" style="max-width: 128px; max-height: 128px">
                     </a>
                     <div class="media-body">
-                        <h3 class="media-heading">@user.fullName</h3>
+                        <h3 class="media-heading" style="display: inline">@user.fullName</h3>
+                        <small>@User.findByIdentity(user).id</small>
                         <p>Email: @user.email.get</p>
                         <p>Auth method: @user.identityId.providerId</p>
-                        <p>User ID: @User.findByIdentity(user).id</p>
                     </div>
                 </div>
                 <div>
