@@ -19,11 +19,14 @@ public class Lecture {
     @ObjectId
     public String id;              //MongoDB Object ID
     public String haksoo;          //학수번호
+    public String year;            //연도
+    public String semester;        //학기
     public String lectureName;     //강의명
-    public String professorName;   //교수명
+    public String grade;           //학년
     public String credit;          //학점
     public String type;            //구분(교양필수, 전공필수, 전공선택, 전공필수 등)
     public String timeClassroom;   //시간 & 강의실
+    public String professorName;   //교수명
 
     public static List<Lecture> all() {
         return Lecture.coll.find().limit(10).toArray();
