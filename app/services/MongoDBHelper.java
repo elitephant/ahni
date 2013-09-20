@@ -1,11 +1,10 @@
-package service;
+package services;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import org.joda.time.DateTime;
-import play.Logger;
 import scala.Some;
 import securesocial.core.*;
 import securesocial.core.java.Token;

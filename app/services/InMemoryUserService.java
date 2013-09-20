@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package service;
+package services;
 
 import play.Application;
 import play.Logger;
@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * A Sample In Memory user service in Java
+ * A Sample In Memory user services in Java
  *
  * Note: This is NOT suitable for a production environment and is provided only as a guide.
  * A real implementation would persist things in a database

@@ -1,11 +1,10 @@
-package service;
+package services;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import play.Application;
-import play.Logger;
 import scala.Option;
 import securesocial.core.Identity;
 import securesocial.core.IdentityId;

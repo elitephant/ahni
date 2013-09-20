@@ -6,7 +6,11 @@
             <div class="text-left">
                 <div class="media">
                     <a class="pull-left" href="#">
+                    @if(user.avatarUrl.get=="null") {
+                        <span class="glyphicon glyphicon-user" style="font-size: 128px; color: #505050"></span>
+                    } else {
                         <img class="media-object" src="@user.avatarUrl.get" alt="@user.fullName" style="max-width: 128px; max-height: 128px">
+                    }
                     </a>
                     <div class="media-body">
                         <h3 class="media-heading" style="display: inline">@user.fullName</h3>

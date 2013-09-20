@@ -1,4 +1,4 @@
-package service
+package services
 
 import play.api.mvc.{RequestHeader, Request}
 import play.api.templates.{Html, Txt}
