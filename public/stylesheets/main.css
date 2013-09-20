@@ -97,6 +97,20 @@ ul.ui-autocomplete { max-height: 12em; overflow-y: auto; overflow-x: hidden;}
 
 .table-hover-custom > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th { background-color: #702020 }
 
+div.alert.ahni-success {
+    background-color: dodgerblue;
+    color: #ffffff;
+    border: none;
+    border-radius: 0;
+}
+
+div.alert.ahni-danger {
+    background-color: crimson;
+    color: #ffffff;
+    border: none;
+    border-radius: 0;
+}
+
 /*My Favorite Color*/
 .crimson-f{color: crimson} .crimson-b{background-color: crimson}
 .dodgerblue-f{color: dodgerblue} .dodgerblue-b{background-color: dodgerblue}

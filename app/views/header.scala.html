@@ -32,3 +32,26 @@
                 </div><!--/.nav-collapse -->
             </div>
         </div><!-- /.navbar -->
+
+        @if(flash.containsKey("success")){
+            <div class="alert ahni-success" style="display: none">
+                @flash.get("success")
+            </div>
+
+            <script type="text/javascript">
+            $(document).ready(function() {
+                $('div.alert.ahni-success').slideDown(500).delay(5000).slideUp(500)
+            });
+            </script>
+        }
+        @if(flash.containsKey("error")){
+            <div class="alert ahni-danger" style="display: none">
+                @flash.get("error")
+            </div>
+
+            <script type="text/javascript">
+            $(document).ready(function() {
+                $('div.alert.ahni-danger').slideDown(500).delay(5000).slideUp(500)
+            });
+            </script>
+        }
