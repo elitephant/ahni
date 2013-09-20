@@ -102,6 +102,17 @@ public class MongoDBHelper {
         return  doc;
     }
 
+    public static DBObject tokenToDoc(Token token, String userId){
+        BasicDBObject doc = new BasicDBObject("uuid", token.getUuid())
+                .append("userId",userId)
+                .append("token", new BasicDBObject("email",token.getEmail())
+                        .append("creationTime",token.getCreationTime().toDate())
+                        .append("expirationTime",token.getExpirationTime().toDate())
+                        .append("isSignUp",token.getIsSignUp()));
+
+        return  doc;
+    }
+
     /**
      * DBObject -> Identity, 데이터베이스에 있는 유저 정보를 Identity 타입에 맞춰서 가져옴.
      * @param doc MongoDB - JSON 형태로 저장되어 있는 유저 정보

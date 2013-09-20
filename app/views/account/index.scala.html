@@ -1,4 +1,4 @@
-@(user: securesocial.core.Identity)
+@(user: securesocial.core.Identity, userDetail: UserDetail)
 @main("ahni - account") {
     @header("account",user)
     <div class="container">
@@ -13,10 +13,19 @@
                     }
                     </a>
                     <div class="media-body">
-                        <h3 class="media-heading" style="display: inline">@user.fullName</h3>
-                        <small>@User.findByIdentity(user).id</small>
-                        <p>Email: @user.email.get</p>
-                        <p>Auth method: @user.identityId.providerId</p>
+                        <h3 class="media-heading">@user.fullName</h3>
+                        <div><small>고유 아이디: @User.findByIdentity(user).id</small></div>
+                        <div><small>이메일: @user.email.get</small></div>
+                        <div><small>가입경로: @user.identityId.providerId</small></div>
+                        <div><small>
+                            인하대학생 인증:
+                            @if(userDetail != null) {
+                                <span>(@userDetail.validatedEmail)</span> <span class="glyphicon glyphicon-ok"></span>
+                            } else {
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <a href="@routes.Account.startAuthenticate()">지금 인증하기</a>
+                            }
+                        </small></div>
                     </div>
                 </div>
                 <div>

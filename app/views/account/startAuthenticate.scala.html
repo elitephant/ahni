@@ -1,0 +1,27 @@
+@(authenticateForm: Form[String])
+@main("ahni - inha authenticate") {
+    <div class="container">
+        <div class="starter-template">
+            <img src="@routes.Assets.at("images/ahni-logo/ahni-logo-64.png")" alt="">
+            <h1>인하대학교 학생이신가요?</h1>
+
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6">
+                    @helper.form(action = routes.Account.requestAuthenticate(), 'role -> "form") {
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">
+                                <div>학교 이메일의 @("@inha.edu")를 제외한 아이디를 입력해주세요</div>
+                                <div><small>예) @("david@inha.edu")라는 학교 이메일을 사용하신다면 입력란에 david을 입력해주세요</small></div>
+                            </label>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="학교 이메일 아이디">
+                        </div>
+                        <button type="submit" class="btn btn-darkorange">인증 메일 전송하기</button>
+                    }
+                </div>
+                <div class="col-lg-3"></div>
+            </div>
+        </div>
+    </div><!-- /.container -->
+}
+
