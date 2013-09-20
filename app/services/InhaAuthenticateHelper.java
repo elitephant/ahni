@@ -33,7 +33,7 @@ public class InhaAuthenticateHelper {
         DateTime now = DateTime.now();
         token.setUuid(uuid);
         token.setCreationTime(now);
-        token.setExpirationTime(now.plusHours(1));
+        token.setExpirationTime(now.plusMinutes(60));
         token.setIsSignUp(false);
         token.setEmail(String.format("%s@inha.edu",emailId));
 
