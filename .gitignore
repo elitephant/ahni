@@ -12,7 +12,8 @@ dist
 /.classpath
 /.project
 /RUNNING_PID
-/.settingsconf/application.conf
+/.settings
+conf/application.conf
 conf/play.plugins
 conf/routes
 conf/securesocial.conf
