@@ -1,5 +1,27 @@
 @(authenticateForm: Form[String])
 @main("ahni - inha authenticate") {
+    @if(flash.containsKey("success")){
+        <div class="alert ahni-success" style="display: none; position: absolute; top: 0; width: 100%;">
+            @flash.get("success")
+        </div>
+
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $('div.alert.ahni-success').slideDown(500).delay(5000).slideUp(500)
+        });
+        </script>
+    }
+    @if(flash.containsKey("error")){
+        <div class="alert ahni-danger" style="display: none; position: absolute; top: 0; width: 100%;">
+            @flash.get("error")
+        </div>
+
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $('div.alert.ahni-danger').slideDown(500).delay(5000).slideUp(500)
+        });
+        </script>
+    }
     <div class="container">
         <div class="starter-template">
             <img src="@routes.Assets.at("images/ahni-logo/ahni-logo-64.png")" alt="">
@@ -14,7 +36,7 @@
                                 <div>학교 이메일의 @("@inha.edu")를 제외한 아이디를 입력해주세요</div>
                                 <div><small>예) @("david@inha.edu")라는 학교 이메일을 사용하신다면 입력란에 david을 입력해주세요</small></div>
                             </label>
-                            <input type="text" class="form-control" id="email" name="email" placeholder="학교 이메일 아이디">
+                            <input type="text" class="form-control" id="email" name="email" placeholder="학교 이메일 아이디" required="required" autocomplete="off">
                         </div>
                         <button type="submit" class="btn btn-darkorange">인증 메일 전송하기</button>
                     }

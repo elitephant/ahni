@@ -13,6 +13,9 @@ import views.html.account.index;
 import views.html.account.login;
 import views.html.account.startAuthenticate;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @SecureSocial.SecuredAction
 public class Account extends Controller{
     static Form<String> authenticateForm = Form.form(String.class);
@@ -47,11 +50,19 @@ public class Account extends Controller{
         Form<String> filledForm = authenticateForm.bindFromRequest();
 
         for (String emailId : filledForm.data().values()) {
+            Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+            Matcher m = p.matcher(emailId);
+
+            if (m.find()) {
+                flash("error", "아이디에 특수 문자를 포함할 수 없습니다.");
+                return redirect(routes.Account.startAuthenticate());
+            }
+
             InhaAuthenticateHelper.sendEmail(emailId, dbUser.id, ctx()._requestHeader());
-            flash("success", String.format("입력하신 %s@inha.edu로 인증 메일을 발송하였습니다.",emailId));
+            flash("success", String.format("%s@inha.edu 주소로 인증 메일을 발송하였습니다.",emailId));
             break;
         }
-        return redirect(controllers.routes.Account.index());
+        return redirect(routes.Account.startAuthenticate());
     }
 
     public static Result completeAuthenticate(String token) {
