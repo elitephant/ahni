@@ -1,17 +1,17 @@
 @(request: play.api.mvc.RequestHeader, loginForm: play.api.data.Form[(String,String)], errorMsg: Option[String] = None)
 
-@import helper._
 @import securesocial.core.Registry
-@import securesocial.core.AuthenticationMethod._
 @import securesocial.core.providers.UsernamePasswordProvider.UsernamePassword
 @import views.html.custom.provider
 
 @views.html.main(Messages("securesocial.login.title")) {
     <div class="container">
         <div class="starter-template">
-
-            <img src="@routes.Assets.at("images/ahni-logo/ahni-logo-256.png")" alt="">
-            <div style="padding-bottom: 1em"></div>
+            <div>
+                <img src="@routes.Assets.at("images/ahni-logo/ahni-logo-64.png")" alt="">
+                <h2 class="darkorange-f">ahni</h2>
+            </div>
+            <hr class="darkorange-border">
 
             @errorMsg.map { msg =>
                 <div class="alert alert-danger">
