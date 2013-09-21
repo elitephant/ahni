@@ -110,6 +110,12 @@ div.alert.ahni-danger {
     border: none;
     border-radius: 0;
 }
+div.ahni-alert-fixed-top {
+    display:none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
 
 /*My Favorite Color*/
 .crimson-f{color: crimson} .crimson-b{background-color: crimson}

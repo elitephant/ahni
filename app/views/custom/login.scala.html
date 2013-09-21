@@ -5,6 +5,38 @@
 @import views.html.custom.provider
 
 @views.html.main(Messages("securesocial.login.title")) {
+    @errorMsg.map { msg =>
+        <div class="alert ahni-alert-fixed-top ahni-danger">
+            @Messages(msg)
+        </div>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $('div.alert.ahni-danger').slideDown(500).delay(5000).slideUp(500)
+        });
+        </script>
+    }
+
+    @request.flash.get("success").map { msg =>
+        <div class="alert ahni-alert-fixed-top ahni-success">
+            @msg
+        </div>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $('div.alert.ahni-success').slideDown(500).delay(5000).slideUp(500)
+        });
+        </script>
+    }
+
+    @request.flash.get("error").map { msg =>
+        <div class="alert ahni-alert-fixed-top ahni-danger">
+            @msg
+        </div>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $('div.alert.ahni-danger').slideDown(500).delay(5000).slideUp(500)
+        });
+        </script>
+    }
     <div class="container">
         <div class="starter-template">
             <div>
@@ -12,25 +44,6 @@
                 <h2 class="darkorange-f">ahni</h2>
             </div>
             <hr class="darkorange-border">
-
-            @errorMsg.map { msg =>
-                <div class="alert alert-danger">
-                    @Messages(msg)
-                </div>
-            }
-
-            @request.flash.get("success").map { msg =>
-                <div class="alert alert-info">
-                    @msg
-                </div>
-            }
-
-            @request.flash.get("error").map { msg =>
-                <div class="alert alert-danger">
-                    @msg
-                </div>
-            }
-
             @defining( Registry.providers.all.values.filter( _.id != UsernamePassword) ) { externalProviders =>
 
                 @if( externalProviders.size > 0 ) {
