@@ -5,6 +5,7 @@ import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import org.joda.time.DateTime;
+import play.Play;
 import scala.Some;
 import securesocial.core.*;
 import securesocial.core.java.Token;
@@ -16,17 +17,20 @@ public class MongoDBHelper {
     private static DB db = getConnection();
 
     public static DB getConnection(){
+        String database = Play.application().configuration().getString("mongodb.database");
+        String credentials = Play.application().configuration().getString("mongodb.credentials");
+        String servers = Play.application().configuration().getString("mongodb.servers");
+
         DB db;
         MongoClient mongoClient = null;
         try {
-//          mongoClient = new MongoClient();
-            mongoClient = new MongoClient("ds039768.mongolab.com",39768);
+            mongoClient = new MongoClient(servers.split(":")[0],Integer.parseInt(servers.split(":")[1]));
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
 
-        db = mongoClient.getDB("ahni");
-        db.authenticate("admin","1234".toCharArray());
+        db = mongoClient.getDB(database);
+        db.authenticate(credentials.split(":")[0],credentials.split(":")[1].toCharArray());
 
         return db;
     }
