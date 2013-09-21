@@ -13,4 +13,7 @@ dist
 /.project
 /RUNNING_PID
 /.settings
-conf
+conf/application.conf
+conf/play.plugins
+conf/routes
+conf/securesocial.conf
