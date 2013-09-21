@@ -6,11 +6,14 @@ import play.data.*;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
+import services.utils.SecureInha;
 import views.html.evaluation.index;
 
 @SecureSocial.SecuredAction
+@Security.Authenticated(SecureInha.class)
 public class Evaluation extends Controller {
     static Form<LectureEvaluation> lectureEvaluationForm = Form.form(LectureEvaluation.class);
     static Form<String> searchForm = Form.form(String.class);
