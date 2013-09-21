@@ -1,7 +1,7 @@
 $("#lectureName").autocomplete({
     source: function (request, response) {
         $.ajax({
-            url: "/evaluation/search/lecturenames",
+            url: "/evaluation/search/ajax/lecturenames",
             dataType: "json",
             data: {term: request.term},
             success: function(data) {
@@ -27,7 +27,7 @@ $("#lectureName").autocomplete({
 $("#professorName").autocomplete({
     source: function (request, response) {
         $.ajax({
-            url: "/evaluation/search/professornames",
+            url: "/evaluation/search/ajax/professornames",
             dataType: "json",
             data: {term: request.term},
             success: function(data) {
