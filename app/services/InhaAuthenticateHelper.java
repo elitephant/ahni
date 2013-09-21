@@ -4,6 +4,7 @@ import com.mongodb.*;
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
 import controllers.routes;
+import models.UserDetail;
 import org.joda.time.DateTime;
 import play.api.mvc.RequestHeader;
 import securesocial.core.java.Token;
@@ -80,5 +81,14 @@ public class InhaAuthenticateHelper {
                 .append("validatedEmail", String.valueOf(token.get("email")));
 
         coll.insert(userDetail, WriteConcern.SAFE);
+    }
+
+    public static boolean isValidatedUser(UserDetail userDetail) {
+        if(userDetail != null) {
+            if(userDetail.validatedEmail.contains("@inha.edu")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

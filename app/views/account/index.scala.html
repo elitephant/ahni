@@ -1,4 +1,5 @@
 @(user: securesocial.core.Identity, userDetail: UserDetail)
+@import services.InhaAuthenticateHelper
 @main("ahni - account") {
     @header("account",user)
     <div class="container">
@@ -19,7 +20,7 @@
                         <div><small>가입경로: @user.identityId.providerId</small></div>
                         <div><small>
                             인하대학생 인증:
-                            @if(userDetail != null) {
+                            @if(InhaAuthenticateHelper.isValidatedUser(userDetail)) {
                                 <span>(@userDetail.validatedEmail)</span> <span class="glyphicon glyphicon-ok"></span>
                             } else {
                                 <span class="glyphicon glyphicon-remove"></span>
