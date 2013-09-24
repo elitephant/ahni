@@ -13,7 +13,7 @@ import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 public class Lecture {
-    private static JacksonDBCollection<Lecture, String> coll = MongoDB.getCollection("Lectures", Lecture.class, String.class);
+    private static JacksonDBCollection<Lecture, String> coll = MongoDB.getCollection("lecture", Lecture.class, String.class);
 
     @Id
     @ObjectId
@@ -30,6 +30,10 @@ public class Lecture {
 
     public static List<Lecture> all() {
         return Lecture.coll.find().limit(10).toArray();
+    }
+
+    public static Collection<Lecture> findByLectureName(String lectureName) {
+        return Lecture.coll.find(new BasicDBObject("lectureName", Pattern.compile(lectureName))).toArray();
     }
 
     public static Collection<String> findLectureNameByKeyword(String keyword) {

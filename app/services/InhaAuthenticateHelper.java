@@ -39,7 +39,7 @@ public class InhaAuthenticateHelper {
         token.setEmail(String.format("%s@inha.edu",emailId));
 
         //디비에 토큰을 넣음
-        DBCollection coll = MongoDBHelper.getDB().getCollection("Tokens");
+        DBCollection coll = MongoDBHelper.getDB().getCollection("token");
         coll.insert(MongoDBHelper.tokenToDoc(token, userId), WriteConcern.SAFE);
     }
 
@@ -49,7 +49,7 @@ public class InhaAuthenticateHelper {
      * @return
      */
     public static boolean validateToken(String uuid) {
-        DBCollection coll = MongoDBHelper.getDB().getCollection("Tokens");
+        DBCollection coll = MongoDBHelper.getDB().getCollection("token");
         DBObject obj = coll.findOne(new BasicDBObject("uuid",uuid));
         if(obj!=null){
             addUserToValidatedList(obj);
@@ -75,7 +75,7 @@ public class InhaAuthenticateHelper {
      */
     public static void addUserToValidatedList(DBObject obj) {
         DBObject token = (DBObject)obj.get("token");
-        DBCollection coll = MongoDBHelper.getDB().getCollection("UserDetails");
+        DBCollection coll = MongoDBHelper.getDB().getCollection("user_detail");
         DBObject userDetail = new BasicDBObject("userId", String.valueOf(obj.get("userId")))
                 .append("validatedTime",DateTime.now().toDate())
                 .append("validatedEmail", String.valueOf(token.get("email")));

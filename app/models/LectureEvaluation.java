@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class LectureEvaluation {
-    private static JacksonDBCollection<LectureEvaluation, String> coll = MongoDB.getCollection("LectureEvaluations", LectureEvaluation.class, String.class);
+    private static JacksonDBCollection<LectureEvaluation, String> coll = MongoDB.getCollection("lecture_evaluation", LectureEvaluation.class, String.class);
 
     @Id
     @ObjectId

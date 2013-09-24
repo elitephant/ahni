@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import java.util.List;
 
 public class User {
-    private static JacksonDBCollection<User, String> coll = MongoDB.getCollection("Users", User.class, String.class);
+    private static JacksonDBCollection<User, String> coll = MongoDB.getCollection("user", User.class, String.class);
 
     @Id
     @ObjectId

@@ -27,7 +27,7 @@ public class MongoDBUserService extends BaseUserService {
      */
     @Override
     public Identity doSave(Identity user) {
-        DBCollection coll = MongoDBHelper.getDB().getCollection("Users");
+        DBCollection coll = MongoDBHelper.getDB().getCollection("user");
         DBObject userObject = coll.findOne(new BasicDBObject("UserIdAndProviderId",user.identityId().userId() + user.identityId().providerId()));
 
         //디비에 없으면 insert
@@ -44,13 +44,13 @@ public class MongoDBUserService extends BaseUserService {
      */
     @Override
     public void doSave(Token token) {
-        DBCollection coll = MongoDBHelper.getDB().getCollection("Tokens");
+        DBCollection coll = MongoDBHelper.getDB().getCollection("token");
         coll.insert(MongoDBHelper.tokenToDoc(token));
     }
 
     @Override
     public Identity doFind(IdentityId userId) {
-        DBCollection coll = MongoDBHelper.getDB().getCollection("Users");
+        DBCollection coll = MongoDBHelper.getDB().getCollection("user");
         DBObject obj = coll.findOne(new BasicDBObject("UserIdAndProviderId",userId.userId() + userId.providerId()));
 
         Identity user = MongoDBHelper.docToIdentity(obj);
@@ -60,7 +60,7 @@ public class MongoDBUserService extends BaseUserService {
 
     @Override
     public Token doFindToken(String tokenId) {
-        DBCollection coll = MongoDBHelper.getDB().getCollection("Tokens");
+        DBCollection coll = MongoDBHelper.getDB().getCollection("token");
         DBObject obj = coll.findOne(new BasicDBObject("uuid", tokenId));
         if(obj==null) return null;
 
@@ -82,7 +82,7 @@ public class MongoDBUserService extends BaseUserService {
         Identity result = null;
 
         HashMap<String, Identity> tempUsers = new HashMap<>();
-        DBCollection coll = MongoDBHelper.getDB().getCollection("Users");
+        DBCollection coll = MongoDBHelper.getDB().getCollection("user");
         DBCursor cursor = coll.find();
 
         while(cursor.hasNext()) {
@@ -107,14 +107,14 @@ public class MongoDBUserService extends BaseUserService {
 
     @Override
     public void doDeleteToken(String uuid) {
-        DBCollection coll = MongoDBHelper.getDB().getCollection("Tokens");
+        DBCollection coll = MongoDBHelper.getDB().getCollection("token");
         coll.remove(new BasicDBObject("uuid",uuid));
     }
 
     @Override
     public void doDeleteExpiredTokens() {
         HashMap<String, Token> tokens = new HashMap<>();
-        DBCollection coll = MongoDBHelper.getDB().getCollection("Tokens");
+        DBCollection coll = MongoDBHelper.getDB().getCollection("token");
         DBCursor cursor = coll.find();
 
         while(cursor.hasNext()) {
