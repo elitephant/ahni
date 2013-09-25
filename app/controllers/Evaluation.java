@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Lecture;
+import models.LectureSimple;
 import models.LectureEvaluation;
 import play.data.*;
 import play.libs.Json;
@@ -64,7 +65,7 @@ public class Evaluation extends Controller {
      * @return
      */
     public static Result getLectureNames(String term) {
-        return ok(Json.toJson(Lecture.findLectureNameByKeyword(term)));
+        return ok(Json.toJson(LectureSimple.findLectureNameByKeyword(term)));
     }
 
     /**
@@ -73,6 +74,6 @@ public class Evaluation extends Controller {
      * @return
      */
     public static Result getProfessorNames(String term) {
-        return ok(Json.toJson(Lecture.findProfessorNameByKeyword(term)));
+        return ok(Json.toJson(LectureSimple.findProfessorNameByKeyword(term)));
     }
 }
