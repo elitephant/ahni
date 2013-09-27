@@ -1,0 +1,54 @@
+@(user: securesocial.core.Identity, lectureSimple: LectureSimple, lectureEvaluationForm: Form[LectureEvaluation])
+
+@main("ahni - evaluation") {
+    @header("evaluation",user)
+
+    <div class="container">
+        <div class="starter-template text-left">
+            <h2>강의평 작성하기</h2>
+            <h2 class="darkorange-f" style="display: inline">@lectureSimple.lectureName</h2>
+            <h4 style="display: inline">@lectureSimple.professorName</h4>
+            <hr>
+
+            @helper.form(action = routes.Evaluation.save(lectureSimple.id), 'role -> "form") {
+                <div class="form-group">
+                    <label for="comment">수강후기</label>
+                    <textarea name="comment" id="comment" rows="3" class="form-control" placeholder="이 강의에 대한 생각을 자유롭게 작성해주세요" required="required" autofocus="on"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="year">수강연도</label>
+                    <select class="form-control" id="year" name="year" required="required">
+                        <option value="" disabled>수강년도</option>
+                        @for(i <- Calendar.getInstance().get(Calendar.YEAR) to 1954 by -1) {
+                            <option value="@i">@(i+"년")</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="semester">수강학기</label>
+                    <select class="form-control" id="semester" name="semester" required="required">
+                        <option value="" disabled>수강학기</option>
+                        <option value="1">1학기</option>
+                        <option value="2">2학기</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="rating">평가점수</label>
+                    <select class="form-control" id="rating" name="rating" required="required">
+                        <option value="" disabled>이 강의에 대한 평가점수를 선택해주세요</option>
+                        <option value="1">1 (매우나쁨)</option>
+                        <option value="2">2 (나쁨)</option>
+                        <option value="3">3 (보통)</option>
+                        <option value="4">4 (좋음)</option>
+                        <option value="5">5 (매우좋음)</option>
+                    </select>
+                </div>
+                <div class="form-group text-right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    <button type="submit" class="btn btn-darkorange-slim">입력하기</button>
+                </div>
+            }
+        </div>
+    </div>
+}
+
