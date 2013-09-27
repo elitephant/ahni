@@ -1,86 +1,9 @@
-@(user: securesocial.core.Identity, lectureEvaluationForm: Form[LectureEvaluation], searchForm: Form[String], lectureEvaluationList: List[LectureEvaluation])
+@(user: securesocial.core.Identity, searchForm: Form[String], lectureSimpleList: List[LectureSimple])
 
 @main("ahni - evaluation") {
     @header("evaluation",user)
     <div class="container">
         <div class="starter-template">
-
-            @*강의평가 Modal toggle button*@
-            <div class="text-left" style="margin-bottom: 1em">
-                <a data-toggle="modal" href="#myModal" class="btn btn-darkorange" style="border-color: darkorange">강의평가 작성하기</a>
-            </div>
-
-            @*강의평가 입력 Form*@
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                    @helper.form(action = routes.Evaluation.save(), 'class -> "form-horizontal", 'role -> "form") {
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">강의평가</h4>
-                            <div>&nbsp;<img src="@routes.Assets.at("images/ajax-indicator-white.gif")" id="loading-indicator" alt="loading..." style="position: relative; left: -8px; display: none;"/>&nbsp;</div>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="lectureName" class="col-lg-2 control-label">강의명</label>
-                                <div class="col-lg-10">
-                                    <input type="text" class="form-control" name="lectureName" id="lectureName" placeholder="강의명을 입력해주세요" required="required" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="professorName" class="col-lg-2 control-label">교수명</label>
-                                <div class="col-lg-10">
-                                    <input type="text" class="form-control" name="professorName" id="professorName" placeholder="교수명을 입력해주세요" required="required" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="comment" class="col-lg-2 control-label">수강후기</label>
-                                <div class="col-lg-10">
-                                    <textarea name="comment" id="comment" rows="3" class="form-control" placeholder="이 강의에 대한 생각을 자유롭게 작성해주세요" required="required"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="year" class="col-lg-2 control-label">수강시기</label>
-                                <div class="col-lg-5">
-                                    <select class="form-control" id="year" name="year" required="required">
-                                        <option value="" disabled>수강년도</option>
-                                        @*현재의 연도부터 2000년 까지*@
-                                        @for(i <- Calendar.getInstance().get(Calendar.YEAR) to 1954 by -1) {
-                                            <option value="@i">@i년</option>
-                                        }
-                                    </select>
-                                </div>
-                                <div class="col-lg-5">
-                                    <select class="form-control" id="semester" name="semester" required="required">
-                                        <option value="" disabled>수강학기</option>
-                                        <option value="1">1학기</option>
-                                        <option value="2">2학기</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="rating" class="col-lg-2 control-label">평가점수</label>
-                                <div class="col-lg-10">
-                                    <select class="form-control" id="rating" name="rating" required="required">
-                                        <option value="" disabled>이 강의에 대한 평가점수를 선택해주세요</option>
-                                        <option value="1">1 (매우나쁨)</option>
-                                        <option value="2">2 (나쁨)</option>
-                                        <option value="3">3 (보통)</option>
-                                        <option value="4">4 (좋음)</option>
-                                        <option value="5">5 (매우좋음)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                            <button type="submit" class="btn btn-darkorange-slim">입력하기</button>
-                        </div>
-                    }
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
 
             @*강의평가 Search Form*@
             @helper.form(action = routes.Evaluation.search(), 'role -> "form") {
@@ -98,21 +21,27 @@
 
             @*강의평가 출력*@
             <h3 class="text-left">"지금 ahni 에서는 15202명의 학우들의 205467개의 강의평가가 공유중!"</h3>
-            @for(lectureEvaluation <- lectureEvaluationList) {
+            @for(lectureSimple <- lectureSimpleList) {
                 <div class="row">
                     <div class="col-md-12 text-left div-review">
-                        <h2 style="display: inline">@lectureEvaluation.lectureName</h2>
-                        <h4 style="display: inline">@lectureEvaluation.professorName</h4>
-                        <h5>@lectureEvaluation.comment</h5>
-                        <div>
-                            추천도:
-                            @*  rating 크기만큼 별을 그림  *@
-                            @for( i <- 1 to lectureEvaluation.rating){ <span class="glyphicon glyphicon-star"></span> }
-                            @*  5-rating 크기만큼 빈별을 그림  *@
-                            @for( i <- 1 to 5-lectureEvaluation.rating){ <span class="glyphicon glyphicon-star-empty"></span> }
+                        <h2 style="display: inline">@lectureSimple.lectureName</h2>
+                        <h4 style="display: inline">@lectureSimple.professorName</h4>
+                        <div class="pull-right text-right">
+                            @if(lectureSimple.evaluations!=null) {
+                                <div class="rating-wrapper">
+                                    <span class="darkorange-f rating-score">@(Math.round(lectureSimple.avgRating*10.0)/10.0)</span>
+                                    <small class="rating-count">
+                                        (
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        @lectureSimple.evaluations.size()
+                                        )
+                                    </small>
+                                </div>
+                            }
+                            <a href="@routes.Evaluation.detail(lectureSimple.id)" class="btn btn-sm btn-default">자세히 보기</a>
+                            <a href="@routes.Evaluation.write(lectureSimple.id)" class="btn btn-sm btn-darkorange-slim">강의평 작성하기</a>
                         </div>
-                        <div><small class="text-right">@lectureEvaluation.year년 @lectureEvaluation.semester학기에 수강</small></div>
-                        <div><small class="text-right">작성일: @lectureEvaluation.dateTime</small></div>
+                        <div class="clearfix"></div>
                     </div>
                 </div>
             }
