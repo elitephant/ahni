@@ -1,6 +1,5 @@
 package controllers;
 
-import models.Lecture;
 import models.LectureSimple;
 import models.LectureEvaluation;
 import play.data.*;
@@ -12,6 +11,8 @@ import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
 import services.utils.SecureInha;
 import views.html.evaluation.index;
+import views.html.evaluation.write;
+import views.html.evaluation.detail;
 
 @SecureSocial.SecuredAction
 @Security.Authenticated(SecureInha.class)
@@ -25,21 +26,37 @@ public class Evaluation extends Controller {
      */
     public static Result index() {
         Identity user = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        return ok(index.render(user, lectureEvaluationForm, searchForm, LectureEvaluation.all()));
+        return ok(index.render(user, searchForm, LectureSimple.all()));
+    }
+
+    public static Result detail(String id) {
+        Identity user = (Identity) ctx().args.get(SecureSocial.USER_KEY);
+        return ok(detail.render(user, LectureSimple.findById(id)));
+    }
+
+    /**
+     * 강의평가 작성하는 화면 렌더링
+     * @param lecture 작성할 강의의 몽고 아이디
+     * @return
+     */
+    public static Result write(String lecture) {
+        Identity user = (Identity) ctx().args.get(SecureSocial.USER_KEY);
+        LectureSimple lectureSimple = LectureSimple.findById(lecture);
+        return ok(write.render(user, lectureSimple, lectureEvaluationForm));
     }
 
     /**
      * 강의평가 저장하는 액션
      * @return
      */
-    public static Result save() {
+    public static Result save(String id) {
         Identity user = (Identity) ctx().args.get(SecureSocial.USER_KEY);
         Form<LectureEvaluation> filledForm = lectureEvaluationForm.bindFromRequest();
 
         if(filledForm.hasErrors()) {
-            return badRequest(index.render(user, filledForm, searchForm, LectureEvaluation.all()));
+            return badRequest(index.render(user, searchForm, LectureSimple.all()));
         } else {
-            LectureEvaluation.create(filledForm.get(), user);
+            LectureSimple.addEvaluation(filledForm.get(), user, id);
             return redirect(routes.Evaluation.index());
         }
     }
@@ -53,7 +70,7 @@ public class Evaluation extends Controller {
         Form<String> filledForm = searchForm.bindFromRequest();
 
         for (String keyword : filledForm.data().values()) {
-            return ok(index.render(user, lectureEvaluationForm, searchForm, LectureEvaluation.findByKeyword(keyword)));
+            return ok(index.render(user, searchForm, LectureSimple.findByKeyword(keyword)));
         }
 
         return redirect(routes.Evaluation.index());

@@ -3,9 +3,9 @@ package models;
 import com.mongodb.BasicDBObject;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
+import net.vz.mongodb.jackson.Id;
 import play.modules.mongodb.jackson.MongoDB;
 
-import javax.persistence.Id;
 import java.util.List;
 
 public class UserDetail {
