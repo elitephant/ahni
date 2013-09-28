@@ -149,6 +149,22 @@ div.ahni-graph-bar-column {
     height: 1em;
     background-color: darkorange;
 }
+table.table.ahni-table-slim {
+    font-size: 12px;
+    line-height: 1em;
+}
+table.table.ahni-table-slim tbody > tr > td span.glyphicon {
+    top: 0;
+    margin: 0 auto;
+    padding: 0 0 0 0;
+    position: relative;
+}
+table.table.ahni-table-slim thead > tr > th {
+    text-align: left;
+    font-weight: bold;
+    color: darkorange;
+    font-size: 14px;
+}
 
 /*My Favorite Color*/
 .crimson-f{color: crimson} .crimson-b{background-color: crimson}
