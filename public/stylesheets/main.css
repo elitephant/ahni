@@ -83,10 +83,6 @@ div.div-review h2 {
     padding: 0;
 }
 
-div.div-review div span.glyphicon-star {
-    color: darkorange;
-}
-
 /*자동완성목록이 Modal 뒤에 나오는 것 fix*/
 ul.ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content.ui-corner-all {
     z-index: 1051;

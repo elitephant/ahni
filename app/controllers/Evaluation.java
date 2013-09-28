@@ -31,7 +31,16 @@ public class Evaluation extends Controller {
 
     public static Result detail(String id) {
         Identity user = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        return ok(detail.render(user, LectureSimple.findById(id)));
+
+        LectureSimple lectureSimple = LectureSimple.findById(id);
+
+        if(lectureSimple==null) {
+            flash("error", "해당 페이지를 찾을 수 없습니다 :(");
+            return redirect(routes.Evaluation.index());
+        }
+        else {
+            return ok(detail.render(user, LectureSimple.findById(id)));
+        }
     }
 
     /**

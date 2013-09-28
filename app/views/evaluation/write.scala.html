@@ -12,10 +12,6 @@
 
             @helper.form(action = routes.Evaluation.save(lectureSimple.id), 'role -> "form") {
                 <div class="form-group">
-                    <label for="comment">수강후기</label>
-                    <textarea name="comment" id="comment" rows="3" class="form-control" placeholder="이 강의에 대한 생각을 자유롭게 작성해주세요" required="required" autofocus="on"></textarea>
-                </div>
-                <div class="form-group">
                     <label for="year">수강연도</label>
                     <select class="form-control" id="year" name="year" required="required">
                         <option value="" disabled>수강년도</option>
@@ -42,6 +38,10 @@
                         <option value="4">4 (좋음)</option>
                         <option value="5">5 (매우좋음)</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="comment">수강후기</label>
+                    <textarea name="comment" id="comment" rows="3" class="form-control" placeholder="이 강의에 대한 생각을 자유롭게 작성해주세요" required="required" autofocus="on"></textarea>
                 </div>
                 <div class="form-group text-right">
                     <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>

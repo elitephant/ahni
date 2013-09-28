@@ -20,56 +20,42 @@
                 <h2 class="darkorange-f" style="display: inline-block">@lectureSimple.lectureName</h2>
                 <h4 style="display: inline-block">@lectureSimple.professorName</h4>
             </div>
-            <div class="rating-box row">
-                <div class="score-container col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div class="score">
-                        @(Math.round(lectureSimple.avgRating*10.0)/10.0)
-                    </div>
-                    <div>
-                        @*  rating 크기만큼 별을 그림  *@
-                        @for( i <- 1 to Math.round(lectureSimple.avgRating)){ <span class="glyphicon glyphicon-star darkorange-f"></span> }
-                        @*  5-rating 크기만큼 빈별을 그림  *@
-                        @for( i <- 1 to 5-Math.round(lectureSimple.avgRating)){ <span class="glyphicon glyphicon-star-empty"></span> }
-
-                    </div>
-                    <div class="count">
-                        <span class="glyphicon glyphicon-user"></span>
-                        <span>@lectureSimple.evaluations.size()</span>
-                        <span>total</span>
-                    </div>
-                </div>
-                <div class="rating-histogram text-left col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    @defining(lectureSimple.ratingsToPercentage) { ratings =>
-                        <div>
-                            @makeRatingGraph(ratings(4), "5")
-                        </div>
-                        <div>
-                            @makeRatingGraph(ratings(3), "4")
-                        </div>
-                        <div>
-                            @makeRatingGraph(ratings(2), "3")
-                        </div>
-                        <div>
-                            @makeRatingGraph(ratings(1), "2")
-                        </div>
-                        <div>
-                            @makeRatingGraph(ratings(0), "1")
-                        </div>
-                    }
-                </div>
-            </div>
             @if(lectureSimple.evaluations!=null) {
+                <div class="rating-box row">
+                    <div class="score-container col-xs-6">
+                        <div class="score">
+                            @(Math.round(lectureSimple.avgRating*10.0)/10.0)
+                        </div>
+                        <div>
+                            @for( i <- 1 to Math.round(lectureSimple.avgRating)){ <span class="glyphicon glyphicon-star darkorange-f"></span> }
+                            @for( i <- 1 to 5-Math.round(lectureSimple.avgRating)){ <span class="glyphicon glyphicon-star"></span> }
+                        </div>
+                        <div class="count">
+                            <span class="glyphicon glyphicon-user"></span>
+                            <span>@lectureSimple.evaluations.size()</span>
+                            <span>total</span>
+                        </div>
+                    </div>
+                    <div class="rating-histogram text-left col-xs-6">
+                        @defining(lectureSimple.ratingsToPercentage) { ratings =>
+                            <div>@makeRatingGraph(ratings(4), "5")</div>
+                            <div>@makeRatingGraph(ratings(3), "4")</div>
+                            <div>@makeRatingGraph(ratings(2), "3")</div>
+                            <div>@makeRatingGraph(ratings(1), "2")</div>
+                            <div>@makeRatingGraph(ratings(0), "1")</div>
+                        }
+                    </div>
+                </div>
                 <div class="evaluations">
                 @for(lectureEvaluation <- lectureSimple.evaluations) {
                     <div class="row">
                         <div class="col-md-12 text-left div-review">
                             <span class="glyphicon glyphicon-user pull-left" style="font-size: 4em"></span>
                             <div style="display: inline-block">
-                                @*  rating 크기만큼 별을 그림  *@
-                                @for( i <- 1 to lectureEvaluation.rating){ <span class="glyphicon glyphicon-star"></span> }
-                                @*  5-rating 크기만큼 빈별을 그림  *@
-                                @for( i <- 1 to 5-lectureEvaluation.rating){ <span class="glyphicon glyphicon-star-empty"></span> }
+                                @for( i <- 1 to lectureEvaluation.rating){ <span class="glyphicon glyphicon-star darkorange-f"></span> }
+                                @for( i <- 1 to 5-lectureEvaluation.rating){ <span class="glyphicon glyphicon-star"></span> }
                             </div>
+                            <small class="pull-right">@lectureEvaluation.dateTime</small>
                             <div>@lectureEvaluation.comment</div>
                             <div class="clearfix"></div>
                         </div>
