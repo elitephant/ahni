@@ -1,0 +1,62 @@
+@(user: securesocial.core.Identity, form: Form[UserDetail])
+
+@main("ahni - account detail") {
+    @header("account",user)
+    <div class="container">
+        <div class="starter-template text-left">
+            <h3 class="darkorange-f">추가정보</h3>
+            @helper.form(action = routes.Account.updateUserDetail, 'role -> "form") {
+            <div class="form-group">
+                <label for="gender">성별</label>
+                <select class="form-control" id="gender" name="gender" required="required">
+                    <option value="" disabled>성별을 선택해주세요</option>
+                    @if(form.get.gender!=null) {
+                        @form.get.gender match {
+                            case "남자" => {
+                                <option value="남자" selected="selected">남자</option>
+                                <option value="여자">여자</option>
+                            }
+                            case "여자" => {
+                                <option value="남자">남자</option>
+                                <option value="여자" selected="selected">여자</option>
+                            }
+                        }
+                    } else {
+                        <option value="남자">남자</option>
+                        <option value="여자">여자</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="entrance">입학년도</label>
+                <select class="form-control" id="entrance" name="entrance" required="required">
+                    <option value="" disabled>입학년도를 선택해주세요</option>
+                    @for(i <- Calendar.getInstance().get(Calendar.YEAR) to 1954 by -1) {
+                        @if(form.get.entrance!=null && form.get.entrance.equals(String.valueOf(i))) {
+                            <option value="@i" selected="selected">@(i+"년")</option>
+                        } else {
+                            <option value="@i">@(i+"년")</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="major">전공</label>
+                <select class="form-control" id="major" name="major" required="required">
+                    <option value="" disabled>전공을 선택해주세요</option>
+                    @for(major <- Major.all()) {
+                        @if(form.get.major!=null && form.get.major.equals(major.major)) {
+                            <option value="@major.major" selected="selected">@major.major</option>
+                        } else {
+                            <option value="@major.major">@major.major</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group text-right">
+                <input type="submit" class="btn btn-darkorange-slim" value="입력하기">
+            </div>
+            }
+        </div>
+    </div>
+}
