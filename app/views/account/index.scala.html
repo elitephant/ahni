@@ -8,27 +8,68 @@
                 <div class="media">
                     <a class="pull-left" href="#">
                     @if(user.avatarUrl.get=="null") {
-                        <span class="glyphicon glyphicon-user" style="font-size: 128px; color: #505050"></span>
+                        <span class="glyphicon glyphicon-user" style="font-size: 32px; color: #505050"></span>
                     } else {
-                        <img class="media-object" src="@user.avatarUrl.get" alt="@user.fullName" style="max-width: 128px; max-height: 128px">
+                        <img class="media-object" src="@user.avatarUrl.get" alt="@user.fullName" style="max-width: 32px; max-height: 32px">
                     }
                     </a>
                     <div class="media-body">
-                        <h3 class="media-heading">@user.fullName</h3>
-                        <div><small>고유 아이디: @User.findByIdentity(user).id</small></div>
-                        <div><small>이메일: @user.email.get</small></div>
-                        <div><small>가입경로: @user.identityId.providerId</small></div>
-                        <div><small>
-                            인하대학생 인증:
-                            @if(InhaAuthenticateHelper.isValidatedUser(userDetail)) {
-                                <span>(@userDetail.validatedEmail)</span> <span class="glyphicon glyphicon-ok"></span>
-                            } else {
-                                <span class="glyphicon glyphicon-remove"></span>
-                                <a href="@routes.Account.startAuthenticate()">지금 인증하기</a>
-                            }
-                        </small></div>
+                        <h3 class="media-heading darkorange-f">@user.fullName</h3>
                     </div>
                 </div>
+                <table class="table ahni-table-slim">
+                    <thead>
+                        <tr>
+                            <th>기본정보</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>고유 아이디</td>
+                            <td>@User.findByIdentity(user).id</td>
+                        </tr>
+                        <tr>
+                            <td>이메일</td>
+                            <td>@user.email.get</td>
+                        </tr>
+                        <tr>
+                            <td>가입경로</td>
+                            <td>@user.identityId.providerId</td>
+                        </tr>
+                    </tbody>
+                    <thead>
+                        <tr>
+                            <th>추가정보</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(InhaAuthenticateHelper.isValidatedUser(userDetail)) {
+                            <tr>
+                                <td>인하대학생 인증</td>
+                                <td>@userDetail.validatedEmail</td>
+                            </tr>
+                            <tr>
+                                <td>성별</td>
+                                <td>@userDetail.gender <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit"></span></a></td>
+                            </tr>
+                            <tr>
+                                <td>전공</td>
+                                <td>@userDetail.major <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit"></span></a></td>
+                            </tr>
+                            <tr>
+                                <td>입학년도</td>
+                                <td>@userDetail.entrance <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit"></span></a></td>
+                            </tr>
+                        } else {
+                            <tr>
+                                <td>인하대학생 인증</td>
+                                <td><a href="@routes.Account.startAuthenticate()">지금 인증하기</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
                 <div>
                     <h3>내가 작성한 강의평가</h3>
                     <table class="table table-hover-custom text-center">
