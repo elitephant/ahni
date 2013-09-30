@@ -66,7 +66,7 @@ public class Evaluation extends Controller {
             return badRequest(index.render(user, searchForm, LectureSimple.all()));
         } else {
             LectureSimple.addEvaluation(filledForm.get(), user, id);
-            return redirect(routes.Evaluation.index());
+            return redirect(routes.Evaluation.detail(id));
         }
     }
 
