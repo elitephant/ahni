@@ -1,0 +1,66 @@
+# App name
+securesocial.appName=SecureSocial 2
+
+# Login page
+securesocial.login.title=ahni - Login
+securesocial.login.instructions=아래의 소셜 네트워크 서비스 계정으로 로그인 할 수 있습니다.
+securesocial.login.accessDenied=계정에 대한 접근이 거부 되었습니다.
+securesocial.login.errorLoggingIn=로그인 하는 동안 오류가 발생했습니다. 다시 시도해 보세요.
+securesocial.login.useEmailAndPassword=사용자 이름과 비밀번호를 사용하여 로그인합니다.
+securesocial.login.useEmailAndPasswordOnly=사용자 이름과 비밀번호를 사용하여 로그인합니다.
+securesocial.login.signUp=아직 계정이 없다면 새로 등록해 보세요.
+securesocial.login.here=등록하기
+securesocial.login.invalidCredentials=유효하지 않은 자격 증명입니다.
+securesocial.login.forgotPassword=비밀번호를 잊어버리셨나요?
+
+# Sign up page
+securesocial.signup.title=가입하기
+securesocial.signup.username=사용자 이름
+securesocial.signup.firstName=이름
+securesocial.signup.lastName=성
+securesocial.signup.email1=이메일
+securesocial.signup.email2=이메일 확인
+securesocial.signup.password1=비밀번호
+securesocial.signup.password2=비밀번호 확인
+securesocial.signup.createAccount=계정 만들기
+securesocial.signup.cancel=취소
+securesocial.signup.userNameAlreadyTaken=이미 사용중인 이름입니다.
+securesocial.signup.passwordsDoNotMatch=비밀번호가 일치하지 않습니다.
+securesocial.signup.thankYouCheckEmail=감사합니다. 이메일을 확인해보세요.
+securesocial.signup.invalidLink=잘못된 경로로 접속하였습니다.
+securesocial.signup.signUpDone=환영합니다. 회원가입이 완료되었습니다.
+securesocial.signup.invalidPassword=적어도 {0} 글자 이상 입력해주세요.
+
+# Password reset
+securesocial.password.title=비밀번호 재설정
+securesocial.password.passwordUpdated=성공적으로 비밀번호를 변경하였습니다.
+securesocial.password.reset=비밀번호 재설정
+securesocial.password.error=비밀번호를 변경하는 중에 오류가 발생하였습니다. 다시 시도해보세요.
+
+# Password change
+securesocial.passwordChange.title=비밀번호 변경
+securesocial.passwordChange.currentPassword=기존의 비밀번호
+securesocial.passwordChange.newPassword1=새로운 비밀번호
+securesocial.passwordChange.newPassword2=새로운 비밀번호 확인
+securesocial.passwordChange.changeButton=변경
+securesocial.passwordChange.invalidPassword=잘못된 비밀번호 입니다.
+securesocial.passwordChange.ok=성공적으로 비밀번호를 변경하였습니다.
+securesocial.passwordChange.okButton=확인
+
+# Not authorized page
+securesocial.notAuthorized.title=ahni - Not authorized page
+securesocial.notAuthorized.message=해당 페이지에 대한 접근 권한이 없습니다.
+
+#
+securesocial.loginRequired=로그인이 필요한 기능입니다
+securesocial.suggestSocial=소셜 계정으로 로그인 할 수 있어요
+
+# Mails
+#
+mails.sendAlreadyRegisteredEmail.subject=[ahni] 새로운 계정 등록하기
+mails.sendSignUpEmail.subject=[ahni] 새로운 계정 등록하기
+mails.welcomeEmail.subject=[ahni] 환영합니다
+mails.passwordResetEmail.subject=[ahni] 비밀번호 재설정
+mails.unknownEmail.subject=[ahni] 비밀번호 재설정
+mails.passwordResetOk.subject=[ahni] 비밀번호 변경 확인
+
