@@ -13,7 +13,7 @@
             @helper.form(action = routes.Evaluation.save(lectureSimple.id), 'role -> "form") {
                 <div class="form-group">
                     <label for="year">수강연도</label>
-                    <select class="form-control" id="year" name="year" required="required">
+                    <select class="form-control" id="year" name="year" required="required" autofocus="on">
                         <option value="" disabled>수강년도</option>
                         @for(i <- Calendar.getInstance().get(Calendar.YEAR) to 1954 by -1) {
                             <option value="@i">@(i+"년")</option>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group">
                     <label for="comment">수강후기</label>
-                    <textarea name="comment" id="comment" rows="3" class="form-control" placeholder="이 강의에 대한 생각을 자유롭게 작성해주세요" required="required" autofocus="on"></textarea>
+                    <textarea name="comment" id="comment" rows="3" class="form-control" placeholder="이 강의에 대한 생각을 자유롭게 작성해주세요" required="required"></textarea>
                 </div>
                 <div class="form-group text-right">
                     <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
