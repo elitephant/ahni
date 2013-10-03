@@ -10,7 +10,7 @@
                     @if(user.avatarUrl.get=="null") {
                         <span class="glyphicon glyphicon-user" style="font-size: 32px; color: #505050"></span>
                     } else {
-                        <img class="media-object" src="@user.avatarUrl.get" alt="@user.fullName" style="max-width: 32px; max-height: 32px">
+                        <img class="media-object" src="@user.avatarUrl.get.replace("http://","//")" alt="@user.fullName" style="max-width: 32px; max-height: 32px">
                     }
                     </a>
                     <div class="media-body">
