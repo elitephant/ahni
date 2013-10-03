@@ -17,9 +17,10 @@
             </div>
             <hr class="darkorange-border">
             <h1 class="darkorange-f">@Messages("securesocial.signup.title")</h1>
+            <h3>가지고 계신 이메일을 통해 회원가입을 할 수 있습니다.</h3>
 
             <div class="row">
-                <div class="col-sm-offset-2 col-sm-8">
+                <div class="col-sm-offset-4 col-sm-4">
                     <form action="@securesocial.core.providers.utils.RoutesHelper.handleStartSignUp().absoluteURL(IdentityProvider.sslEnabled)(request)"
                           class="form-horizontal"
                           autocomplete="off" method="post">
@@ -27,7 +28,8 @@
                                 startForm("email"),
                                 '_label -> Messages("securesocial.signup.email1"),
                                 'class -> "form-control",
-                                'placeholder -> "이메일"
+                                'placeholder -> "이메일",
+                                'required -> ""
                             )
                             <div class="form-actions">
                                 <button type="submit" class="btn btn-darkorange">@Messages("securesocial.signup.createAccount")</button>

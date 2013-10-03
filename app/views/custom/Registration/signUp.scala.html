@@ -22,7 +22,7 @@
 
 
             <div class="row">
-                <div class="col-sm-offset-2 col-sm-8">
+                <div class="col-sm-offset-4 col-sm-4">
                     <form action="@securesocial.core.providers.utils.RoutesHelper.handleSignUp(token).absoluteURL(IdentityProvider.sslEnabled)(request)"
                           class="form-horizontal"
                           autocomplete= "off"
@@ -31,33 +31,38 @@
                                 @helper.inputText(
                                     signUpForm("userName"),
                                     '_label -> Messages("securesocial.signup.username"),
-                                    'class -> "form-control"
+                                    'class -> "form-control",
+                                    'required -> ""
                                 )
                             }
 
                             @helper.inputText(
                                 signUpForm("firstName"),
                                 '_label -> Messages("securesocial.signup.firstName"),
-                                'class -> "form-control"
+                                'class -> "form-control",
+                                'required -> ""
                             )
 
                             @helper.inputText(
                                 signUpForm("lastName"),
                                 '_label -> Messages("securesocial.signup.lastName"),
-                                'class -> "form-control"
+                                'class -> "form-control",
+                                'required -> ""
                             )
 
                             @helper.inputPassword(
                                 signUpForm("password.password1"),
                                 '_label -> Messages("securesocial.signup.password1"),
-                                'class -> "form-control"
+                                'class -> "form-control",
+                                'required -> ""
                             )
 
                             @helper.inputPassword(
                                 signUpForm("password.password2"),
                                 '_label -> Messages("securesocial.signup.password2"),
                                 '_error -> signUpForm.error("password"),
-                                'class -> "form-control"
+                                'class -> "form-control",
+                                'required -> ""
                             )
 
                             <div class="form-actions">

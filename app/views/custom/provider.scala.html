@@ -24,7 +24,7 @@
 
             @if( provider.authMethod == UserPassword ) {
         <div class="row">
-            <div class="col-sm-offset-2 col-sm-8">
+            <div class="col-sm-offset-4 col-sm-4">
                 <form action = "@securesocial.core.providers.utils.RoutesHelper.authenticateByPost("userpass").absoluteURL(IdentityProvider.sslEnabled)(request)"
                     class="form-horizontal" autocomplete="off" method="POST">
 
@@ -33,14 +33,18 @@
                                 loginForm.get("username"),
                                 '_label -> Messages("securesocial.signup.username"),
                                 'class -> "form-control",
-                                'placeholder -> "아이디"
+                                'placeholder -> "아이디",
+                                'autofocus -> "on",
+                                'required -> ""
                             )
                         } else {
                             @helper.inputText(
                                 loginForm.get("username"),
                                 '_label -> Messages("securesocial.signup.email1"),
                                 'class -> "form-control",
-                                'placeholder -> "이메일"
+                                'placeholder -> "이메일",
+                                'autofocus -> "on",
+                                'required -> ""
                             )
                         }
 
@@ -48,7 +52,8 @@
                             loginForm.get("password"),
                             '_label -> Messages("securesocial.signup.password1"),
                             'class -> "form-control",
-                            'placeholder -> "소중한 비밀번호"
+                            'placeholder -> "소중한 비밀번호",
+                            'required -> ""
                         )
 
                     <button type="submit" class="btn btn-darkorange btn-lg">입장하기</button>
