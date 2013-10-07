@@ -15,7 +15,8 @@ public class UserDetail {
     @Id
     @ObjectId
     public String id;               //MongoDB Object ID
-    public String userId;           //userId
+    @ObjectId
+    public String user;             //userId
     public Object validatedTime;    //학교 인증 시간
     public String validatedEmail;   //학교 인증 메일
     public String gender;           //성별
@@ -26,11 +27,11 @@ public class UserDetail {
         return UserDetail.coll.find().toArray();
     }
 
-    public static UserDetail findByUserId(String userId) {
-        return UserDetail.coll.findOne(new BasicDBObject("userId", userId));
+    public static UserDetail findByUserId(String user) {
+        return UserDetail.coll.findOne(new BasicDBObject("user", new org.bson.types.ObjectId(user)));
     }
 
-    public boolean save(Identity user) {
+    public boolean update(Identity user) {
         User dbUser = User.findByIdentity(user);
         UserDetail userDetail = UserDetail.findByUserId(dbUser.id);
 
@@ -40,7 +41,7 @@ public class UserDetail {
         else {
             this.validatedEmail = userDetail.validatedEmail;
             this.validatedTime = userDetail.validatedTime;
-            this.userId = userDetail.userId;
+            this.user = userDetail.user;
 
             coll.update(userDetail, this);
 

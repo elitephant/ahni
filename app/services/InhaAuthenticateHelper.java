@@ -80,7 +80,7 @@ public class InhaAuthenticateHelper {
     public static void addUserToValidatedList(DBObject obj) {
         DBObject token = (DBObject)obj.get("token");
         DBCollection coll = MongoDBHelper.getDB().getCollection("user_detail");
-        DBObject userDetail = new BasicDBObject("userId", String.valueOf(obj.get("userId")))
+        DBObject userDetail = new BasicDBObject("user", new org.bson.types.ObjectId(String.valueOf(obj.get("userId"))))
                 .append("validatedTime",DateTime.now().toDate())
                 .append("validatedEmail", String.valueOf(token.get("email")));
 

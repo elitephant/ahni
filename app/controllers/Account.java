@@ -56,7 +56,8 @@ public class Account extends Controller{
         }
         UserDetail userDetail = boundForm.get();
 
-        if(userDetail.save(user)) {
+        //사용자 정보 업데이트
+        if(userDetail.update(user)) {
             flash().put("success","사용자 정보를 업데이트 하였습니다.");
             return redirect(routes.Account.index());
         }
