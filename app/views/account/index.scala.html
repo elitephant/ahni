@@ -17,50 +17,51 @@
                         <h3 class="media-heading darkorange-f">@user.fullName</h3>
                     </div>
                 </div>
+                <h3>내 정보</h3>
                 <table class="table ahni-table-slim">
+                    @*<thead>*@
+                        @*<tr>*@
+                            @*<th>기본정보</th>*@
+                            @*<th></th>*@
+                        @*</tr>*@
+                    @*</thead>*@
+                    @*<tbody>*@
+                        @*<tr>*@
+                            @*<td>고유 아이디</td>*@
+                            @*<td>@User.findByIdentity(user).id</td>*@
+                        @*</tr>*@
+                        @*<tr>*@
+                            @*<td>이메일</td>*@
+                            @*<td>@user.email.get</td>*@
+                        @*</tr>*@
+                        @*<tr>*@
+                            @*<td>가입경로</td>*@
+                            @*<td>@user.identityId.providerId</td>*@
+                        @*</tr>*@
+                    @*</tbody>*@
                     <thead>
                         <tr>
-                            <th>기본정보</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>고유 아이디</td>
-                            <td>@User.findByIdentity(user).id</td>
-                        </tr>
-                        <tr>
-                            <td>이메일</td>
-                            <td>@user.email.get</td>
-                        </tr>
-                        <tr>
-                            <td>가입경로</td>
-                            <td>@user.identityId.providerId</td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th>추가정보</th>
-                            <th></th>
+                            <th>구분</th>
+                            <th>값</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if(InhaAuthenticateHelper.isValidatedUser(userDetail)) {
                             <tr>
                                 <td>인하대학생 인증</td>
-                                <td>@userDetail.validatedEmail</td>
+                                <td>인증됨 <span class="glyphicon glyphicon-ok"></span></td>
                             </tr>
                             <tr>
                                 <td>성별</td>
-                                <td>@userDetail.gender <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td>@userDetail.gender <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit darkorange-f"></span></a></td>
                             </tr>
                             <tr>
                                 <td>전공</td>
-                                <td>@userDetail.major <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td>@userDetail.major <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit darkorange-f"></span></a></td>
                             </tr>
                             <tr>
                                 <td>입학년도</td>
-                                <td>@userDetail.entrance <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <td>@userDetail.entrance <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit darkorange-f"></span></a></td>
                             </tr>
                         } else {
                             <tr>
@@ -71,25 +72,33 @@
                     </tbody>
                 </table>
                 <div>
-                    <h3>내가 작성한 강의평가</h3>
-                    <table class="table table-hover-custom text-center">
-                        <thead>
-                            <tr>
-                                <th>강의명</th>
-                                <th>교수명</th>
-                                <th>삭제</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @for( lectureEvaluation <- LectureEvaluation.findByIdentity(user) ) {
-                            <tr>
-                                <td>@lectureEvaluation.lectureName</td>
-                                <td>@lectureEvaluation.professorName</td>
-                                <td><a href="#"><span class="glyphicon glyphicon-remove darkorange-f"></span></a></td>
-                            </tr>
+                    @defining(LectureEvaluation.findByIdentity(user)) { lectureSimples =>
+                        @if(lectureSimples!=null && lectureSimples.size()>0) {
+                            <h3>내가 작성한 강의평가</h3>
+                            <table class="table ahni-table-slim">
+                                <thead>
+                                    <tr>
+                                        <th>강의명</th>
+                                        <th>교수명</th>
+                                        <th>보기</th>
+                                        <th>수정</th>
+                                        <th>삭제</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @for(lectureSimple <- lectureSimples) {
+                                    <tr>
+                                        <td>@lectureSimple.lectureName</td>
+                                        <td>@lectureSimple.professorName</td>
+                                        <td><a href="@routes.Evaluation.detail(lectureSimple.id)"><span class="glyphicon glyphicon-eye-open darkorange-f"></span></a></td>
+                                        <td><a href="@routes.Evaluation.write(lectureSimple.id)"><span class="glyphicon glyphicon-edit darkorange-f"></span></a></td>
+                                        <td><a href="@routes.Evaluation.delete(lectureSimple.id)"><span class="glyphicon glyphicon-remove crimson-f"></span></a></td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
                         }
-                        </tbody>
-                    </table>
+                    }
                 </div>
             </div>
         </div>

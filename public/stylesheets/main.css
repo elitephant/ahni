@@ -5,6 +5,7 @@ body {
     color: #f0f0f0;
     padding-top: 50px;   /* Account for fixed navbar */
     position: relative; /* For scrollyspy */
+    /*background-color: #102d41;*/
     background-color: #202020;
     font-weight: lighter;
 }
@@ -133,9 +134,10 @@ div.score {
     color: darkorange;
 }
 div.ahni-graph-wrapper {
-    display: block;
     width: 100%;
     text-align: right;
+    display: inline-block;
+    height: 1em;
 }
 div.ahni-graph-axis {
     float: right;
@@ -145,9 +147,9 @@ div.ahni-graph-bar-wrapper {
     margin-right: 32px;
 }
 div.ahni-graph-bar-column {
-    display: inline-block;
     height: 1em;
     background-color: darkorange;
+    float: right;
 }
 table.table.ahni-table-slim {
     font-size: 12px;

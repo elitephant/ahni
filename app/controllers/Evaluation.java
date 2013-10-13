@@ -1,7 +1,11 @@
 package controllers;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.WriteConcern;
 import models.LectureSimple;
 import models.LectureEvaluation;
+import models.User;
+import play.Logger;
 import play.data.*;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -50,24 +54,58 @@ public class Evaluation extends Controller {
      */
     public static Result write(String lecture) {
         Identity user = (Identity) ctx().args.get(SecureSocial.USER_KEY);
+        User dbUser = User.findByIdentity(user);
         LectureSimple lectureSimple = LectureSimple.findById(lecture);
-        return ok(write.render(user, lectureSimple, lectureEvaluationForm));
+
+        if(lectureSimple.evaluations != null) {
+            for(LectureEvaluation lectureEvaluation : lectureSimple.evaluations) {
+                if(lectureEvaluation.user.equals(dbUser.id)) {
+                    Form<LectureEvaluation> filledForm = lectureEvaluationForm.fill(lectureEvaluation);
+                    return ok(write.render(user, lectureSimple, filledForm, true));
+                }
+            }
+        }
+
+        return ok(write.render(user, lectureSimple, lectureEvaluationForm, false));
     }
 
     /**
      * 강의평가 저장하는 액션
      * @return
      */
-    public static Result save(String id) {
+    public static Result save(String id, Boolean isEdit) {
         Identity user = (Identity) ctx().args.get(SecureSocial.USER_KEY);
         Form<LectureEvaluation> filledForm = lectureEvaluationForm.bindFromRequest();
 
         if(filledForm.hasErrors()) {
             return badRequest(index.render(user, searchForm, LectureSimple.all()));
         } else {
-            LectureSimple.addEvaluation(filledForm.get(), user, id);
-            return redirect(routes.Evaluation.detail(id));
+            //성공적으로 강의평가 저장
+            if(LectureSimple.addEvaluation(filledForm.get(), user, id, isEdit)) {
+                return redirect(routes.Evaluation.detail(id));
+            } else {
+                return badRequest(index.render(user, searchForm, LectureSimple.all()));
+            }
         }
+    }
+
+    public static Result delete(String id) {
+        Identity user = (Identity) ctx().args.get(SecureSocial.USER_KEY);
+        User dbUser = User.findByIdentity(user);
+
+        BasicDBObject findQuery = new BasicDBObject("_id", new org.bson.types.ObjectId(id))
+                .append("evaluations.user",new org.bson.types.ObjectId(dbUser.id));
+
+        BasicDBObject pullQuery = new BasicDBObject("$pull",
+                new BasicDBObject("evaluations",
+                        new BasicDBObject("user",
+                                new org.bson.types.ObjectId(dbUser.id)))
+        );
+
+        LectureSimple.coll.setWriteConcern(WriteConcern.SAFE);
+        LectureSimple.coll.update(findQuery, pullQuery);
+
+        return redirect(routes.Account.index());
     }
 
     /**

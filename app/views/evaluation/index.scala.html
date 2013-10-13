@@ -27,9 +27,9 @@
                         <h2 style="display: inline">@lectureSimple.lectureName</h2>
                         <h4 style="display: inline">@lectureSimple.professorName</h4>
                         <div class="pull-right text-right">
-                            @if(lectureSimple.evaluations!=null) {
+                            @if(lectureSimple.evaluations!=null && lectureSimple.evaluations.size()>0) {
                                 <div class="rating-wrapper">
-                                    <span class="darkorange-f rating-score">@(Math.round(lectureSimple.avgRating*10.0)/10.0)</span>
+                                    <span class="darkorange-f rating-score">@(Math.round(lectureSimple.getAvgRating*10.0)/10.0)</span>
                                     <small class="rating-count">
                                         (
                                         <span class="glyphicon glyphicon-user"></span>

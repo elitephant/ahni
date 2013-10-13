@@ -10,7 +10,7 @@ securesocial.login.useEmailAndPassword=사용자 이름과 비밀번호를 사�
 securesocial.login.useEmailAndPasswordOnly=사용자 이름과 비밀번호를 사용하여 로그인합니다.
 securesocial.login.signUp=아직 계정이 없다면 새로 등록해 보세요.
 securesocial.login.here=등록하기
-securesocial.login.invalidCredentials=유효하지 않은 자격 증명입니다.
+securesocial.login.invalidCredentials=유효하지 않은 로그인 정보입니다.
 securesocial.login.forgotPassword=비밀번호를 잊어버리셨나요?
 
 # Sign up page
@@ -26,7 +26,7 @@ securesocial.signup.createAccount=계정 만들기
 securesocial.signup.cancel=취소
 securesocial.signup.userNameAlreadyTaken=이미 사용중인 이름입니다.
 securesocial.signup.passwordsDoNotMatch=비밀번호가 일치하지 않습니다.
-securesocial.signup.thankYouCheckEmail=감사합니다. 이메일을 확인해보세요.
+securesocial.signup.thankYouCheckEmail=감사합니다. 이메일 수신함을 확인해보세요.
 securesocial.signup.invalidLink=잘못된 경로로 접속하였습니다.
 securesocial.signup.signUpDone=환영합니다. 회원가입이 완료되었습니다.
 securesocial.signup.invalidPassword=적어도 {0} 글자 이상 입력해주세요.

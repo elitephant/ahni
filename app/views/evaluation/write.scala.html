@@ -1,22 +1,32 @@
-@(user: securesocial.core.Identity, lectureSimple: LectureSimple, lectureEvaluationForm: Form[LectureEvaluation])
+@(user: securesocial.core.Identity, lectureSimple: LectureSimple, lectureEvaluationForm: Form[LectureEvaluation], isEdit: Boolean)
 
 @main("ahni - evaluation") {
     @header("evaluation",user)
 
     <div class="container">
         <div class="starter-template text-left">
-            <h2>강의평 작성하기</h2>
+            @if(isEdit) {
+                <h2 style="display: inline-block">강의평 <span class="darkorange-f">수정하기</span></h2>
+                <small>작성한 강의평을 수정할 수 있습니다</small>
+                <div class="clearfix"></div>
+            } else {
+                <h2>강의평 작성하기</h2>
+            }
             <h2 class="darkorange-f" style="display: inline">@lectureSimple.lectureName</h2>
             <h4 style="display: inline">@lectureSimple.professorName</h4>
             <hr>
 
-            @helper.form(action = routes.Evaluation.save(lectureSimple.id), 'role -> "form") {
+            @helper.form(action = routes.Evaluation.save(lectureSimple.id, isEdit), 'role -> "form") {
                 <div class="form-group">
                     <label for="year">수강연도</label>
                     <select class="form-control" id="year" name="year" required="required" autofocus="on">
                         <option value="" disabled>수강년도</option>
                         @for(i <- Calendar.getInstance().get(Calendar.YEAR) to 1954 by -1) {
-                            <option value="@i">@(i+"년")</option>
+                            @if(isEdit) {
+                                <option value="@i" @if(lectureEvaluationForm.get.year.equals(i)){ selected }>@(i+"년")</option>
+                            } else {
+                                <option value="@i">@(i+"년")</option>
+                            }
                         }
                     </select>
                 </div>
@@ -24,27 +34,40 @@
                     <label for="semester">수강학기</label>
                     <select class="form-control" id="semester" name="semester" required="required">
                         <option value="" disabled>수강학기</option>
-                        <option value="1">1학기</option>
-                        <option value="2">2학기</option>
+                        @if(isEdit) {
+                            <option value="1" @if(lectureEvaluationForm.get.semester.equals(1)){ selected }>1학기</option>
+                            <option value="2" @if(lectureEvaluationForm.get.semester.equals(2)){ selected }>2학기</option>
+                        } else {
+                            <option value="1">1학기</option>
+                            <option value="2">2학기</option>
+                        }
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="rating">평가점수</label>
                     <select class="form-control" id="rating" name="rating" required="required">
                         <option value="" disabled>이 강의에 대한 평가점수를 선택해주세요</option>
-                        <option value="1">1 (매우나쁨)</option>
-                        <option value="2">2 (나쁨)</option>
-                        <option value="3">3 (보통)</option>
-                        <option value="4">4 (좋음)</option>
-                        <option value="5">5 (매우좋음)</option>
+                        @if(isEdit) {
+                            <option value="1" @if(lectureEvaluationForm.get.rating.equals(1)){ selected }>1 (매우나쁨)</option>
+                            <option value="2" @if(lectureEvaluationForm.get.rating.equals(2)){ selected }>2 (나쁨)</option>
+                            <option value="3" @if(lectureEvaluationForm.get.rating.equals(3)){ selected }>3 (보통)</option>
+                            <option value="4" @if(lectureEvaluationForm.get.rating.equals(4)){ selected }>4 (좋음)</option>
+                            <option value="5" @if(lectureEvaluationForm.get.rating.equals(5)){ selected }>5 (매우좋음)</option>
+                        } else {
+                            <option value="1">1 (매우나쁨)</option>
+                            <option value="2">2 (나쁨)</option>
+                            <option value="3">3 (보통)</option>
+                            <option value="4">4 (좋음)</option>
+                            <option value="5">5 (매우좋음)</option>
+                        }
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="comment">수강후기</label>
-                    <textarea name="comment" id="comment" rows="3" class="form-control" placeholder="이 강의에 대한 생각을 자유롭게 작성해주세요" required="required"></textarea>
+                    <textarea name="comment" id="comment" rows="3" class="form-control" placeholder="이 강의에 대한 생각을 자유롭게 작성해주세요" required="required">@if(isEdit){@lectureEvaluationForm.get.comment}</textarea>
                 </div>
                 <div class="form-group text-right">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    <a href="@request.getHeader("referer")" class="btn btn-default">뒤로</a>
                     <button type="submit" class="btn btn-darkorange-slim">입력하기</button>
                 </div>
             }

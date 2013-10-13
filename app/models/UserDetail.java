@@ -10,7 +10,7 @@ import securesocial.core.Identity;
 import java.util.List;
 
 public class UserDetail {
-    private static JacksonDBCollection<UserDetail, String> coll = MongoDB.getCollection("user_detail", UserDetail.class, String.class);
+    public static JacksonDBCollection<UserDetail, String> coll = MongoDB.getCollection("user_detail", UserDetail.class, String.class);
 
     @Id
     @ObjectId

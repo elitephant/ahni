@@ -1,10 +1,13 @@
 package models;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.WriteConcern;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
 import net.vz.mongodb.jackson.Id;
 import org.joda.time.DateTime;
+import play.Logger;
 import play.modules.mongodb.jackson.MongoDB;
 import securesocial.core.Identity;
 
@@ -12,7 +15,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class LectureSimple {
-    static JacksonDBCollection<LectureSimple, String> coll = MongoDB.getCollection("lecture_simple", LectureSimple.class, String.class);
+    public static JacksonDBCollection<LectureSimple, String> coll = MongoDB.getCollection("lecture_simple", LectureSimple.class, String.class);
 
     @Id
     @ObjectId
@@ -81,30 +84,61 @@ public class LectureSimple {
         return treeMap.values();
     }
 
-    public static boolean addEvaluation(LectureEvaluation lectureEvaluation, Identity user, String id) {
+    public static boolean addEvaluation(LectureEvaluation lectureEvaluation, Identity user, String id, Boolean isEdit) {
         LectureSimple lectureSimple = LectureSimple.findById(id);
+        User dbUser = User.findByIdentity(user);
 
+        //그런 강의가 없다
         if(lectureSimple==null) {
             return false;
         } else {
+            //강의평 추가 준비
             lectureEvaluation = LectureEvaluation.prepareToAdd(lectureEvaluation, user);
 
-            if(lectureSimple.evaluations==null) {
-                lectureSimple.evaluations = new ArrayList<>();
-                lectureSimple.evaluations.add(lectureEvaluation);
+            //기존의 강의평을 업데이트
+            if(isEdit) {
+                BasicDBObject findQuery = new BasicDBObject("_id", new org.bson.types.ObjectId(id))
+                        .append("evaluations.user",new org.bson.types.ObjectId(dbUser.id));
+
+                //set query
+                BasicDBObject setObject = new BasicDBObject("evaluations.$.year",lectureEvaluation.year)
+                        .append("evaluations.$.comment",lectureEvaluation.comment)
+                        .append("evaluations.$.rating",lectureEvaluation.rating)
+                        .append("evaluations.$.semester",lectureEvaluation.semester)
+                        .append("evaluations.$.dateTime",lectureEvaluation.dateTime.getMillis());
+
+                BasicDBObject setQuery = new BasicDBObject("$set", setObject);
+
+                LectureSimple.coll.setWriteConcern(WriteConcern.SAFE);
+                LectureSimple.coll.update(findQuery, setQuery);
+                return true;
             }
+            //새로운 강의평
             else {
-                lectureSimple.evaluations.add(lectureEvaluation);
+                BasicDBObject findQuery = new BasicDBObject("_id", new org.bson.types.ObjectId(id));
+
+                //push query
+                BasicDBObject pushObject = new BasicDBObject("evaluations",
+                        new BasicDBObject("_id",new org.bson.types.ObjectId(lectureEvaluation.id))
+                                .append("user",new org.bson.types.ObjectId(lectureEvaluation.user))
+                                .append("year",lectureEvaluation.year)
+                                .append("comment",lectureEvaluation.comment)
+                                .append("rating",lectureEvaluation.rating)
+                                .append("semester",lectureEvaluation.semester)
+                                .append("dateTime",lectureEvaluation.dateTime.getMillis())
+                );
+
+                BasicDBObject pushQuery = new BasicDBObject("$push", pushObject);
+
+                LectureSimple.coll.setWriteConcern(WriteConcern.SAFE);
+                LectureSimple.coll.update(findQuery, pushQuery);
+
+                return true;
             }
-
-            LectureSimple.coll.updateById(id, lectureSimple);
-
-            return true;
         }
     }
 
-    public float avgRating() {
-
+    public float getAvgRating() {
         if(this.evaluations==null) {
             return 0f;
         }
@@ -117,7 +151,7 @@ public class LectureSimple {
         }
     }
 
-    public float avgRatingPercentage() {
+    public float getAvgRatingPercentage() {
         if(this.evaluations==null) {
             return 0f;
         }
@@ -130,7 +164,7 @@ public class LectureSimple {
         }
     }
 
-    public float[] ratingsToPercentage() {
+    public float[] getRatingsToPercentage() {
         if(this.evaluations==null) {
             return null;
         }
@@ -158,6 +192,84 @@ public class LectureSimple {
             ratings[2] = ratings[2] / max * 100;
             ratings[3] = ratings[3] / max * 100;
             ratings[4] = ratings[4] / max * 100;
+
+            return ratings;
+        }
+    }
+
+    public float[][] getRatingsToPercentageByGender() {
+        if(this.evaluations==null) {
+            return null;
+        }
+        else {
+            //[0][]:남자, [1][]:여자
+            float ratings[][] = new float[2][5];
+            float maleMax = Float.MIN_VALUE;
+            float femaleMax = Float.MIN_VALUE;
+
+            //[유저 아이디 : 강의평가 객체]의 맵 생성
+            Map<org.bson.types.ObjectId, LectureEvaluation> lectureEvaluationMap = new HashMap<>();
+            for(LectureEvaluation lectureEvaluation : this.evaluations) {
+                lectureEvaluationMap.put(new org.bson.types.ObjectId(lectureEvaluation.user), lectureEvaluation);
+                Logger.debug(new org.bson.types.ObjectId(lectureEvaluation.user).toString());
+            }
+
+            BasicDBObject inQuery = new BasicDBObject("$in", lectureEvaluationMap.keySet());
+
+            //find 쿼리 한번 호출
+            for(UserDetail userDetail : UserDetail.coll.find(new BasicDBObject("user", inQuery))) {
+                if(userDetail.gender==null) {
+                    continue;
+                }
+                else if(userDetail.gender.equals("남자")){
+                    switch (lectureEvaluationMap.get(new org.bson.types.ObjectId(userDetail.user)).rating) {
+                        case 1: ratings[0][0]++; break;
+                        case 2: ratings[0][1]++; break;
+                        case 3: ratings[0][2]++; break;
+                        case 4: ratings[0][3]++; break;
+                        case 5: ratings[0][4]++; break;
+                        default : break;
+                    }
+                } else if(userDetail.gender.equals("여자")){
+                    switch (lectureEvaluationMap.get(new org.bson.types.ObjectId(userDetail.user)).rating) {
+                        case 1: ratings[1][0]++; break;
+                        case 2: ratings[1][1]++; break;
+                        case 3: ratings[1][2]++; break;
+                        case 4: ratings[1][3]++; break;
+                        case 5: ratings[1][4]++; break;
+                        default : break;
+                    }
+                } else {
+                    continue;
+                }
+                Logger.debug(
+                        String.format("%s : %s : %s",
+                            userDetail.user,
+                            userDetail.gender,
+                            String.valueOf(lectureEvaluationMap.get(new org.bson.types.ObjectId(userDetail.user)).rating)
+                        )
+                );
+            }
+
+            for(float rating : ratings[0]) {
+                if(rating>maleMax) maleMax = rating;
+            }
+
+            for(float rating : ratings[1]) {
+                if(rating>femaleMax) femaleMax = rating;
+            }
+
+            ratings[0][0] = ratings[0][0] / maleMax * 100;
+            ratings[0][1] = ratings[0][1] / maleMax * 100;
+            ratings[0][2] = ratings[0][2] / maleMax * 100;
+            ratings[0][3] = ratings[0][3] / maleMax * 100;
+            ratings[0][4] = ratings[0][4] / maleMax * 100;
+
+            ratings[1][0] = ratings[1][0] / femaleMax * 100;
+            ratings[1][1] = ratings[1][1] / femaleMax * 100;
+            ratings[1][2] = ratings[1][2] / femaleMax * 100;
+            ratings[1][3] = ratings[1][3] / femaleMax * 100;
+            ratings[1][4] = ratings[1][4] / femaleMax * 100;
 
             return ratings;
         }

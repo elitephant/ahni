@@ -16,53 +16,85 @@
     @header("evaluation",user)
     <div class="container">
         <div class="starter-template">
+            @if(lectureSimple.evaluations!=null && lectureSimple.evaluations.size()>0) {
+                <div class="pull-right">
+                    <a href="@routes.Evaluation.write(lectureSimple.id)" class="btn btn-sm btn-darkorange-slim">강의평 작성하기</a>
+                </div>
+            }
             <div class="text-left">
-                <h2 class="darkorange-f" style="display: inline-block">@lectureSimple.lectureName</h2>
+                <h2 class="darkorange-f" style="display: inline-block; margin: 0 auto">@lectureSimple.lectureName</h2>
                 <h4 style="display: inline-block">@lectureSimple.professorName</h4>
             </div>
-            @if(lectureSimple.evaluations!=null) {
+            @if(lectureSimple.evaluations!=null && lectureSimple.evaluations.size()>0) {
+                @*남겨진 강의평가가 있다면*@
                 <div class="rating-box row">
                     <div class="score-container col-xs-6">
                         <div class="score">
-                            @(Math.round(lectureSimple.avgRating*10.0)/10.0)
+                            @*메인 Score 표시*@
+                            @(Math.round(lectureSimple.getAvgRating*10.0)/10.0)
                         </div>
                         <div>
-                            @for( i <- 1 to Math.round(lectureSimple.avgRating)){ <span class="glyphicon glyphicon-star darkorange-f"></span> }
-                            @for( i <- 1 to 5-Math.round(lectureSimple.avgRating)){ <span class="glyphicon glyphicon-star"></span> }
+                            @*Score를 별 그래프로 표시*@
+                            @for( i <- 1 to Math.round(lectureSimple.getAvgRating)){ <span class="glyphicon glyphicon-star darkorange-f"></span> }
+                            @for( i <- 1 to 5-Math.round(lectureSimple.getAvgRating)){ <span class="glyphicon glyphicon-star"></span> }
                         </div>
                         <div class="count">
+                            @*강의평가 Count 표시*@
                             <span class="glyphicon glyphicon-user"></span>
                             <span>@lectureSimple.evaluations.size()</span>
                             <span>total</span>
                         </div>
                     </div>
                     <div class="rating-histogram text-left col-xs-6">
-                        @defining(lectureSimple.ratingsToPercentage) { ratings =>
-                            <div>@makeRatingGraph(ratings(4), "5")</div>
-                            <div>@makeRatingGraph(ratings(3), "4")</div>
-                            <div>@makeRatingGraph(ratings(2), "3")</div>
-                            <div>@makeRatingGraph(ratings(1), "2")</div>
-                            <div>@makeRatingGraph(ratings(0), "1")</div>
+                        @defining(lectureSimple.getRatingsToPercentage) { ratings =>
+                            @*평점별 비율 그래프*@
+                            @makeRatingGraph(ratings(4), "5")
+                            @makeRatingGraph(ratings(3), "4")
+                            @makeRatingGraph(ratings(2), "3")
+                            @makeRatingGraph(ratings(1), "2")
+                            @makeRatingGraph(ratings(0), "1")
                         }
                     </div>
                 </div>
-                <div class="evaluations">
-                @for(lectureEvaluation <- lectureSimple.evaluations) {
-                    <div class="row">
-                        <div class="col-md-12 text-left div-review">
-                            <span class="glyphicon glyphicon-user pull-left" style="font-size: 4em"></span>
-                            <div style="display: inline-block">
-                                @for( i <- 1 to lectureEvaluation.rating){ <span class="glyphicon glyphicon-star darkorange-f"></span> }
-                                @for( i <- 1 to 5-lectureEvaluation.rating){ <span class="glyphicon glyphicon-star"></span> }
-                            </div>
-                            <small class="pull-right">@lectureEvaluation.dateTime</small>
-                            <div>@lectureEvaluation.comment</div>
-                            <div class="clearfix"></div>
-                        </div>
+                <div class="rating-box row">
+                    @defining(lectureSimple.getRatingsToPercentageByGender) { ratings =>
+                    <div class="rating-histogram text-left col-xs-6">
+                        @*남자 평점 비율*@
+                        @makeRatingGraph(ratings(0)(4), "5")
+                        @makeRatingGraph(ratings(0)(3), "4")
+                        @makeRatingGraph(ratings(0)(2), "3")
+                        @makeRatingGraph(ratings(0)(1), "2")
+                        @makeRatingGraph(ratings(0)(0), "1")
+                        <div class="text-center">남자</div>
                     </div>
-                }
+                    <div class="rating-histogram text-left col-xs-6">
+                        @*여자 평점 비율*@
+                        @makeRatingGraph(ratings(1)(4), "5")
+                        @makeRatingGraph(ratings(1)(3), "4")
+                        @makeRatingGraph(ratings(1)(2), "3")
+                        @makeRatingGraph(ratings(1)(1), "2")
+                        @makeRatingGraph(ratings(1)(0), "1")
+                        <div class="text-center">여자</div>
+                    </div>
+                    }
                 </div>
+                @for(lectureEvaluation <- lectureSimple.evaluations) {
+                @*모든 강의평가 코멘트에 대해서*@
+                <div class="row">
+                    <div class="col-md-12 text-left div-review">
+                        <span class="glyphicon glyphicon-user pull-left" style="font-size: 4em"></span>
+                        <div style="display: inline-block">
+                            @for( i <- 1 to lectureEvaluation.rating){ <span class="glyphicon glyphicon-star darkorange-f"></span> }
+                            @for( i <- 1 to 5-lectureEvaluation.rating){ <span class="glyphicon glyphicon-star"></span> }
+                        </div>
+                        <small class="pull-right">@lectureEvaluation.dateTime</small>
+                        <div>@lectureEvaluation.comment</div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                }
             } else {
+                @*남겨진 강의평가가 없다면*@
                 <div class="text-center">
                     <h3>아직 남겨진 강의평가가 없네요?</h3>
                     <h4>첫번째 강의평가의 주인공이 되어보세요!</h4>

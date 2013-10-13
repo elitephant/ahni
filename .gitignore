@@ -17,3 +17,4 @@ conf/application.conf
 conf/play.plugins
 conf/routes
 conf/securesocial.conf
+conf/generated.keystore
