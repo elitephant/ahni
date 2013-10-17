@@ -13,6 +13,7 @@ object ApplicationBuild extends Build {
     javaJdbc,
     javaEbean,
     "securesocial" %% "securesocial" % "master-SNAPSHOT",
+    //"securesocial" %% "securesocial" % "master-SNAPSHOT" exclude("org.scala-stm", "scala-stm_2.10.0"),
     "org.mongodb" % "mongo-java-driver" % "2.11.2",
     "net.vz.mongodb.jackson" %% "play-mongo-jackson-mapper" % "1.1.0"
   )

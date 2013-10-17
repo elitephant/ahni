@@ -1,19 +1,23 @@
-package services;
+package services.InhaAuthenticator;
 
 import com.mongodb.*;
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
 import controllers.routes;
 import models.UserDetail;
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
+import play.Logger;
 import play.api.mvc.RequestHeader;
 import securesocial.core.IdentityProvider;
 import securesocial.core.java.Token;
+import services.MongoDBHelper;
 
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class InhaAuthenticateHelper {
-
+public class EmailAuthenticator {
     /**
      * 파라미터로 받은 userid 를 이용해 emailId@inha.edu 계정으로 인증 토큰을 보낸다.
      * @param emailId 교내 이메일 아이디
@@ -26,11 +30,11 @@ public class InhaAuthenticateHelper {
         String uuid = UUID.randomUUID().toString();
 
         mail.setSubject("[ahni] 인하대학교 학생 인증 메일입니다");
-        mail.addRecipient(String.format("%s@inha.edu",emailId));
-        mail.addFrom("ahni <rmrhtdms@gmail.com>");
+        mail.setRecipient(String.format("%s@inha.edu",emailId));
+        mail.setFrom("ahni <rmrhtdms@gmail.com>");
         mail.sendHtml(
                 "<p>아래의 링크를 누르면 인증이 완료됩니다.</p>"
-                +"<p>"+routes.Account.completeAuthenticate(uuid).absoluteURL(IdentityProvider.sslEnabled(), requestHeader)+"</p>"
+                        +"<p>"+routes.Account.completeAuthenticate(uuid).absoluteURL(IdentityProvider.sslEnabled(), requestHeader)+"</p>"
         );
 
         //토큰 객체 생성
@@ -53,16 +57,29 @@ public class InhaAuthenticateHelper {
      * @return
      */
     public static boolean validateToken(String uuid) {
+        //uuid 포맷 검증. DB 검색을 피하기 위함.
+        try {
+            UUID validateUUID = UUID.fromString(uuid);
+            if(!uuid.equals(validateUUID.toString())) {
+                throw new IllegalArgumentException();
+            }
+        } catch (IllegalArgumentException ex) {
+            return false;
+        }
+
         DBCollection coll = MongoDBHelper.getDB().getCollection("token");
         DBObject obj = coll.findOne(new BasicDBObject("uuid",uuid));
         if(obj!=null){
-            addUserToValidatedList(obj);
+            addUserToValidatedList(String.valueOf(obj.get("userId")));
 
             DBObject token = (DBObject)obj.get("token");
             String email = String.valueOf(token.get("email"));
 
+            //해당 이메일로 발행된 토큰 검색
             BasicDBObject query = new BasicDBObject("token.email",email);
             DBCursor cur = coll.find(query);
+
+            //해당 이메일로 발행된 토큰 모두 삭제
             for(DBObject toRemove : cur) {
                 coll.remove(toRemove);
             }
@@ -75,24 +92,14 @@ public class InhaAuthenticateHelper {
 
     /**
      * 해당 유저와 이메일을 인증 목록에 추가한다.
-     * @param obj
+     * @param user
      */
-    public static void addUserToValidatedList(DBObject obj) {
-        DBObject token = (DBObject)obj.get("token");
-        DBCollection coll = MongoDBHelper.getDB().getCollection("user_detail");
-        DBObject userDetail = new BasicDBObject("user", new org.bson.types.ObjectId(String.valueOf(obj.get("userId"))))
-                .append("validatedTime",DateTime.now().toDate())
-                .append("validatedEmail", String.valueOf(token.get("email")));
+    public static void addUserToValidatedList(String user) {
+        UserDetail toInsert = new UserDetail();
+        toInsert.isValidated = true;
+        toInsert.validatedTime = DateTime.now().toDate();
+        toInsert.user = user;
 
-        coll.insert(userDetail, WriteConcern.SAFE);
-    }
-
-    public static boolean isValidatedUser(UserDetail userDetail) {
-        if(userDetail != null) {
-            if(userDetail.validatedEmail.contains("@inha.edu")) {
-                return true;
-            }
-        }
-        return false;
+        UserDetail.coll.insert(toInsert);
     }
 }

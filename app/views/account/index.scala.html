@@ -1,5 +1,4 @@
 @(user: securesocial.core.Identity, userDetail: UserDetail)
-@import services.InhaAuthenticateHelper
 @main("ahni - account") {
     @header("account",user)
     <div class="container">
@@ -19,26 +18,6 @@
                 </div>
                 <h3>내 정보</h3>
                 <table class="table ahni-table-slim">
-                    @*<thead>*@
-                        @*<tr>*@
-                            @*<th>기본정보</th>*@
-                            @*<th></th>*@
-                        @*</tr>*@
-                    @*</thead>*@
-                    @*<tbody>*@
-                        @*<tr>*@
-                            @*<td>고유 아이디</td>*@
-                            @*<td>@User.findByIdentity(user).id</td>*@
-                        @*</tr>*@
-                        @*<tr>*@
-                            @*<td>이메일</td>*@
-                            @*<td>@user.email.get</td>*@
-                        @*</tr>*@
-                        @*<tr>*@
-                            @*<td>가입경로</td>*@
-                            @*<td>@user.identityId.providerId</td>*@
-                        @*</tr>*@
-                    @*</tbody>*@
                     <thead>
                         <tr>
                             <th>구분</th>
@@ -46,10 +25,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(InhaAuthenticateHelper.isValidatedUser(userDetail)) {
+                        @if(UserDetail.isValidatedUser(userDetail)) {
                             <tr>
                                 <td>인하대학생 인증</td>
-                                <td>인증됨 <span class="glyphicon glyphicon-ok"></span></td>
+                                <td>인증됨</td>
                             </tr>
                             <tr>
                                 <td>성별</td>

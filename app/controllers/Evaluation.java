@@ -5,7 +5,6 @@ import com.mongodb.WriteConcern;
 import models.LectureSimple;
 import models.LectureEvaluation;
 import models.User;
-import play.Logger;
 import play.data.*;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -13,7 +12,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import securesocial.core.Identity;
 import securesocial.core.java.SecureSocial;
-import services.utils.SecureInha;
+import services.InhaAuthenticator.SecureInha;
 import views.html.evaluation.index;
 import views.html.evaluation.write;
 import views.html.evaluation.detail;
@@ -40,7 +39,7 @@ public class Evaluation extends Controller {
 
         if(lectureSimple==null) {
             flash("error", "해당 페이지를 찾을 수 없습니다 :(");
-            return redirect(routes.Evaluation.index());
+            return redirect(controllers.routes.Evaluation.index());
         }
         else {
             return ok(detail.render(user, LectureSimple.findById(id)));
@@ -82,7 +81,7 @@ public class Evaluation extends Controller {
         } else {
             //성공적으로 강의평가 저장
             if(LectureSimple.addEvaluation(filledForm.get(), user, id, isEdit)) {
-                return redirect(routes.Evaluation.detail(id));
+                return redirect(controllers.routes.Evaluation.detail(id));
             } else {
                 return badRequest(index.render(user, searchForm, LectureSimple.all()));
             }
@@ -105,7 +104,7 @@ public class Evaluation extends Controller {
         LectureSimple.coll.setWriteConcern(WriteConcern.SAFE);
         LectureSimple.coll.update(findQuery, pullQuery);
 
-        return redirect(routes.Account.index());
+        return redirect(controllers.routes.Account.index());
     }
 
     /**
@@ -120,7 +119,7 @@ public class Evaluation extends Controller {
             return ok(index.render(user, searchForm, LectureSimple.findByKeyword(keyword)));
         }
 
-        return redirect(routes.Evaluation.index());
+        return redirect(controllers.routes.Evaluation.index());
     }
 
     /**
