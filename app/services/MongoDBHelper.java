@@ -16,7 +16,7 @@ public class MongoDBHelper {
 
     private static DB db = getConnection();
 
-    public static DB getConnection(){
+    private static DB getConnection(){
         String database = Play.application().configuration().getString("mongodb.database");
         String credentials = Play.application().configuration().getString("mongodb.credentials");
         String servers = Play.application().configuration().getString("mongodb.servers");

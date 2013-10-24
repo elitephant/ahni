@@ -172,6 +172,19 @@ table.table.ahni-table-slim thead > tr > th {
     font-weight: bold;
     font-size: 14px;
 }
+div.lecture-evaluation-stat {
+
+}
+div.lecture-evaluation-stat div.stat-wrapper {
+    display: inline-block;
+    margin: 1em 0;
+}
+div.lecture-evaluation-stat div.stat-wrapper span.icon {
+    font-size: 2em;
+}
+div.lecture-evaluation-stat div.stat-wrapper span.count {
+    font-size: 2em;
+}
 
 /*My Favorite Color*/
 .crimson-f{color: crimson} .crimson-b{background-color: crimson}

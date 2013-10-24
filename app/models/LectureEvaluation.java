@@ -1,14 +1,15 @@
 package models;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
+import com.mongodb.*;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
 import net.vz.mongodb.jackson.Id;
 import org.joda.time.DateTime;
+import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.modules.mongodb.jackson.MongoDB;
 import securesocial.core.Identity;
+import services.MongoDBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,5 +45,51 @@ public class LectureEvaluation {
 
     public static List<LectureSimple> findByIdentity(Identity user) {
         return LectureSimple.coll.find(new BasicDBObject("evaluations.user", new org.bson.types.ObjectId(User.findByIdentity(user).id))).toArray();
+    }
+
+    /**
+     * 작성된 강의평가 카운트 반환
+     * @return 강의평가 개수
+     */
+    public static int getEvaluationsCount() {
+        DB mongoDB = MongoDBHelper.getDB();
+        DBCollection coll = mongoDB.getCollection("lecture_simple");
+
+        BasicDBObject unwindQuery = new BasicDBObject("$unwind", "$evaluations");
+        BasicDBObject groupQuery = new BasicDBObject("$group", new BasicDBObject("_id", "$evaluations"));
+        BasicDBObject countQuery = new BasicDBObject("$group", new BasicDBObject("_id", "count").append("count", new BasicDBObject("$sum", 1)));
+
+        AggregationOutput aggregationOutput = coll.aggregate(unwindQuery, groupQuery, countQuery);
+
+        for(DBObject obj : aggregationOutput.results()) {
+            int count = Integer.parseInt(String.valueOf(obj.get("count")));
+            if(count > 0) {
+                return count;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * 강의평가를 작성한 유저 카운트 반환
+     * @return 유저 카운트
+     */
+    public static int getUsersCount() {
+        DB mongoDB = MongoDBHelper.getDB();
+        DBCollection coll = mongoDB.getCollection("lecture_simple");
+
+        BasicDBObject unwindQuery = new BasicDBObject("$unwind", "$evaluations");
+        BasicDBObject groupQuery = new BasicDBObject("$group", new BasicDBObject("_id", "$evaluations.user"));
+        BasicDBObject countQuery = new BasicDBObject("$group", new BasicDBObject("_id", "count").append("count", new BasicDBObject("$sum", 1)));
+
+        AggregationOutput aggregationOutput = coll.aggregate(unwindQuery, groupQuery, countQuery);
+
+        for(DBObject obj : aggregationOutput.results()) {
+            int count = Integer.parseInt(String.valueOf(obj.get("count")));
+            if(count > 0) {
+                return count;
+            }
+        }
+        return 0;
     }
 }

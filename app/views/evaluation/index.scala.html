@@ -20,7 +20,18 @@
             }
 
             @*강의평가 출력*@
-            <h3 class="text-left">"지금 ahni 에서는 {}명의 학우들의 {}개의 강의평가가 공유중!"</h3>
+            <div class="lecture-evaluation-stat">
+                <div class="stat-wrapper">
+                    <span class="icon"><span class="glyphicon glyphicon-user"></span></span>
+                    <span class="count">@LectureEvaluation.getUsersCount</span>
+                </div>
+                명의 학우가
+                <div class="stat-wrapper">
+                    <span class="icon"><span class="glyphicon glyphicon-pencil"></span></span>
+                    <span class="count">@LectureEvaluation.getEvaluationsCount</span>
+                </div>
+                개의 강의평을 작성했습니다.
+            </div>
             @for(lectureSimple <- lectureSimpleList) {
                 <div class="row">
                     <div class="col-md-12 text-left div-review">
