@@ -30,8 +30,8 @@ public class EmailAuthenticator {
         String uuid = UUID.randomUUID().toString();
 
         mail.setSubject("[ahni] 인하대학교 학생 인증 메일입니다");
-        mail.setRecipient(String.format("%s@inha.edu",emailId));
-        mail.setFrom("ahni <rmrhtdms@gmail.com>");
+        mail.addRecipient(String.format("%s@inha.edu",emailId));
+        mail.addFrom("ahni <rmrhtdms@gmail.com>");
         mail.sendHtml(
                 "<p>아래의 링크를 누르면 인증이 완료됩니다.</p>"
                         +"<p>"+routes.Account.completeAuthenticate(uuid).absoluteURL(IdentityProvider.sslEnabled(), requestHeader)+"</p>"
