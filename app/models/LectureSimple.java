@@ -1,17 +1,15 @@
 package models;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import net.vz.mongodb.jackson.JacksonDBCollection;
 import net.vz.mongodb.jackson.ObjectId;
 import net.vz.mongodb.jackson.Id;
-import org.joda.time.DateTime;
 import play.Logger;
 import play.modules.mongodb.jackson.MongoDB;
 import securesocial.core.Identity;
-import services.util.ValueComparator;
+import services.util.ValueComparator.LectureSimpleFloatValueComparator;
+import services.util.ValueComparator.StringIntegerValueComparator;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -40,6 +38,20 @@ public class LectureSimple {
         orList.add(new BasicDBObject("professorName", Pattern.compile(keyword)));
 
         return LectureSimple.coll.find(new BasicDBObject("$or", orList)).toArray();
+    }
+
+    public static List<LectureSimple> findByLectureSimpleExcludeSelf(LectureSimple lectureSimple) {
+        List<LectureSimple> lectureSimpleList = LectureSimple.coll.find(
+                new BasicDBObject("lectureName", lectureSimple.lectureName)
+                        .append("_id", new BasicDBObject("$ne", new org.bson.types.ObjectId(lectureSimple.id)))
+        ).toArray();
+
+        if(lectureSimpleList != null && lectureSimpleList.size()>0) {
+            return lectureSimpleList;
+        }
+        else {
+            return null;
+        }
     }
 
     /**
@@ -153,6 +165,14 @@ public class LectureSimple {
         }
     }
 
+    public int getEvaluationsSize() {
+        if(this.evaluations==null) {
+            return 0;
+        } else {
+            return this.evaluations.size();
+        }
+    }
+
     public float getAvgRatingPercentage() {
         if(this.evaluations==null) {
             return 0f;
@@ -212,17 +232,37 @@ public class LectureSimple {
         BasicDBObject inQuery = new BasicDBObject("$in", lectureEvaluationMap.keySet());
         List<UserDetail> userDetails = UserDetail.coll.find(new BasicDBObject("user", inQuery)).toArray();
 
+        //남여 평점 비율
         float ratings[][] = this.getRatingsToPercentageByGender(userDetails, lectureEvaluationMap);
         stat.setMaleRating(ratings[0]);
         stat.setFemaleRating(ratings[1]);
 
+        //많이 수강하는 전공
         Map<String, Integer> majorCountMap = this.getMajorCountMap(userDetails, lectureEvaluationMap);
         stat.setMajorCountMap(majorCountMap);
+
+        //이 강의의 다른 교수
+        List<LectureSimple> lectureSimpleList = LectureSimple.findByLectureSimpleExcludeSelf(this);
+        if(lectureSimpleList != null && lectureSimpleList.size() > 0) {
+            HashMap<LectureSimple, Float> hashMap = new HashMap<>();
+
+            for(LectureSimple lectureSimple : lectureSimpleList) {
+                hashMap.put(lectureSimple, lectureSimple.getAvgRating());
+            }
+
+            LectureSimpleFloatValueComparator bvc = new LectureSimpleFloatValueComparator(hashMap);
+            TreeMap<LectureSimple, Float> treeMap = new TreeMap<>(bvc);
+            treeMap.putAll(hashMap);
+            stat.setLectureSimpleFloatMap(treeMap);
+        }
+        else {
+            stat.setLectureSimpleFloatMap(null);
+        }
 
         return stat;
     }
 
-    public float[][] getRatingsToPercentageByGender(List<UserDetail> userDetails, Map<org.bson.types.ObjectId, LectureEvaluation> lectureEvaluationMap) {
+    private float[][] getRatingsToPercentageByGender(List<UserDetail> userDetails, Map<org.bson.types.ObjectId, LectureEvaluation> lectureEvaluationMap) {
         if(this.evaluations==null) {
             return null;
         }
@@ -283,9 +323,9 @@ public class LectureSimple {
         }
     }
 
-    public Map<String, Integer> getMajorCountMap(List<UserDetail> userDetails, Map<org.bson.types.ObjectId, LectureEvaluation> lectureEvaluationMap) {
+    private Map<String, Integer> getMajorCountMap(List<UserDetail> userDetails, Map<org.bson.types.ObjectId, LectureEvaluation> lectureEvaluationMap) {
         HashMap<String, Integer> hashMap = new HashMap<>();
-        ValueComparator bvc = new ValueComparator(hashMap);
+        StringIntegerValueComparator bvc = new StringIntegerValueComparator(hashMap);
         TreeMap<String, Integer> treeMap = new TreeMap<>(bvc);
 
         for(UserDetail userDetail : userDetails) {

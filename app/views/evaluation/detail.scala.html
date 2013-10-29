@@ -1,16 +1,16 @@
 @(user: securesocial.core.Identity, lectureSimple: LectureSimple)
 
-@makeRatingGraph(rating: Float, axis: String) = {
-    <div class="ahni-graph-wrapper">
-        <div class="ahni-graph-axis">
-            <span class="glyphicon glyphicon-star darkorange-f"></span>
-            <span>@axis</span>
+    @makeRatingGraph(rating: Float, axis: String) = {
+        <div class="ahni-graph-wrapper">
+            <div class="ahni-graph-axis">
+                <span class="glyphicon glyphicon-star darkorange-f"></span>
+                <span>@axis</span>
+            </div>
+            <div class="ahni-graph-bar-wrapper">
+                <div class="ahni-graph-bar-column" style="width: @rating%"></div>
+            </div>
         </div>
-        <div class="ahni-graph-bar-wrapper">
-            <div class="ahni-graph-bar-column" style="width: @rating%"></div>
-        </div>
-    </div>
-}
+    }
 
 @main("ahni - evaluation") {
     @header("evaluation",user)
@@ -65,15 +65,28 @@
                             <div class="text-center">여자</div>
                         </div>
                     </div>
-                @if(stat.getMajorCountMap != null && stat.getMajorCountMap.size >= 1) {
+                @if(stat.getMajorCountMap != null && stat.getMajorCountMap.size > 0) {
                     @defining(stat.getMajorCountMap.keysIterator) { it =>
                         <div class="rating-box row">
                             <div class="col-xs-6 major-box text-left">
+                                <small style="display: block; margin-bottom: 1em">이 강의를 주로 수강하는 전공</small>
                                 @if(it.hasNext) { <div class="first">1. @it.next()</div> }
                                 @if(it.hasNext) { <div>2. @it.next()</div> }
                                 @if(it.hasNext) { <div>3. @it.next()</div> }
-                                <small style="display: block; margin-top: 1em">이 강의를 주로 수강하는 전공</small>
-                            </div>
+                                </div>
+                            @if(stat.getLectureSimpleFloatMap != null && stat.getLectureSimpleFloatMap.size > 0) {
+                                <div class="col-xs-6 text-left">
+                                    <small style="display: block; margin-bottom: 1em">@(lectureSimple.lectureName)을(를) 강의하는 다른 교수 (평점순 상위 4명)</small>
+                                    @for(lectureSimple <- stat.getLectureSimpleFloatMapToSubList(4)) {
+                                        <div>
+                                            <span>@lectureSimple.professorName</span>
+                                            <span class="darkorange-f">@(Math.round(lectureSimple.getAvgRating*10.0)/10.0)</span>
+                                            <small class="rating-count">( <span class="glyphicon glyphicon-user"></span> @lectureSimple.getEvaluationsSize )</small>
+                                            <small><a href="@routes.Evaluation.detail(lectureSimple.id)">자세히 보기</a></small>
+                                        </div>
+                                    }
+                                </div>
+                            }
                         </div>
                     }
                 }
