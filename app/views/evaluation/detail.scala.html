@@ -46,52 +46,52 @@
                         </div>
                     </div>
                     <div class="rating-histogram text-left col-xs-6">
-                        @defining(lectureSimple.getRatingsToPercentage) { ratings =>
-                            @*평점별 비율 그래프*@
-                            @makeRatingGraph(ratings(4), "5")
-                            @makeRatingGraph(ratings(3), "4")
-                            @makeRatingGraph(ratings(2), "3")
-                            @makeRatingGraph(ratings(1), "2")
-                            @makeRatingGraph(ratings(0), "1")
-                        }
-                    </div>
-                </div>
-                <div class="rating-box row">
-                    @defining(lectureSimple.getRatingsToPercentageByGender) { ratings =>
-                    <div class="rating-histogram text-left col-xs-6">
-                        @*남자 평점 비율*@
-                        @makeRatingGraph(ratings(0)(4), "5")
-                        @makeRatingGraph(ratings(0)(3), "4")
-                        @makeRatingGraph(ratings(0)(2), "3")
-                        @makeRatingGraph(ratings(0)(1), "2")
-                        @makeRatingGraph(ratings(0)(0), "1")
-                        <div class="text-center">남자</div>
-                    </div>
-                    <div class="rating-histogram text-left col-xs-6">
-                        @*여자 평점 비율*@
-                        @makeRatingGraph(ratings(1)(4), "5")
-                        @makeRatingGraph(ratings(1)(3), "4")
-                        @makeRatingGraph(ratings(1)(2), "3")
-                        @makeRatingGraph(ratings(1)(1), "2")
-                        @makeRatingGraph(ratings(1)(0), "1")
-                        <div class="text-center">여자</div>
-                    </div>
+                    @defining(lectureSimple.getRatingsToPercentage) { ratings =>
+                        @*평점별 비율 그래프*@
+                        @for(i <- 0 to 4) { @makeRatingGraph(ratings(4-i), (4-i+1).toString) }
                     }
-                </div>
-                @for(lectureEvaluation <- lectureSimple.evaluations) {
-                @*모든 강의평가 코멘트에 대해서*@
-                <div class="row">
-                    <div class="col-md-12 text-left div-review">
-                        <span class="glyphicon glyphicon-user pull-left" style="font-size: 4em"></span>
-                        <div style="display: inline-block">
-                            @for( i <- 1 to lectureEvaluation.rating){ <span class="glyphicon glyphicon-star darkorange-f"></span> }
-                            @for( i <- 1 to 5-lectureEvaluation.rating){ <span class="glyphicon glyphicon-star"></span> }
-                        </div>
-                        <small class="pull-right">@lectureEvaluation.dateTime</small>
-                        <div>@lectureEvaluation.comment</div>
-                        <div class="clearfix"></div>
                     </div>
                 </div>
+                @defining(lectureSimple.getDetailStat()) { stat =>
+                    <div class="rating-box row">
+                        <div class="rating-histogram text-left col-xs-6">
+                            @*남자 평점 비율*@
+                            @for(i <- 0 to 4) { @makeRatingGraph(stat.getMaleRating()(4-i), (4-i+1).toString) }
+                        <div class="text-center">남자</div>
+                        </div>
+                        <div class="rating-histogram text-left col-xs-6">
+                            @*여자 평점 비율*@
+                            @for(i <- 0 to 4) { @makeRatingGraph(stat.getFemaleRating()(4-i), (4-i+1).toString) }
+                            <div class="text-center">여자</div>
+                        </div>
+                    </div>
+                @if(stat.getMajorCountMap != null && stat.getMajorCountMap.size >= 1) {
+                    @defining(stat.getMajorCountMap.keysIterator) { it =>
+                        <div class="rating-box row">
+                            <div class="col-xs-6 major-box text-left">
+                                @if(it.hasNext) { <div class="first">1. @it.next()</div> }
+                                @if(it.hasNext) { <div>2. @it.next()</div> }
+                                @if(it.hasNext) { <div>3. @it.next()</div> }
+                                <small style="display: block; margin-top: 1em">이 강의를 주로 수강하는 전공</small>
+                            </div>
+                        </div>
+                    }
+                }
+                }
+                @for(lectureEvaluation <- lectureSimple.evaluations) {
+                    @*모든 강의평가 코멘트에 대해서*@
+                    <div class="row">
+                        <div class="col-md-12 text-left div-review">
+                            <span class="glyphicon glyphicon-user pull-left" style="font-size: 4em"></span>
+                            <div style="display: inline-block">
+                                @for( i <- 1 to lectureEvaluation.rating){ <span class="glyphicon glyphicon-star darkorange-f"></span> }
+                                @for( i <- 1 to 5-lectureEvaluation.rating){ <span class="glyphicon glyphicon-star"></span> }
+                            </div>
+                            <small class="pull-right">@lectureEvaluation.dateTime</small>
+                            <div>@lectureEvaluation.comment</div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
                 }
             } else {
                 @*남겨진 강의평가가 없다면*@

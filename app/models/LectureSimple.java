@@ -1,6 +1,7 @@
 package models;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import net.vz.mongodb.jackson.JacksonDBCollection;
@@ -10,6 +11,7 @@ import org.joda.time.DateTime;
 import play.Logger;
 import play.modules.mongodb.jackson.MongoDB;
 import securesocial.core.Identity;
+import services.util.ValueComparator;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -197,7 +199,30 @@ public class LectureSimple {
         }
     }
 
-    public float[][] getRatingsToPercentageByGender() {
+    public LectureEvaluationStat getDetailStat() {
+        LectureEvaluationStat stat = new LectureEvaluationStat();
+
+        //[유저 아이디 : 강의평가 객체]의 맵 생성
+        Map<org.bson.types.ObjectId, LectureEvaluation> lectureEvaluationMap = new HashMap<>();
+        for(LectureEvaluation lectureEvaluation : this.evaluations) {
+            lectureEvaluationMap.put(new org.bson.types.ObjectId(lectureEvaluation.user), lectureEvaluation);
+        }
+
+        //DB 쿼리 실행
+        BasicDBObject inQuery = new BasicDBObject("$in", lectureEvaluationMap.keySet());
+        List<UserDetail> userDetails = UserDetail.coll.find(new BasicDBObject("user", inQuery)).toArray();
+
+        float ratings[][] = this.getRatingsToPercentageByGender(userDetails, lectureEvaluationMap);
+        stat.setMaleRating(ratings[0]);
+        stat.setFemaleRating(ratings[1]);
+
+        Map<String, Integer> majorCountMap = this.getMajorCountMap(userDetails, lectureEvaluationMap);
+        stat.setMajorCountMap(majorCountMap);
+
+        return stat;
+    }
+
+    public float[][] getRatingsToPercentageByGender(List<UserDetail> userDetails, Map<org.bson.types.ObjectId, LectureEvaluation> lectureEvaluationMap) {
         if(this.evaluations==null) {
             return null;
         }
@@ -207,17 +232,7 @@ public class LectureSimple {
             float maleMax = Float.MIN_VALUE;
             float femaleMax = Float.MIN_VALUE;
 
-            //[유저 아이디 : 강의평가 객체]의 맵 생성
-            Map<org.bson.types.ObjectId, LectureEvaluation> lectureEvaluationMap = new HashMap<>();
-            for(LectureEvaluation lectureEvaluation : this.evaluations) {
-                lectureEvaluationMap.put(new org.bson.types.ObjectId(lectureEvaluation.user), lectureEvaluation);
-                Logger.debug(new org.bson.types.ObjectId(lectureEvaluation.user).toString());
-            }
-
-            BasicDBObject inQuery = new BasicDBObject("$in", lectureEvaluationMap.keySet());
-
-            //find 쿼리 한번 호출
-            for(UserDetail userDetail : UserDetail.coll.find(new BasicDBObject("user", inQuery))) {
+            for(UserDetail userDetail : userDetails) {
                 if(userDetail.gender==null) {
                     continue;
                 }
@@ -242,13 +257,6 @@ public class LectureSimple {
                 } else {
                     continue;
                 }
-                Logger.debug(
-                        String.format("%s : %s : %s",
-                            userDetail.user,
-                            userDetail.gender,
-                            String.valueOf(lectureEvaluationMap.get(new org.bson.types.ObjectId(userDetail.user)).rating)
-                        )
-                );
             }
 
             for(float rating : ratings[0]) {
@@ -273,5 +281,26 @@ public class LectureSimple {
 
             return ratings;
         }
+    }
+
+    public Map<String, Integer> getMajorCountMap(List<UserDetail> userDetails, Map<org.bson.types.ObjectId, LectureEvaluation> lectureEvaluationMap) {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        ValueComparator bvc = new ValueComparator(hashMap);
+        TreeMap<String, Integer> treeMap = new TreeMap<>(bvc);
+
+        for(UserDetail userDetail : userDetails) {
+            if(userDetail.major!=null && userDetail.major!="") {
+                if(hashMap.containsKey(userDetail.major)) {
+                    int cnt = hashMap.get(userDetail.major).intValue();
+                    hashMap.put(userDetail.major, ++cnt);
+                } else {
+                    hashMap.put(userDetail.major, 1);
+                }
+            }
+        }
+
+        treeMap.putAll(hashMap);
+        Logger.debug(treeMap.toString());
+        return treeMap;
     }
 }

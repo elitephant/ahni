@@ -1,4 +1,7 @@
 @(user: securesocial.core.Identity, searchForm: Form[String], lectureSimpleList: List[LectureSimple])
+@import play.api.cache
+@import play.api.Play.current
+@import services.util.ThousandsSeparator
 
 @main("ahni - evaluation") {
     @header("evaluation",user)
@@ -7,31 +10,36 @@
 
             @*강의평가 Search Form*@
             @helper.form(action = routes.Evaluation.search(), 'role -> "form") {
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="input-group">
-                        <input type="text" class="form-control search-box" id="keyword" name="keyword" style="height: 4em" placeholder="강의명 또는 교수명을 입력하세요" required="required" autocomplete="off" autofocus="on">
-                        <span class="input-group-btn">
-                            <button class="btn btn-darkorange" type="submit" style="height: 4em; border-color: darkorange">검색 <span class="glyphicon glyphicon-search"></span></button>
-                        </span>
-                    </div><!-- /input-group -->
-                </div><!-- /.col-lg-12 -->
-            </div><!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control search-box" id="keyword" name="keyword" style="height: 4em" placeholder="강의명 또는 교수명을 입력하세요" required="required" autocomplete="off" autofocus="on">
+                            <span class="input-group-btn">
+                                <button class="btn btn-darkorange" type="submit" style="height: 4em; border-color: darkorange">검색 <span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
             }
-
+            @* 강의평, 유저 카운트. 1시간 동안 캐싱 *@
+            @cache.Cache.getOrElse("cached-lecture-evaluation-stat", 3600) {
+                <div class="lecture-evaluation-stat">
+                    <div>
+                        <div class="stat-wrapper">
+                            <span class="icon"><span class="glyphicon glyphicon-user"></span></span>
+                            <span class="count">@ThousandsSeparator.parse(LectureEvaluation.getUsersCount)</span>
+                        </div>
+                        명의 학우가
+                        <div class="stat-wrapper">
+                            <span class="icon"><span class="glyphicon glyphicon-pencil"></span></span>
+                            <span class="count">@ThousandsSeparator.parse(LectureEvaluation.getEvaluationsCount)</span>
+                        </div>
+                        개의 강의평을 작성했습니다.
+                    </div>
+                    <small>이 통계의 마지막 업데이트 (@org.joda.time.DateTime.now)</small>
+                </div>
+            }
             @*강의평가 출력*@
-            <div class="lecture-evaluation-stat">
-                <div class="stat-wrapper">
-                    <span class="icon"><span class="glyphicon glyphicon-user"></span></span>
-                    <span class="count">@LectureEvaluation.getUsersCount</span>
-                </div>
-                명의 학우가
-                <div class="stat-wrapper">
-                    <span class="icon"><span class="glyphicon glyphicon-pencil"></span></span>
-                    <span class="count">@LectureEvaluation.getEvaluationsCount</span>
-                </div>
-                개의 강의평을 작성했습니다.
-            </div>
             @for(lectureSimple <- lectureSimpleList) {
                 <div class="row">
                     <div class="col-md-12 text-left div-review">
@@ -44,13 +52,13 @@
                                     <small class="rating-count">
                                         (
                                         <span class="glyphicon glyphicon-user"></span>
-                                        @lectureSimple.evaluations.size()
+                                            @lectureSimple.evaluations.size()
                                         )
                                     </small>
                                 </div>
                             }
-                            <a href="@routes.Evaluation.detail(lectureSimple.id)" class="btn btn-sm btn-default">자세히 보기</a>
-                            <a href="@routes.Evaluation.write(lectureSimple.id)" class="btn btn-sm btn-darkorange-slim">강의평 작성하기</a>
+                        <a href="@routes.Evaluation.detail(lectureSimple.id)" class="btn btn-sm btn-default">자세히 보기</a>
+                        <a href="@routes.Evaluation.write(lectureSimple.id)" class="btn btn-sm btn-darkorange-slim">강의평 작성하기</a>
                         </div>
                         <div class="clearfix"></div>
                     </div>
