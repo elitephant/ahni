@@ -1,5 +1,6 @@
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, serif;
+    /*font-family: "Helvetica Neue", Helvetica, Arial, serif;*/
+    font-family: "Malgun Gothic", "맑은 고딕", "Apple SD 산돌고딕 Neo", "AppleSDGothicNeo", mg, sans-serif !important;
     font-size: 14px;
     line-height: 1.428571429;
     color: #f0f0f0;
