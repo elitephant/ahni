@@ -14,10 +14,10 @@
             }
 
             <div class="text-left">
-                <h4>전공별 채팅방</h4>
+                <h2>전공별 채팅방 <small>원하는 닉네임으로 채팅에 참여해보세요</small></h2>
                 <form action="@routes.Chat.chatRoom()" class="form-inline">
                     <div class="form-group">
-                        <input id="u" name="u" class="form-control" type="text" placeholder="닉네임을 입력하세요" required="required" value="@user.fullName">
+                        <input id="u" name="u" class="form-control" type="text" placeholder="닉네임을 입력하세요" required="required" value="@user.fullName" autofocus="on">
                     </div>
                     <div class="form-group">
                         <select id="r" name="r" class="form-control" required="required">
