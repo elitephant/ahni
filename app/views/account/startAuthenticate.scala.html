@@ -28,6 +28,28 @@
             <h1>인하대학교 학생이신가요?</h1>
             <h3>아래에 두 가지 인증 방법이 있습니다.</h3>
             <div class="row">
+                @*포털 인증*@
+                <div class="col-sm-6 text-left" style="margin-bottom: 24px">
+                    <div style="border: 4px solid #1A1A1A; padding: 1em 1em 1em 1em;">
+                        <div style="margin-bottom: 1em">
+                            <h2>포털 아이디로 인증</h2>
+                            <div>인증을 위해 포털 로그인 정보를 입력해주세요.</div>
+                            <div class="dodgerblue-f">안심하셔도 좋습니다. 어떠한 데이터도 저장되지 않으니까요.</div>
+                        </div>
+                        @helper.form(action = routes.Account.requestPortalAuthenticate(), 'role -> "form") {
+                            <div class="form-group">
+                                <label for="uid">아이디</label>
+                                <input type="text" class="form-control" id="uid" name="uid" placeholder="아이디" required="required" autocomplete="off" autofocus="on">
+                            </div>
+                            <div class="form-group">
+                                <label for="pwd">패스워드</label>
+                                <input type="password" class="form-control" id="pwd" name="pwd" placeholder="패스워드" required="required" autocomplete="off">
+                            </div>
+                            <button type="submit" class="btn btn-darkorange">인증하기</button>
+                        }
+                    </div>
+                </div>
+
                 @*이메일 인증*@
                 <div class="col-sm-6 text-left" style="margin-bottom: 24px">
                     <div style="border: 4px solid #1A1A1A; padding: 1em 1em 1em 1em;">
@@ -51,28 +73,6 @@
                             <div>
                                 <button type="submit" class="btn btn-darkorange">인증 메일 전송하기</button>
                             </div>
-                        }
-                    </div>
-                </div>
-
-                @*포털 인증*@
-                <div class="col-sm-6 text-left" style="margin-bottom: 24px">
-                    <div style="border: 4px solid #1A1A1A; padding: 1em 1em 1em 1em;">
-                        <div style="margin-bottom: 1em">
-                            <h2>포털 아이디로 인증</h2>
-                            <div>인증을 위해 포털 로그인 정보를 입력해주세요.</div>
-                            <div class="dodgerblue-f">안심하셔도 좋습니다. 어떠한 데이터도 저장되지 않으니까요.</div>
-                        </div>
-                        @helper.form(action = routes.Account.requestPortalAuthenticate(), 'role -> "form") {
-                            <div class="form-group">
-                                <label for="uid">아이디</label>
-                                <input type="text" class="form-control" id="uid" name="uid" placeholder="아이디" required="required" autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label for="pwd">패스워드</label>
-                                <input type="password" class="form-control" id="pwd" name="pwd" placeholder="패스워드" required="required" autocomplete="off">
-                            </div>
-                            <button type="submit" class="btn btn-darkorange">인증하기</button>
                         }
                     </div>
                 </div>

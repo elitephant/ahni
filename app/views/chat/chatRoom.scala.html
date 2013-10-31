@@ -1,0 +1,105 @@
+@(user: securesocial.core.Identity, username: String, key: String)
+
+@main("ahni - chat") {
+    @header("chat", user)
+
+    <div class="container">
+        <div class="starter-template">
+            <div class="text-left">
+            <h4>
+                <span class="darkorange-f">@key</span> 채팅방에 오신걸 환영합니다
+                <small>닉네임: @username</small>
+            </h4>
+            </div>
+
+            <div class="chat-wrapper">
+                <div id="onError" class="alert-message error">
+                    <p><strong>Oops!</strong><span></span></p>
+                </div>
+                <div id="onChat">
+                    <div class="chat-inner-wrapper pull-left" style="width: 75%; display: inline-block">
+                        <div id="messages">
+                        </div>
+                        <input type="text" id="talk" placeholder="여기에 글을 입력하세요" autofocus="on"/>
+                    </div>
+                    <div class="chat-inner-wrapper text-left" style="padding-left: 1em;width: 25%; display: inline-block">
+                        <div>접속한 사람</div>
+                        <ul id="members">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+    //invalid name call
+    $('#messages').slimscroll({
+        color: 'darkorange',
+        size: '6px',
+        width: '100%',
+        height: '360px'
+    });
+
+        var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
+        var chatSocket = new WS("@routes.Chat.chat(username, key).webSocketURL(request, securesocial.core.IdentityProvider.sslEnabled)")
+
+        var sendMessage = function() {
+            if($("#talk").val().length > 0) {
+                chatSocket.send(JSON.stringify(
+                    {text: $("#talk").val()}
+                ))
+                $("#talk").val('')
+            }
+        }
+
+        var receiveEvent = function(event) {
+            var data = JSON.parse(event.data)
+
+            // Handle errors
+            if(data.error) {
+                chatSocket.close()
+                $("#onError span").text(data.error)
+                $("#onError").show()
+                return
+            } else {
+                $("#onChat").show()
+            }
+
+            // Create the message element
+            var el = $('<div class="message"><span></span><p></p></div>')
+            $("span", el).text(data.user)
+            $("p", el).text(data.message)
+            $(el).addClass(data.kind)
+            if(data.user == '@username') $(el).addClass('me')
+            $('#messages').append(el)
+
+            // Update the members list
+            $("#members").html('')
+            $(data.members).each(function() {
+                $("#members").append('<li>' + this + '</li>')
+            })
+
+
+        var totalHeight = 0;
+        $('div#messages div').each(function() {
+            totalHeight = totalHeight + $(this).height()+12;
+        })
+        $('#messages').slimScroll({ scrollTo: totalHeight});
+        }
+
+        var handleReturnKey = function(e) {
+            if(e.charCode == 13 || e.keyCode == 13) {
+                e.preventDefault()
+                sendMessage()
+            }
+        }
+
+        $("#talk").keypress(handleReturnKey)
+
+        chatSocket.onmessage = receiveEvent
+    })
+    </script>
+
+}

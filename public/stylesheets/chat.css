@@ -1,0 +1,71 @@
+div.chat-wrapper {
+    background-color: #1A1A1A;
+    color: #ddd;
+    padding: 1em 1em 1em 1em;
+}
+div.chat-inner-wrapper {
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+}
+#onError, #onChat {
+    display: none;
+}
+
+#messages {
+    color: #202020;
+    text-align: left;
+    position: absolute;
+    width: 100%;
+    bottom: 2em;
+    margin-bottom: 1em;
+}
+
+#talk {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border: 1px solid darkorange;
+    background-color: transparent;
+    padding: .5em .5em .5em .5em;
+    color: #ddd;
+}
+#talk:focus {
+    outline: none;
+}
+
+.message {
+    color: #ddd;
+    padding: 4px 0;
+    position: relative;
+    border-bottom: 4px solid #202020;
+}
+
+.message span {
+    width: 70px;
+    overflow: hidden;
+    text-align: left;
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    margin-right: .5em;
+    margin-left: .5em;
+}
+
+.message p {
+    display: inline-block;
+    margin: 0;
+}
+
+.message.me {
+    color: lightseagreen;
+}
+
+.message.join, .message.quit {
+    color: lightsalmon;
+}
+#messages {
+    top: 0 !important;
+}

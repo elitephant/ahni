@@ -1,0 +1,43 @@
+@(user: securesocial.core.Identity)
+
+@main("ahni - chat") {
+    @header("chat", user)
+
+    <div class="container">
+        <div class="starter-template">
+            @if(flash.containsKey("error")) {
+                <div class="alert-message error">
+                    <p>
+                        <strong>Oops!</strong> @flash.get("error")
+                    </p>
+                </div>
+            }
+
+            <div class="text-left">
+                <h4>전공별 채팅방</h4>
+                <form action="@routes.Chat.chatRoom()" class="form-inline">
+                    <div class="form-group">
+                        <input id="u" name="u" class="form-control" type="text" placeholder="닉네임을 입력하세요" required="required" value="@user.fullName">
+                    </div>
+                    <div class="form-group">
+                        <select id="r" name="r" class="form-control" required="required">
+                            <option value="" disabled>채팅방을 선택하세요</option>
+                            @defining(UserDetail.findByUserId(User.findByIdentity(user).id)) { userDetail =>
+                                @for(major <- Major.all()) {
+                                    @if(userDetail.major != null && userDetail.major.equals(major.major)) {
+                                        <option value="@major.major" selected>@major.major</option>
+                                    } else {
+                                        <option value="@major.major">@major.major</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-darkorange" type="submit">입장하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
