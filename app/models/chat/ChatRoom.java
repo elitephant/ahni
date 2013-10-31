@@ -33,6 +33,7 @@ public class ChatRoom extends UntypedActor {
         chatRooms = new HashMap<>();
         for(Major m : Major.all()) {
             chatRooms.put(m.major, Akka.system().actorOf(new Props(ChatRoom.class)));
+            new Robot(chatRooms.get(m.major));
         }
     }
 
