@@ -28,10 +28,10 @@ public class Robot {
         // Join the room
         chatRoom.tell(new ChatRoom.Join("Robot", robotChannel));
 
-        // Make the robot talk every 60*10 seconds
+        // Make the robot talk every 30 seconds
         Akka.system().scheduler().schedule(
-                Duration.create(60*10, SECONDS),
-                Duration.create(60*10, SECONDS),
+                Duration.create(30, SECONDS),
+                Duration.create(30, SECONDS),
                 chatRoom,
                 new ChatRoom.Talk("Robot", "I'm still alive"),
                 Akka.system().dispatcher()
