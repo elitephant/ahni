@@ -12,21 +12,44 @@ body {
     background-color: #202020;
     font-weight: lighter;
 }
+
+html,
+body {
+    height: 100%;
+}
+
+#main-wrap {
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto -18px;
+}
+
+#footer {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    height: 18px;
+    line-height: 18px;
+    font-size: 12px;
+    text-align: center;
+    width:100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1030;
+}
+
 .starter-template {
     padding: 40px 15px;
     text-align: center;
 }
 
-#footer {
-    font-size: 12px;
-    text-align: center;
-    position:fixed;
-    left:0px;
-    bottom:0px;
-    width:100%;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 1030;
-}
+/*#footer {*/
+    /*font-size: 12px;*/
+    /*text-align: center;*/
+    /*position:fixed;*/
+    /*left:0px;*/
+    /*bottom:0px;*/
+    /*width:100%;*/
+    /*background-color: rgba(0,0,0,0.5);*/
+    /*z-index: 1030;*/
+/*}*/
 
 .thumbnail.thumb-photo{
     background-color: transparent;
