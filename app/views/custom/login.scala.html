@@ -7,6 +7,7 @@
 @views.html.main(Messages("securesocial.login.title")) {
     @errorMsg.map { msg =>
         <div class="alert ahni-alert-fixed-top ahni-danger">
+            <span class="glyphicon glyphicon-warning-sign"></span>
             @Messages(msg)
         </div>
         <script type="text/javascript">
@@ -18,6 +19,7 @@
 
     @request.flash.get("success").map { msg =>
         <div class="alert ahni-alert-fixed-top ahni-success">
+            <span class="glyphicon glyphicon-info-sign"></span>
             @msg
         </div>
         <script type="text/javascript">
@@ -29,6 +31,7 @@
 
     @request.flash.get("error").map { msg =>
         <div class="alert ahni-alert-fixed-top ahni-danger">
+            <span class="glyphicon glyphicon-warning-sign"></span>
             @msg
         </div>
         <script type="text/javascript">
