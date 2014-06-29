@@ -3,10 +3,10 @@ package models.chat;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+import com.fasterxml.jackson.databind.JsonNode;
 import models.Major;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import play.libs.Akka;
 import play.libs.F;
 import play.libs.Json;
@@ -55,7 +55,7 @@ public class ChatRoom extends UntypedActor {
                 public void invoke(JsonNode event) {
 
                     // Send a Talk message to the room.
-                    chatRooms.get(key).tell(new Talk(username, event.get("text").asText()));
+                    chatRooms.get(key).tell(new Talk(username, event.get("text").asText()), null);
 
                 }
             });
@@ -65,7 +65,7 @@ public class ChatRoom extends UntypedActor {
                 public void invoke() {
 
                     // Send a Quit message to the room.
-                    chatRooms.get(key).tell(new Quit(username));
+                    chatRooms.get(key).tell(new Quit(username), null);
 
                 }
             });
@@ -95,11 +95,11 @@ public class ChatRoom extends UntypedActor {
 
             // Check if this username is free.
             if(members.containsKey(join.username)) {
-                getSender().tell("이미 사용중인 닉네임입니다");
+                getSender().tell("이미 사용중인 닉네임입니다", getSelf());
             } else {
                 members.put(join.username, join.channel);
                 notifyAll("join", join.username, "입장하였습니다");
-                getSender().tell("OK");
+                getSender().tell("OK", getSelf());
             }
 
         } else if(message instanceof Talk)  {

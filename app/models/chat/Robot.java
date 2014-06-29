@@ -1,14 +1,15 @@
 package models.chat;
 
-import akka.actor.ActorRef;
-import org.codehaus.jackson.JsonNode;
-import play.Logger;
-import play.libs.Akka;
-import play.libs.Json;
-import play.mvc.WebSocket;
-import scala.concurrent.duration.Duration;
+import play.*;
+import play.mvc.*;
+import play.libs.*;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import scala.concurrent.duration.*;
+import akka.actor.*;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
+import static java.util.concurrent.TimeUnit.*;
 
 public class Robot {
 
@@ -26,7 +27,7 @@ public class Robot {
         };
 
         // Join the room
-        chatRoom.tell(new ChatRoom.Join("Robot", robotChannel));
+        chatRoom.tell(new ChatRoom.Join("Robot", robotChannel), null);
 
         // Make the robot talk every 30 seconds
         Akka.system().scheduler().schedule(
@@ -34,7 +35,8 @@ public class Robot {
                 Duration.create(30, SECONDS),
                 chatRoom,
                 new ChatRoom.Talk("Robot", "I'm still alive"),
-                Akka.system().dispatcher()
+                Akka.system().dispatcher(),
+                null
         );
 
     }

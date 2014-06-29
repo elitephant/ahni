@@ -1,9 +1,7 @@
 package controllers;
 
-import controllers.*;
 import models.User;
 import models.UserDetail;
-import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;

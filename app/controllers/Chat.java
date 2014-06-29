@@ -1,7 +1,7 @@
 package controllers;
 
 import models.chat.ChatRoom;
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -33,10 +33,10 @@ public class Chat extends Controller {
         Logger.debug("@@채팅방입장");
         if(username == null || username.trim().equals("")) {
             flash("error", "올바른 닉네임을 입력해주세요");
-            return redirect(routes.Chat.index());
+            return redirect(controllers.routes.Chat.index());
         } else if (key == null || key.trim().equals("") || !ChatRoom.getChatRooms().containsKey(key)) {
             flash("error", "잘못된 접근입니다");
-            return redirect(routes.Chat.index());
+            return redirect(controllers.routes.Chat.index());
         }
         return ok(chatRoom.render(user, username, key));
     }
