@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Restaurant;
 import play.mvc.Controller;
 import play.mvc.Result;
 import securesocial.core.Identity;
@@ -10,6 +11,6 @@ import views.html.foodmap.index;
 public class FoodMap extends Controller {
     public static Result index() {
         Identity user = (Identity) ctx().args.get(SecureSocial.USER_KEY);
-        return ok(index.render(user));
+        return ok(index.render(user, Restaurant.all()));
     }
 }

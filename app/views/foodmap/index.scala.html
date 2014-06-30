@@ -1,63 +1,50 @@
-@(user: securesocial.core.Identity)
+@(user: securesocial.core.Identity, restaurantList: List[Restaurant])
 @main("ahni - foodmap") {
     @header("foodmap",user)
-    <div class="container" xmlns="http://www.w3.org/1999/html">
+    <div class="container">
         <div class="starter-template">
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxfbaCe0lfmc2oA-2U_Ol7LJqMhEbeId4&sensor=false"></script>
-            <script>
-            function initialize() {
-            var mapOptions = {
-            zoom: 4,
-            center: new google.maps.LatLng(37.451656, 126.65723),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            var map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);
-
-            // Add 5 markers to the map at random locations
-            var southWest = new google.maps.LatLng(37.451379, 126.655868);
-            var northEast = new google.maps.LatLng(37.451298, 126.658587);
-
-            var bounds = new google.maps.LatLngBounds(southWest, northEast);
-            map.fitBounds(bounds);
-
-            var lngSpan = northEast.lng() - southWest.lng();
-            var latSpan = northEast.lat() - southWest.lat();
-
-            for (var i = 0; i < 5; i++) {
-            var position = new google.maps.LatLng(
-            southWest.lat() + latSpan * Math.random(),
-            southWest.lng() + lngSpan * Math.random());
-            var marker = new google.maps.Marker({
-            position: position,
-            map: map
-            });
-
-            marker.setTitle((i + 1).toString());
-            attachSecretMessage(marker, i);
-            }
-            }
-
-            // The five markers show a secret message when clicked
-            // but that message is not within the marker's instance data
-            function attachSecretMessage(marker, num) {
-            var message = ['This', 'is', 'the', 'secret', 'message'];
-            var infowindow = new google.maps.InfoWindow({
-            content: message[num]
-            });
-
-            google.maps.event.addListener(marker, 'click', function() {
-            infowindow.open(marker.get('map'), marker);
-            });
-            }
-
-            google.maps.event.addDomListener(window, 'load', initialize);
-
-            </script>
-            <div id="map-canvas" style="width:100%; height:350px; overflow:hidden; top:51px; right:0; left:0; position: absolute"></div>
-            <h1 style="top: 400px; position : relative;">서비스 준비중입니다.</h1>
+            <div class="foodmap-wrap">
+                <form action="#" method="GET" role="form">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <input type="text" class="form-control search-box" id="keyword" name="keyword" style="height: 4em" placeholder="아무거나 검색해보세요" required="required" autocomplete="off" autofocus="on">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-darkorange" type="submit" style="height: 4em; border-color: darkorange">검색 <span class="glyphicon glyphicon-search"></span></button>
+                                </span>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-12 -->
+                    </div><!-- /.row -->
+                </form>
+                <div class="row">
+                @for(restaurant <- restaurantList) {
+                    <div class="col-md-4">
+                        <div class="foodmap-item">
+                            <div class="title">
+                            @restaurant.name
+                            </div>
+                            <div class="score-container">
+                                <div class="score">
+                                    5.0
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-star darkorange-f"></span>  <span class="glyphicon glyphicon-star darkorange-f"></span>  <span class="glyphicon glyphicon-star darkorange-f"></span>  <span class="glyphicon glyphicon-star darkorange-f"></span>  <span class="glyphicon glyphicon-star darkorange-f"></span>
+                                </div>
+                                <div class="count">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span>1</span>
+                                    <span>total</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1em">
+                                <a class="btn btn-sm btn-default" href="#">자세히 보기 <span class="glyphicon glyphicon-search"></span></a>
+                                <a class="btn btn-sm btn-darkorange-slim" href="#">평가 작성하기 <span class="glyphicon glyphicon-pencil"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                </div>
+            </div>
         </div>
     </div><!-- /.container -->
 }
-

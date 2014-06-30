@@ -37,6 +37,7 @@
 
         @if(flash.containsKey("success")){
             <div class="alert ahni-success" style="display: none">
+                <span class="glyphicon glyphicon-info-sign"></span>
                 @flash.get("success")
             </div>
 
@@ -48,6 +49,7 @@
         }
         @if(flash.containsKey("error")){
             <div class="alert ahni-danger" style="display: none">
+                <span class="glyphicon glyphicon-warning-sign"></span>
                 @flash.get("error")
             </div>
 

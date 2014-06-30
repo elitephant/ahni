@@ -10,8 +10,8 @@ object ApplicationBuild extends Build {
   val appDependencies = Seq(
     // Add your project dependencies here,
     javaCore,
-    javaJdbc,
-    javaEbean,
+    jdbc,
+    cache,
     "ws.securesocial" %% "securesocial" % "2.1.3",
     "org.mongodb" % "mongo-java-driver" % "2.11.2",
     "net.vz.mongodb.jackson" %% "play-mongo-jackson-mapper" % "1.1.0"

@@ -1,0 +1,29 @@
+div.foodmap-wrap {
+}
+div.foodmap-wrap > div.row > div {
+    margin-top: 2em;
+}
+div.foodmap-item {
+    padding: 1em 1em;
+    border-left: 4px solid darkorange;
+    background-color: rgba(0,0,0,.5);
+}
+div.foodmap-item div.title {
+    font-size: 2em;
+    color: darkorange;
+}
+div.interest {
+    margin-top: 1em;
+}
+.btn-like {
+    min-width: 100px;
+    border: none;
+    color: dodgerblue;
+    background-color: #202020;
+}
+.btn-hate {
+    min-width: 100px;
+    border: none;
+    color: crimson;
+    background-color: #202020;
+}
