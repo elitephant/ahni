@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="input-group">
-                            <input type="text" class="form-control search-box" id="keyword" name="keyword" style="height: 4em" placeholder="강의명 또는 교수명을 입력하세요" required="required" autocomplete="off" autofocus="on">
+                            <input type="text" class="form-control search-box" id="keyword" name="keyword" style="height: 4em" pattern=".{2,}" title="2 글자 이상 입력하세요" placeholder="강의명 또는 교수명을 입력하세요" required="required" autocomplete="off" autofocus="on">
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="submit" style="height: 4em">검색 <span class="glyphicon glyphicon-search"></span></button>
                             </span>
