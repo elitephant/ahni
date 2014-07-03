@@ -1,5 +1,6 @@
 package models;
 
+import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.WriteConcern;
 import net.vz.mongodb.jackson.JacksonDBCollection;
@@ -96,6 +97,22 @@ public class LectureSimple {
         TreeMap<String, String> treeMap = new TreeMap<>(hashMap);
 
         return treeMap.values();
+    }
+
+    /**
+     * 강의평 리스트를 역순으로 반환한다.
+     * @return 역순으로 정렬된 강의평 리스트
+     */
+    public List<LectureEvaluation> getEvaluations(boolean reverse) {
+        List<LectureEvaluation> lectureEvaluations;
+        if(reverse) {
+            lectureEvaluations = Lists.reverse(this.evaluations);
+        }
+        else {
+            lectureEvaluations = this.evaluations;
+        }
+
+        return lectureEvaluations;
     }
 
     public static boolean addEvaluation(LectureEvaluation lectureEvaluation, Identity user, String id, Boolean isEdit) {

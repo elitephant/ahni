@@ -92,7 +92,7 @@
                     }
                 }
                 }
-                @for(lectureEvaluation <- lectureSimple.evaluations) {
+                @for(lectureEvaluation <- lectureSimple.getEvaluations(true)) {
                     @*모든 강의평가 코멘트에 대해서*@
                     <div class="row">
                         <div class="col-md-12 text-left comment">
@@ -101,11 +101,11 @@
                                 @for( i <- 1 to lectureEvaluation.rating){ <span class="glyphicon glyphicon-star darkorange-f"></span> }
                                 @for( i <- 1 to 5-lectureEvaluation.rating){ <span class="glyphicon glyphicon-star light-gray-f"></span> }
                             </div>
-                            <small class="pull-right">
-                                <span class="label label-default">
+                            <span class="pull-right">
+                                <span class="label label-default" style="font-weight: normal">
                                     <time class="timeago" datetime="@lectureEvaluation.dateTime">@lectureEvaluation.dateTime</time>
                                 </span>
-                            </small>
+                            </span>
                             <div>@lectureEvaluation.comment</div>
                             <div class="clearfix"></div>
                         </div>
