@@ -23,18 +23,20 @@
         </script>
     }
     <div class="container">
-        <div class="starter-template">
-            <img src="@routes.Assets.at("images/ahni-logo/ahni-logo-64.png")" alt="">
+        <div class="starter-template text-center">
+            <img src="@routes.Assets.at("images/logo-temp.png")" style="height: 48px" alt=""/>
+            <h1 style="margin-top: 0">ahni<small style="color: #fff">[:inha]</small></h1>
             <h1>인하대학교 학생이신가요?</h1>
             <h3>아래에 두 가지 인증 방법이 있습니다.</h3>
+            <hr/>
             <div class="row">
                 @*포털 인증*@
                 <div class="col-sm-6 text-left" style="margin-bottom: 24px">
-                    <div style="border: 4px solid #1A1A1A; padding: 1em 1em 1em 1em;">
+                    <div style="padding: 1em 1em 1em 1em;">
                         <div style="margin-bottom: 1em">
                             <h2>포털 아이디로 인증</h2>
                             <div>인증을 위해 포털 로그인 정보를 입력해주세요.</div>
-                            <div class="dodgerblue-f">안심하셔도 좋습니다. 어떠한 데이터도 저장되지 않으니까요.</div>
+                            <div class="light-gray-f">안심하셔도 좋습니다. 어떠한 데이터도 저장되지 않으니까요.</div>
                         </div>
                         @helper.form(action = routes.Account.requestPortalAuthenticate(), 'role -> "form") {
                             <div class="form-group">
@@ -45,17 +47,17 @@
                                 <label for="pwd">패스워드</label>
                                 <input type="password" class="form-control" id="pwd" name="pwd" placeholder="패스워드" required="required" autocomplete="off">
                             </div>
-                            <button type="submit" class="btn btn-darkorange">인증하기</button>
+                            <button type="submit" class="btn btn-primary">인증하기</button>
                         }
                     </div>
                 </div>
 
                 @*이메일 인증*@
                 <div class="col-sm-6 text-left" style="margin-bottom: 24px">
-                    <div style="border: 4px solid #1A1A1A; padding: 1em 1em 1em 1em;">
+                    <div style="padding: 1em 1em 1em 1em;">
                         <div style="margin-bottom: 1em">
                             <h2>학교 메일로 인증</h2>
-                            <div>학교 이메일의 <strong class="darkorange-f">@("@inha.edu")를 제외한 아이디</strong>를 입력해주세요.</div>
+                            <div>학교 이메일의 <strong class="lovely-pink-f">@("@inha.edu")를 제외한 아이디</strong>를 입력해주세요.</div>
                             <div><small>예) @("ahni@inha.edu")라는 학교 이메일을 사용하신다면 입력란에 ahni을 입력해주세요.</small></div>
                         </div>
                         @helper.form(action = routes.Account.requestEmailAuthenticate(), 'role -> "form") {
@@ -63,15 +65,13 @@
                                 <label for="email">이메일 아이디</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="email" name="email" placeholder="학교 이메일 아이디" required="required" autocomplete="off">
-                                    <span class="input-group-btn">
-                                    @("@inha.edu")
-                                    </span>
+                                    <div class="input-group-addon">@("@inha.edu")</div>
                                 </div>
                             </div>
                             <div style="height: 59px" class="form-group">
                             </div>
                             <div>
-                                <button type="submit" class="btn btn-darkorange">인증 메일 전송하기</button>
+                                <button type="submit" class="btn btn-primary">인증 메일 전송하기</button>
                             </div>
                         }
                     </div>

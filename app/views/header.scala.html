@@ -1,6 +1,6 @@
 @(title: String, user: securesocial.core.Identity)
 
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -10,7 +10,6 @@
                     </button>
                     <a class="navbar-brand" href="@routes.Home.index">
                         @*<span class="glyphicon glyphicon-send"></span>*@
-                        <img src="@routes.Assets.at("images/ahni-logo/ahni-logo-32x32.png")" style="width: 16px;" alt=""/>
                         ahni
                     </a>
                 </div>
@@ -22,11 +21,11 @@
                         @if(title!="evaluation") {<li><a href="@routes.Evaluation.index"><span class="glyphicon glyphicon-pencil"></span> 강의평가</a></li>}
                         @if(title=="chat") {<li class="active"><a href="@routes.Chat.index"><span class="glyphicon glyphicon-bullhorn"></span> 채팅방</a></li>}
                         @if(title!="chat") {<li><a href="@routes.Chat.index"><span class="glyphicon glyphicon-bullhorn"></span> 채팅방</a></li>}
-                        @if(title=="foodmap") {<li class="active"><a href="@routes.FoodMap.index"><span class="glyphicon glyphicon-map-marker"></span> 맛지도</a></li>}
-                        @if(title!="foodmap") {<li><a href="@routes.FoodMap.index"><span class="glyphicon glyphicon-map-marker"></span> 맛지도</a></li>}
+                        @*@if(title=="foodmap") {<li class="active"><a href="@routes.FoodMap.index"><span class="glyphicon glyphicon-map-marker"></span> 맛지도</a></li>}*@
+                        @*@if(title!="foodmap") {<li><a href="@routes.FoodMap.index"><span class="glyphicon glyphicon-map-marker"></span> 맛지도</a></li>}*@
                         @if(user != null) {
-                            @if(title=="account") {<li class="active"><a href="@routes.Account.index">@user.fullName 님 환영합니다!</a></li>}
-                            @if(title!="account") {<li><a href="@routes.Account.index">@user.fullName 님 환영합니다!</a></li>}
+                            @if(title=="account") {<li class="active"><a href="@routes.Account.index"><span class="glyphicon glyphicon-user"></span> 나</a></li>}
+                            @if(title!="account") {<li><a href="@routes.Account.index"><span class="glyphicon glyphicon-user"></span> 나</a></li>}
                             <li><a href="/logout">로그아웃 <span class="glyphicon glyphicon-remove-circle"></span></a></li>
                         }
                         @if(user == null) {<li><a href="/login">로그인</a></li>}

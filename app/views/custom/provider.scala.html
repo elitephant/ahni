@@ -23,8 +23,6 @@
             }
 
             @if( provider.authMethod == UserPassword ) {
-        <div class="row">
-            <div class="col-sm-offset-4 col-sm-4">
                 <form action = "@securesocial.core.providers.utils.RoutesHelper.authenticateByPost("userpass").absoluteURL(IdentityProvider.sslEnabled)(request)"
                     class="form-horizontal" autocomplete="off" method="POST">
 
@@ -56,12 +54,19 @@
                             'required -> ""
                         )
 
-                    <button type="submit" class="btn btn-darkorange btn-lg">입장하기</button>
-                    <a href="@securesocial.core.providers.utils.RoutesHelper.startResetPassword()"><p>@Messages("securesocial.login.forgotPassword")</p></a>
-                    <p>@Messages("securesocial.login.signUp") <a href="@securesocial.core.providers.utils.RoutesHelper.startSignUp()">@Messages("securesocial.login.here")</a></p>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">입장하기</button>
+                        <a href="@securesocial.core.providers.utils.RoutesHelper.startSignUp()" class="btn btn-default btn-lg">
+                            @Messages("securesocial.login.here")
+                        </a>
+                        <div style="margin-top: 1em;">
+                            <span class="glyphicon glyphicon-lock"></span>
+                            <a href="@securesocial.core.providers.utils.RoutesHelper.startResetPassword()" style="color: #fff">
+                                @Messages("securesocial.login.forgotPassword")
+                            </a>
+                        </div>
+                    </div>
                 </form>
-            </div>
-        </div>
             }
 }.getOrElse {
     @*****************************************

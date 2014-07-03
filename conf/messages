@@ -9,7 +9,7 @@ securesocial.login.errorLoggingIn=로그인 하는 동안 오류가 발생했습
 securesocial.login.useEmailAndPassword=사용자 이름과 비밀번호를 사용하여 로그인합니다.
 securesocial.login.useEmailAndPasswordOnly=사용자 이름과 비밀번호를 사용하여 로그인합니다.
 securesocial.login.signUp=아직 계정이 없다면 새로 등록해 보세요.
-securesocial.login.here=등록하기
+securesocial.login.here=가입하기
 securesocial.login.invalidCredentials=유효하지 않은 로그인 정보입니다.
 securesocial.login.forgotPassword=비밀번호를 잊어버리셨나요?
 

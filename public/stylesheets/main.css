@@ -9,7 +9,7 @@ body {
     padding-top: 50px;   /* Account for fixed navbar */
     position: relative; /* For scrollyspy */
     /*background-color: #102d41;*/
-    background-color: #202020;
+    background-color: #15acdc;
     font-weight: lighter;
 }
 
@@ -21,23 +21,22 @@ body {
 #main-wrap {
     min-height: 100%;
     height: auto;
-    margin: 0 auto -18px;
+    margin: 0 auto -32px;
 }
 
 #footer {
     /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-    height: 18px;
-    line-height: 18px;
+    height: 32px;
+    line-height: 32px;
     font-size: 12px;
     text-align: center;
     width:100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: #f5706c;
     z-index: 1030;
 }
 
 .starter-template {
-    padding: 40px 15px;
-    text-align: center;
+    padding: 40px 15px 72px;
 }
 
 /*#footer {*/
@@ -94,22 +93,6 @@ pre.pre-javachip {
     color: white;
 }
 
-div.div-review{
-    background-color: rgba(0,0,0,.5);
-    border-style: none;
-    border-left: 5px solid darkorange;
-    border-radius: 0;
-    padding-bottom: 1em;
-    padding-top: 1em;
-    margin-bottom: 1em;
-}
-
-div.div-review h2 {
-    color: darkorange;
-    margin: 0 auto;
-    padding: 0;
-}
-
 /*자동완성목록이 Modal 뒤에 나오는 것 fix*/
 ul.ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content.ui-corner-all {
     z-index: 1051;
@@ -139,21 +122,14 @@ div.ahni-alert-fixed-top {
     top: 0;
     width: 100%;
 }
-
-div.rating-wrapper {
-
-}
-div.rating-wrapper .rating-score {
-    font-size: 2em;
-}
 div.rating-box {
     margin-top: 1em;
     margin-bottom: 1em;
     padding-top: 1em;
     padding-bottom: 1em;
-    border: 1px solid darkorange;
-    border-left-width: 5px;
-    background-color: rgba(0,0,0,.5);
+    border-radius: 6px;
+    background-color: #fff;
+    color: #555;
 }
 div.score {
     font-size: 3em;
@@ -176,16 +152,17 @@ div.ahni-graph-bar-column {
     height: 1em;
     background-color: darkorange;
     float: right;
+    border-radius: 6px;
 }
 table.table.ahni-table-slim {
     font-size: 12px;
     line-height: 1em;
 }
 table.table.ahni-table-slim th {
-    border-bottom: 2px solid #555;
+    border-bottom: 2px solid rgb(200, 200, 200);
 }
 table.table.ahni-table-slim td {
-    border-bottom: 1px solid #555;
+    border-bottom: 1px solid rgb(200, 200, 200);
 }
 table.table.ahni-table-slim tbody > tr > td span.glyphicon {
     top: 0;
@@ -214,9 +191,46 @@ div.major-box .first {
     font-size: 2em;
     color: darkorange;
 }
+.social-login > a {
+    margin: 1em;
+}
+div.row.lecture-simple {
+}
+div.row.lecture-simple > div > div {
+    border-radius: 6px;
+    padding: 1em 1em;
+    margin: 1em 0em;
+    background-color: #fff;
+}
+div.row.lecture-simple h3 {
+    color: #f5706c;
+    margin: 0 auto;
+}
+div.row.lecture-simple h4 {
+    color: #888;
+}
+div.comment {
+    background-color: #fff;
+    color: #555;
+    padding: 1em;
+    border-radius: 6px;
+}
+.rating-count {
+    color: #888;
+}
+div.rating-wrapper {
+}
+div.rating-wrapper .rating-score {
+    font-size: 2em;
+}
+div.comment {
+    margin-bottom: 1em;
+}
 
 /*My Favorite Color*/
 .crimson-f{color: crimson} .crimson-b{background-color: crimson}
+.lovely-pink-f{color: #f5706c} .lovely-pink-b{background-color: #f5706c}
+.light-gray-f{color: rgb(230, 230, 230)} .light-gray-b{background-color: rgb(230,230,230)}
 .dodgerblue-f{color: dodgerblue} .dodgerblue-b{background-color: dodgerblue}
 .chartreuse-f{color: chartreuse} .chartreuse-b{background-color: chartreuse}
 .darkorange-f{color: darkorange} .darkorange-b{background-color: darkorange} .darkorange-border{border-color: darkorange}

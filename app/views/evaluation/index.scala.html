@@ -2,12 +2,12 @@
 @import play.api.cache
 @import play.api.Play.current
 @import services.util.ThousandsSeparator
+@import java.math.BigInteger; var row = 0;
 
 @main("ahni - evaluation") {
     @header("evaluation",user)
     <div class="container">
         <div class="starter-template">
-
             @*강의평가 Search Form*@
             @helper.form(action = routes.Evaluation.search(), 'role -> "form") {
                 <div class="row">
@@ -15,7 +15,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control search-box" id="keyword" name="keyword" style="height: 4em" placeholder="강의명 또는 교수명을 입력하세요" required="required" autocomplete="off" autofocus="on">
                             <span class="input-group-btn">
-                                <button class="btn btn-darkorange" type="submit" style="height: 4em; border-color: darkorange">검색 <span class="glyphicon glyphicon-search"></span></button>
+                                <button class="btn btn-primary" type="submit" style="height: 4em">검색 <span class="glyphicon glyphicon-search"></span></button>
                             </span>
                         </div><!-- /input-group -->
                     </div><!-- /.col-lg-12 -->
@@ -23,7 +23,7 @@
             }
             @* 강의평, 유저 카운트. 1시간 동안 캐싱 *@
             @cache.Cache.getOrElse("cached-lecture-evaluation-stat", 3600) {
-                <div class="lecture-evaluation-stat">
+                <div class="lecture-evaluation-stat text-center">
                     <div>
                         <div class="stat-wrapper">
                             <span class="icon"><span class="glyphicon glyphicon-user"></span></span>
@@ -41,28 +41,31 @@
             }
             @*강의평가 출력*@
             @for(lectureSimple <- lectureSimpleList) {
-                <div class="row">
-                    <div class="col-md-12 text-left div-review">
-                        <h2 style="display: inline">@lectureSimple.lectureName</h2>
+                @if(row.%(3).==(0)) { <div class="row lecture-simple"> }
+                @{ row = row + 1 }
+                <div class="col-md-4">
+                    <div>
+                        <h3 style="display: inline">@lectureSimple.lectureName</h3>
                         <h4 style="display: inline">@lectureSimple.professorName</h4>
-                        <div class="pull-right text-right">
-                            @if(lectureSimple.evaluations!=null && lectureSimple.evaluations.size()>0) {
-                                <div class="rating-wrapper">
-                                    <span class="darkorange-f rating-score">@(Math.round(lectureSimple.getAvgRating*10.0)/10.0)</span>
-                                    <small class="rating-count">
-                                        (
-                                        <span class="glyphicon glyphicon-user"></span>
-                                            @lectureSimple.evaluations.size()
-                                        )
-                                    </small>
-                                </div>
-                            }
-                        <a href="@routes.Evaluation.detail(lectureSimple.id)" class="btn btn-sm btn-default">자세히 보기 <span class="glyphicon glyphicon-search"></span></a>
-                        <a href="@routes.Evaluation.write(lectureSimple.id)" class="btn btn-sm btn-darkorange-slim">강의평 작성하기 <span class="glyphicon glyphicon-pencil"></span></a>
+                        @if(lectureSimple.evaluations!=null && lectureSimple.evaluations.size()>0) {
+                            <div class="rating-wrapper text-center">
+                                <div class="darkorange-f rating-score">@(Math.round(lectureSimple.getAvgRating*10.0)/10.0)</div>
+                                <small class="rating-count">
+                                    (
+                                    <span class="glyphicon glyphicon-user"></span>
+                                        @lectureSimple.evaluations.size()
+                                    )
+                                </small>
+                            </div>
+                        }
+                        <div class="text-right" style="margin-top: 1em;">
+                            <a href="@routes.Evaluation.detail(lectureSimple.id)" class="btn btn-sm btn-light-gray">자세히 보기 <span class="glyphicon glyphicon-search"></span></a>
+                            <a href="@routes.Evaluation.write(lectureSimple.id)" class="btn btn-sm btn-primary">강의평 작성하기 <span class="glyphicon glyphicon-pencil"></span></a>
                         </div>
                         <div class="clearfix"></div>
                     </div>
                 </div>
+                @if(row.%(3).==(0)) { </div> }
             }
         </div>
     </div><!-- /.container -->

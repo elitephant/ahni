@@ -42,23 +42,29 @@
     }
     <div class="container">
         <div class="starter-template">
-            <div>
-                <img src="@routes.Assets.at("images/ahni-logo/ahni-logo-64.png")" alt="">
-                <h1 class="darkorange-f">ahni<small>[:inha]</small></h1>
-            </div>
-            <hr class="darkorange-border">
             @defining( Registry.providers.all.values.filter( _.id != UsernamePassword) ) { externalProviders =>
-
-                @if( externalProviders.size > 0 ) {
-                    <p>
-                        @for(p <- externalProviders) { @provider(request, p.id) }
-                    </p>
-                    @*<p> 소셜 아이디로 로그인 할 수 있어요 </p>*@
-                }
-
-                @Registry.providers.get(UsernamePassword).map { up =>
-                    @provider(request, "userpass", Some(loginForm))
-                }
+                    <div class="row">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <div class="text-center" style="margin-bottom: 1em">
+                                <img src="@routes.Assets.at("images/logo-temp.png")" style="height: 48px" alt=""/>
+                                <h1 style="margin-top: 0">ahni<small style="color: #fff">[:inha]</small></h1>
+                            </div>
+                            @if( externalProviders.size > 0 ) {
+                                <div class="text-center social-login">
+                                    @for(p <- externalProviders) { @provider(request, p.id) }
+                                    <div style="margin-top: 1em;">
+                                        <span class="glyphicon glyphicon-hand-up" style="font-size: 2em"></span>
+                                        <span style="font-size: 1.5em; text-decoration: underline;">소셜 계정</span>
+                                        으로 로그인 해보세요
+                                    </div>
+                                </div>
+                            }
+                            <hr/>
+                            @Registry.providers.get(UsernamePassword).map { up =>
+                                @provider(request, "userpass", Some(loginForm))
+                            }
+                        </div>
+                    </div>
             }
         </div>
     </div>

@@ -13,10 +13,16 @@
                     }
                     </a>
                     <div class="media-body">
-                        <h3 class="media-heading darkorange-f">@user.fullName</h3>
+                        <h3 class="media-heading">@user.fullName</h3>
                     </div>
                 </div>
-                <h3>내 정보</h3>
+                <h3>
+                    내 정보
+                    <a href="@routes.Account.detail" class="btn badge btn-primary">
+                        수정하기
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                </h3>
                 <table class="table ahni-table-slim">
                     <thead>
                         <tr>
@@ -32,20 +38,20 @@
                             </tr>
                             <tr>
                                 <td>성별</td>
-                                <td>@userDetail.gender <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit darkorange-f"></span></a></td>
+                                <td>@userDetail.gender</td>
                             </tr>
                             <tr>
                                 <td>전공</td>
-                                <td>@userDetail.major <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit darkorange-f"></span></a></td>
+                                <td>@userDetail.major</td>
                             </tr>
                             <tr>
                                 <td>입학년도</td>
-                                <td>@userDetail.entrance <a href="@routes.Account.detail"><span class="glyphicon glyphicon-edit darkorange-f"></span></a></td>
+                                <td>@userDetail.entrance</td>
                             </tr>
                         } else {
                             <tr>
                                 <td>인하대학생 인증</td>
-                                <td><a href="@routes.Account.startAuthenticate()">지금 인증하기</a></td>
+                                <td><a href="@routes.Account.startAuthenticate()" class="btn btn-sm btn-primary">지금 인증하기</a></td>
                             </tr>
                         }
                     </tbody>

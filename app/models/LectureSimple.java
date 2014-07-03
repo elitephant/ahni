@@ -29,7 +29,7 @@ public class LectureSimple {
      * @return
      */
     public static List<LectureSimple> all() {
-        return LectureSimple.coll.find().sort(new BasicDBObject("evaluations.dateTime", -1)).limit(10).toArray();
+        return LectureSimple.coll.find().sort(new BasicDBObject("evaluations.dateTime", -1)).limit(24).toArray();
     }
 
     public static List<LectureSimple> findByKeyword(String keyword) {
