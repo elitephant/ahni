@@ -5,7 +5,7 @@ body {
     /*font-family: "Helvetica Neue", Helvetica, Arial, serif;*/
     font-size: 14px;
     line-height: 1.428571429;
-    color: #f0f0f0;
+    color: #fff;
     padding-top: 50px;   /* Account for fixed navbar */
     position: relative; /* For scrollyspy */
     /*background-color: #102d41;*/
