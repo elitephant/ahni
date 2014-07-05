@@ -108,12 +108,22 @@
                             </span>
                             <div>@lectureEvaluation.comment</div>
                             <div class="pull-right">
-                                <button class="btn btn-sm btn-primary">
+                                <a onclick="vote(this, '@lectureEvaluation.id', 'likes')" class="btn btn-sm btn-primary">
                                     <span class="glyphicon glyphicon-thumbs-up"></span> 좋아요
-                                </button>
-                                <button class="btn btn-sm btn-info">
+                                    <span class="count">
+                                        @if(lectureEvaluation.getLikeSize>0) {
+                                            @lectureEvaluation.getLikeSize
+                                        }
+                                    </span>
+                                </a>
+                                <a onclick="vote(this, '@lectureEvaluation.id', 'dislikes')" class="btn btn-sm btn-info">
                                     <span class="glyphicon glyphicon-thumbs-down"></span> 싫어요
-                                </button>
+                                    <span class="count">
+                                        @if(lectureEvaluation.getDisLikeSize>0) {
+                                            @lectureEvaluation.getDisLikeSize
+                                        }
+                                    </span>
+                                </a>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -135,4 +145,25 @@
 jQuery(document).ready(function() {
     jQuery("time.timeago").timeago();
 });
+function vote(btn, id, operator) {
+    $.ajax({
+        url: "/evaluation/vote/"+id+"/"+operator,
+        type: "GET",
+        success: function(data){
+            console.log(data);
+            console.log(data.count)
+            console.log(data.isVoted)
+            if(data.count > 0) {
+                $(btn).find("span.count").text(data.count)
+            }
+            else {
+                $(btn).find("span.count").text('')
+            }
+        },
+        error: function(error){
+            console.log("Error:");
+            console.log(error);
+        }
+    }).done(function() { });
+}
 </script>

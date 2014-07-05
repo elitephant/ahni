@@ -1,19 +1,15 @@
 package models;
 
 import com.mongodb.*;
-import net.vz.mongodb.jackson.JacksonDBCollection;
+import net.vz.mongodb.jackson.*;
 import net.vz.mongodb.jackson.ObjectId;
-import net.vz.mongodb.jackson.Id;
 import org.joda.time.DateTime;
-import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.modules.mongodb.jackson.MongoDB;
 import securesocial.core.Identity;
 import services.MongoDBHelper;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class LectureEvaluation {
     private static JacksonDBCollection<LectureEvaluation, String> coll = MongoDB.getCollection("lecture_simple", LectureEvaluation.class, String.class);
@@ -32,6 +28,8 @@ public class LectureEvaluation {
     @ObjectId
     public String user;                     //유저 아이디
     public DateTime dateTime;               //작성 시간
+    public List<org.bson.types.ObjectId> likes;            //좋아요
+    public List<org.bson.types.ObjectId> dislikes;         //싫어요
 
     public static LectureEvaluation prepareToAdd(LectureEvaluation lectureEvaluation, Identity user) {
         //TODO: 시스템 시간이 4시간 더 크게 들어감...
@@ -91,5 +89,77 @@ public class LectureEvaluation {
             }
         }
         return 0;
+    }
+
+    /**
+     * likes 리스트의 사이즈를 반환한다
+     * @return
+     */
+    public int getLikeSize() {
+        if(likes != null && !likes.isEmpty()) { return likes.size(); }
+        else { return 0; }
+    }
+
+    /**
+     * dislikes 리스트의 사이즈를 반환한다
+     * @return
+     */
+    public int getDisLikeSize() {
+        if(dislikes != null && !dislikes.isEmpty()) { return dislikes.size(); }
+        else { return 0; }
+    }
+
+    public static boolean vote(String id, String userId, String operator) {
+        boolean isVoted;
+        DB mongoDB = MongoDBHelper.getDB();
+        DBCollection coll = mongoDB.getCollection("lecture_simple");
+
+        BasicDBObject findQuery = new BasicDBObject("evaluations._id", new org.bson.types.ObjectId(id));
+        BasicDBObject object = new BasicDBObject(String.format("evaluations.$.%s",operator), new org.bson.types.ObjectId(userId));
+        String dbQuery;
+
+        //like 기록이 있는지 확인
+        BasicDBObject existQuery = new BasicDBObject("evaluations", new BasicDBObject("$elemMatch",
+                new BasicDBObject("_id", new org.bson.types.ObjectId(id))
+                        .append(operator, new org.bson.types.ObjectId(userId))));
+        DBObject one = coll.findOne(existQuery);
+
+        //like 기록이 있으면 pull 없으면 push
+        if(one != null) {
+            dbQuery = "$pull";
+            isVoted = false;
+        }
+        else {
+            dbQuery = "$push";
+            isVoted = true;
+        }
+
+        BasicDBObject query = new BasicDBObject(dbQuery, object);
+        findQuery.remove(object);
+
+        coll.setWriteConcern(WriteConcern.SAFE);
+        coll.update(findQuery, query);
+
+        return isVoted;
+    }
+
+    public static List<org.bson.types.ObjectId> getVoteList(String id, String operator) {
+        BasicDBObject findQuery = new BasicDBObject("evaluations._id", new org.bson.types.ObjectId(id));
+
+        LectureSimple lectureSimple = LectureSimple.coll.findOne(findQuery);
+
+        if(lectureSimple != null) {
+            for(LectureEvaluation lectureEvaluation : lectureSimple.evaluations) {
+                if(lectureEvaluation.id.equals(id)) {
+                    if(operator.equals("likes")) {
+                        return lectureEvaluation.likes;
+                    }
+                    else if(operator.equals("dislikes")) {
+                        return lectureEvaluation.dislikes;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

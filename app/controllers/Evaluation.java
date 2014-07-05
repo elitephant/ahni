@@ -1,10 +1,13 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mongodb.BasicDBObject;
 import com.mongodb.WriteConcern;
+import controllers.routes;
 import models.LectureSimple;
 import models.LectureEvaluation;
 import models.User;
+import org.bson.types.ObjectId;
 import play.data.*;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -17,11 +20,34 @@ import views.html.evaluation.index;
 import views.html.evaluation.write;
 import views.html.evaluation.detail;
 
+import java.util.List;
+
 @SecureSocial.SecuredAction
 @Security.Authenticated(SecureInha.class)
 public class Evaluation extends Controller {
     static Form<LectureEvaluation> lectureEvaluationForm = Form.form(LectureEvaluation.class);
     static Form<String> searchForm = Form.form(String.class);
+
+    public static Result vote(String id, String operator) {
+        Identity user = (Identity) ctx().args.get(SecureSocial.USER_KEY);
+        User dbUser = User.findByIdentity(user);
+
+        boolean isVoted = LectureEvaluation.vote(id, dbUser.id, operator);
+
+        ObjectNode result = Json.newObject();
+        List<ObjectId> list = LectureEvaluation.getVoteList(id, operator);
+
+        result.put("isVoted", isVoted);
+
+        if(list != null && list.size() > 0) {
+            result.put("count", list.size());
+        }
+        else {
+            result.put("count", 0);
+        }
+
+        return ok(result);
+    }
 
     /**
      * 인덱스 액션
