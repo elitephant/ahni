@@ -159,10 +159,10 @@ table.table.ahni-table-slim {
     line-height: 1em;
 }
 table.table.ahni-table-slim th {
-    border-bottom: 2px solid rgb(200, 200, 200);
+    border-bottom: 2px solid rgb(255, 255, 255);
 }
 table.table.ahni-table-slim td {
-    border-bottom: 1px solid rgb(200, 200, 200);
+    border-bottom: 1px solid rgb(255, 255, 255);
 }
 table.table.ahni-table-slim tbody > tr > td span.glyphicon {
     top: 0;
