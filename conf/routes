@@ -1,0 +1,62 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /                                             controllers.Home.index
+GET         /elitephant                                   controllers.Home.elitephant
+
+# Chat
+GET         /chat                                         controllers.Chat.index
+GET         /chat/room                                    controllers.Chat.chatRoom(u: String ?= null, r: String ?= null)
+GET         /chat/join                                    controllers.Chat.chat(u, r)
+
+# Account
+GET         /dashboard                                    controllers.Account.index
+GET         /account/detail                               controllers.Account.detail
+POST        /account/detail                               controllers.Account.updateUserDetail
+GET         /authenticate/inha                            controllers.Account.startAuthenticate
+GET         /authenticate/inha/:token                     controllers.Account.completeAuthenticate(token: String)
+POST        /authenticate/inha/email                      controllers.Account.requestEmailAuthenticate
+POST        /authenticate/inha/portal                     controllers.Account.requestPortalAuthenticate
+
+# Evaluation
+GET         /evaluation                                   controllers.Evaluation.index
+GET         /evaluation/search                            controllers.Evaluation.search
+GET         /evaluation/:id                               controllers.Evaluation.detail(id: String)
+POST        /evaluation/:id                               controllers.Evaluation.save(id: String, isEdit: Boolean)
+GET         /evaluation/delete/:id                        controllers.Evaluation.delete(id: String)
+GET         /evaluation/write/:id                         controllers.Evaluation.write(id: String)
+GET         /evaluation/search/ajax/lecturenames          controllers.Evaluation.getLectureNames(term: String ?= "")
+GET         /evaluation/search/ajax/professornames        controllers.Evaluation.getProfessorNames(term: String ?= "")
+POST        /evaluation/vote/:id/:operator                controllers.Evaluation.vote(id: String, operator: String)
+
+# FoodMap
+GET         /foodmap                                      controllers.FoodMap.index
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                                 controllers.Assets.at(path="/public", file)
+
+
+###############################FOR SECURE SOCIAL###############################
+# Login page
+GET         /login                                        securesocial.controllers.LoginPage.login
+GET         /logout                                       securesocial.controllers.LoginPage.logout
+
+# User Registration and password handling
+GET         /signup                                       securesocial.controllers.Registration.startSignUp
+POST        /signup                                       securesocial.controllers.Registration.handleStartSignUp
+GET         /signup/:token                                securesocial.controllers.Registration.signUp(token)
+POST        /signup/:token                                securesocial.controllers.Registration.handleSignUp(token)
+GET         /reset                                        securesocial.controllers.Registration.startResetPassword
+POST        /reset                                        securesocial.controllers.Registration.handleStartResetPassword
+GET         /reset/:token                                 securesocial.controllers.Registration.resetPassword(token)
+POST        /reset/:token                                 securesocial.controllers.Registration.handleResetPassword(token)
+GET         /password                                     securesocial.controllers.PasswordChange.page
+POST        /password                                     securesocial.controllers.PasswordChange.handlePasswordChange
+
+# Providers entry points
+GET         /authenticate/:provider                       securesocial.controllers.ProviderController.authenticate(provider)
+POST        /authenticate/:provider                       securesocial.controllers.ProviderController.authenticateByPost(provider)
+GET         /not-authorized                               securesocial.controllers.ProviderController.notAuthorized
+###############################FOR SECURE SOCIAL###############################
