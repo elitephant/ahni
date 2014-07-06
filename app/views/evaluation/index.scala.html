@@ -65,7 +65,7 @@
                         <div class="clearfix"></div>
                     </div>
                 </div>
-                @if(row.%(3).==(0)) { </div> }
+                @if(row.%(3).==(0) || (lectureSimpleList.size()<3 && row.==(lectureSimpleList.size()))) { </div> }
             }
         </div>
     </div><!-- /.container -->
