@@ -19,7 +19,7 @@
             @helper.form(action = routes.Evaluation.save(lectureSimple.id, isEdit), 'role -> "form") {
                 <div class="form-group">
                     <label for="year">수강연도</label>
-                    <select class="form-control" id="year" name="year" required="required" autofocus="on">
+                    <select class="form-control" id="year" name="year" required autofocus>
                         <option value="" disabled>수강년도</option>
                         @for(i <- Calendar.getInstance().get(Calendar.YEAR) to 1954 by -1) {
                             @if(isEdit) {
@@ -32,7 +32,7 @@
                 </div>
                 <div class="form-group">
                     <label for="semester">수강학기</label>
-                    <select class="form-control" id="semester" name="semester" required="required">
+                    <select class="form-control" id="semester" name="semester" required>
                         <option value="" disabled>수강학기</option>
                         @if(isEdit) {
                             <option value="1" @if(lectureEvaluationForm.get.semester.equals(1)){ selected }>1학기</option>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="form-group">
                     <label for="rating">평가점수</label>
-                    <select class="form-control" id="rating" name="rating" required="required">
+                    <select class="form-control" id="rating" name="rating" required>
                         <option value="" disabled>이 강의에 대한 평가점수를 선택해주세요</option>
                         @if(isEdit) {
                             <option value="1" @if(lectureEvaluationForm.get.rating.equals(1)){ selected }>1 (매우나쁨)</option>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="form-group">
                     <label for="comment">수강후기</label>
-                    <textarea name="comment" id="comment" rows="3" class="form-control" placeholder="이 강의에 대한 생각을 자유롭게 작성해주세요" required="required">@if(isEdit){@lectureEvaluationForm.get.comment}</textarea>
+                    <textarea name="comment" id="comment" rows="3" class="form-control" placeholder="이 강의에 대한 생각을 자유롭게 작성해주세요" required>@if(isEdit){@lectureEvaluationForm.get.comment}</textarea>
                 </div>
                 <div class="form-group text-right">
                     <a href="@request.getHeader("referer")" class="btn btn-default">뒤로</a>
