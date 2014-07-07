@@ -29,6 +29,10 @@ public class Evaluation extends Controller {
     static Form<String> searchForm = Form.form(String.class);
 
     public static Result vote(String id, String operator) {
+        if(!org.bson.types.ObjectId.isValid(id)) {
+            return redirect(routes.Home.index());
+        }
+
         Identity user = (Identity) ctx().args.get(SecureSocial.USER_KEY);
         User dbUser = User.findByIdentity(user);
 
