@@ -1,5 +1,5 @@
 html, body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: "Malgun Gothic", "맑은 고딕", "Apple SD 산돌고딕 Neo", "AppleSDGothicNeo", mg, sans-serif !important;
+    font-family: NanumGothic, "나눔고딕", "Malgun Gothic", "맑은 고딕", "Apple SD 산돌고딕 Neo", "AppleSDGothicNeo", mg, sans-serif !important;
 }
 body {
     /*font-family: "Helvetica Neue", Helvetica, Arial, serif;*/
@@ -9,7 +9,7 @@ body {
     padding-top: 50px;   /* Account for fixed navbar */
     position: relative; /* For scrollyspy */
     /*background-color: #102d41;*/
-    background-color: #15acdc;
+    background-color: #53cdec;
     font-weight: lighter;
 }
 
@@ -31,7 +31,7 @@ body {
     font-size: 12px;
     text-align: center;
     width:100%;
-    background-color: #f5706c;
+    background-color: #f16665;
     z-index: 1030;
 }
 
@@ -203,7 +203,7 @@ div.row.lecture-simple > div > div {
     background-color: #fff;
 }
 div.row.lecture-simple h3 {
-    color: #f5706c;
+    color: #f16665;
     margin: 0 auto;
 }
 div.row.lecture-simple h4 {
@@ -226,10 +226,13 @@ div.rating-wrapper .rating-score {
 div.comment {
     margin-bottom: 1em;
 }
+div.top-majors > div:first-child {
+    color: darkorange;
+}
 
 /*My Favorite Color*/
 .crimson-f{color: crimson} .crimson-b{background-color: crimson}
-.lovely-pink-f{color: #f5706c} .lovely-pink-b{background-color: #f5706c}
+.lovely-pink-f{color: #f16665} .lovely-pink-b{background-color: #f16665}
 .light-gray-f{color: rgb(230, 230, 230)} .light-gray-b{background-color: rgb(230,230,230)}
 .dodgerblue-f{color: dodgerblue} .dodgerblue-b{background-color: dodgerblue}
 .chartreuse-f{color: chartreuse} .chartreuse-b{background-color: chartreuse}
