@@ -8,7 +8,7 @@
                 <span>@axis</span>
             </div>
             <div class="ahni-graph-bar-wrapper">
-                <div class="ahni-graph-bar-column" style="width: @rating%"></div>
+                <div class="ahni-graph-bar-column" style="width: @rating%; display: none;"></div>
             </div>
         </div>
     }
@@ -148,11 +148,6 @@
     </div>
 }
 
-<style>
-    div.ahni-graph-bar-column {
-        display: none;
-    }
-</style>
 <script>
 $(document).ready(function() {
     $("time.timeago").timeago();
