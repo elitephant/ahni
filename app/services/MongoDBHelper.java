@@ -1,16 +1,15 @@
 package services;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
 import org.joda.time.DateTime;
+import play.Logger;
 import play.Play;
 import scala.Some;
 import securesocial.core.*;
 import securesocial.core.java.Token;
 
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 public class MongoDBHelper {
 
@@ -23,14 +22,17 @@ public class MongoDBHelper {
 
         DB db;
         MongoClient mongoClient = null;
+        MongoCredential credential = MongoCredential.createMongoCRCredential(
+                credentials.split(":")[0], database, credentials.split(":")[1].toCharArray()
+        );
+
         try {
-            mongoClient = new MongoClient(servers.split(":")[0],Integer.parseInt(servers.split(":")[1]));
+            mongoClient = new MongoClient(new ServerAddress(servers.split(":")[0],Integer.parseInt(servers.split(":")[1])), Arrays.asList(credential));
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
 
         db = mongoClient.getDB(database);
-        db.authenticate(credentials.split(":")[0],credentials.split(":")[1].toCharArray());
 
         return db;
     }
